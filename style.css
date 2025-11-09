@@ -198,3 +198,28 @@ html, body {
     background: rgba(0, 0, 0, 0.3);
   }
 }
+
+/* ✅ 메뉴를 반응형에서도 오른쪽에 고정 유지 */
+.content {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* 기존에 flex-direction: column; 있는 구문 비활성화 */
+@media screen and (max-width: 1060px) {
+  .content {
+    flex-direction: row !important; /* 강제로 가로 정렬 유지 */
+  }
+  #menu-panel {
+    width: 250px;          /* 메뉴 폭 고정 (원하는 값으로 조정 가능) */
+    min-width: 220px;
+    overflow-y: auto;      /* 세로 스크롤 */
+    height: 100%;
+    position: sticky;
+    top: 0;
+  }
+  #main-content {
+    flex: 1;
+    overflow-x: hidden;
+  }
+}
