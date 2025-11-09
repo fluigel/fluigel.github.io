@@ -64,7 +64,7 @@ html, body {
   border: none;
   box-shadow: none;
   max-width: 900px;
-  margin-top: 0px; /* 여기서 베너와 간격 조절 */
+  margin-top: -45px; /* 여기서 베너와 간격 조절 */
 }
 
 /* --- 본문 제목 --- */
@@ -105,7 +105,7 @@ html, body {
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 0; /* ✅ 직각 유지 */
-  margin-top: 78px; /* 여기서 베너와 간격 조절 */
+  margin-top: 30px; /* 여기서 베너와 간격 조절 */
 }
 
 /* 어두운 반투명 레이어 */
