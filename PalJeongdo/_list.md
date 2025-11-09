@@ -1,0 +1,10 @@
+# 팔정도(八正道)
+
+[고교신차](Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html)
+
+[외부링크](Link/jeongbeop-saiteu.html)
+
+[참고사항](References/_list.html)
+
+
+
