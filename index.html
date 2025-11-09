@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <!-- 절대경로 고정 -->
-  <link rel="stylesheet" href="/style.css">
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <!-- 절대경로 리소스 -->
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <script>
-    // ✅ 루트 리소스 강제 고정 (하위폴더에서도 CSS, Favicon 유지)
-    window.addEventListener('DOMContentLoaded', () => {
+    // ✅ 하위 경로 접근 시 CSS·Favicon 경로 재고정
+    window.addEventListener("DOMContentLoaded", () => {
       const css = document.querySelector('link[rel="stylesheet"]')
       const icon = document.querySelector('link[rel="icon"]')
-      if (css) css.href = '/style.css'
-      if (icon) icon.href = '/favicon.ico'
+      if (css) css.href = "/style.css"
+      if (icon) icon.href = "/favicon.ico"
     })
   </script>
 </head>
@@ -23,7 +23,7 @@
 <body>
   <!-- 상단 배너 -->
   <header class="banner">
-    <img src="/_Images/Banner2.png" alt="Banner">
+    <img src="/_Images/Banner2.png" alt="Banner" />
   </header>
 
   <!-- 본문 + 오른쪽 메뉴 -->
@@ -31,67 +31,101 @@
     <main id="main-content">
       <div class="loading">Loading...</div>
     </main>
-    <aside id="menu-panel"></aside>
+
+    <!-- ✅ menu.html 통합 -->
+    <aside id="menu-panel">
+      <h1>플뤼겔의 탑 | <em class="glow">Tower of Life Energy</em></h1>
+      <hr />
+      <nav>
+        <a href="#" data-page="main.html">Home</a>
+        <a href="#" data-page="Notice/gongjisahang-peulryugel-ui-tap.html">공지사항</a>
+        <a href="#" data-page="Theory/_list.html">기본이론</a>
+        <a href="#" data-page="Shindan/_list.html">신단(神丹)</a>
+
+        <div class="menu-group">
+          <a class="parent" href="#" data-page="Breathing/_list.html">단전(丹田)호흡</a>
+          <ul>
+            <li><a href="#" data-page="Breathing/Practice/_list.html">정규행공</a></li>
+            <li><a href="#" data-page="Breathing/Extension/_list.html">심화학습</a></li>
+          </ul>
+        </div>
+
+        <div class="menu-group">
+          <a class="parent" href="#" data-page="Extra/_list.html">부록(附錄)</a>
+          <ul>
+            <li><a href="#" data-page="Extra/Meridians/_list.html">경락유통</a></li>
+            <li><a href="#" data-page="Extra/Circulation/_list.html">기주행공</a></li>
+            <li><a href="#" data-page="Extra/Imagination/_list.html">심법행공</a></li>
+          </ul>
+        </div>
+
+        <div class="menu-group">
+          <a class="parent" href="#" data-page="PalJeongdo/_list.html">팔정도(八正道)</a>
+          <ul>
+            <li><a href="#" data-page="PalJeongdo/Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html">고교신차</a></li>
+            <li><a href="#" data-page="PalJeongdo/Link/jeongbeop-saiteu.html">외부링크</a></li>
+            <li><a href="#" data-page="PalJeongdo/References/_list.html">참고사항</a></li>
+          </ul>
+        </div>
+
+        <a href="#" data-page="Board/_list.html">자유게시판</a>
+        <a href="#" data-page="Poem/_list.html">나와의대화</a>
+        <a href="#" data-page="Esperanto/_list.html">에스페란토</a>
+        <a href="#" data-page="Note/_list.html">연구노트</a>
+        <a href="#" data-page="Videos/mal-gwa-munja-ui-mohoham-dol-kim-yong-ok-je15gang-mua-ran-mueos-inga.html">영상자료</a>
+        <a href="#" data-page="Health/mom-e-joeun-yachae-seupeu-mandeulgi.html">건강자료</a>
+        <a href="#" data-page="References/chamgo-munheon.html">참고문헌</a>
+      </nav>
+    </aside>
   </section>
 
   <script>
     // -----------------------------
-    // [1] 메뉴 불러오기
+    // [1] 초기 로드
     // -----------------------------
-    fetch('/menu.html')
-      .then(r => r.text())
-      .then(html => document.getElementById('menu-panel').innerHTML = html)
-      .catch(() => document.getElementById('menu-panel').innerHTML =
-        '<p style="color:red;">메뉴를 불러오지 못했습니다.</p>')
-
-    // -----------------------------
-    // [2] 초기 로드 (404 리디렉트 복구 포함)
-    // -----------------------------
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener("DOMContentLoaded", () => {
       const redirect = sessionStorage.redirect
-      sessionStorage.removeItem('redirect')
-      
+      sessionStorage.removeItem("redirect")
       if (redirect) {
-        const path = redirect.replace(/^\//, '')
+        const path = redirect.replace(/^\//, "")
         loadPage(path)
-        history.replaceState(null, '', '/')
+        history.replaceState(null, "", "/")
       } else {
-        loadPage('main.html')
+        loadPage("main.html")
       }
     })
 
     // -----------------------------
-    // [3] 메뉴 클릭 시 본문 교체
+    // [2] 메뉴 클릭 → 본문 교체
     // -----------------------------
-    document.addEventListener('click', e => {
-      const a = e.target.closest('a[data-page]')
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest("a[data-page]")
       if (!a) return
       e.preventDefault()
-
-      const page = a.getAttribute('data-page')
+      const page = a.getAttribute("data-page")
       loadPage(page)
-      history.pushState({ page }, '', '/' + page)
+      history.pushState({ page }, "", "/" + page)
     })
 
     // -----------------------------
-    // [4] 브라우저 뒤로가기/앞으로가기
+    // [3] 뒤로가기/앞으로가기 대응
     // -----------------------------
-    window.addEventListener('popstate', e => {
+    window.addEventListener("popstate", (e) => {
       if (e.state && e.state.page) loadPage(e.state.page)
-      else loadPage('main.html')
+      else loadPage("main.html")
     })
 
     // -----------------------------
-    // [5] 페이지 로더
+    // [4] 본문 교체 로직
     // -----------------------------
     async function loadPage(page) {
-      const main = document.getElementById('main-content')
+      const main = document.getElementById("main-content")
       main.innerHTML = '<div class="loading">Loading...</div>'
       try {
-        const r = await fetch('/' + page)
+        const r = await fetch("/" + page)
         if (!r.ok) throw new Error()
         const t = await r.text()
-        const doc = new DOMParser().parseFromString(t, 'text/html')
+        const doc = new DOMParser().parseFromString(t, "text/html")
         main.innerHTML = doc.body ? doc.body.innerHTML : doc.innerHTML
       } catch {
         main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`

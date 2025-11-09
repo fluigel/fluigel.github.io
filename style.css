@@ -1,225 +1,202 @@
-/* -------------------------
-문서 전체 (Index.html) 설정
---------------------------- */
-
-/* 기본 설정 */
-html, body {
+/* =========================================================
+   [기본 설정]
+   - 전체 초기화 및 기본 글꼴/배경/링크 색상 지정
+   ========================================================= */
+* {
   margin: 0;
   padding: 0;
-  height: 100%;
-  font-family: "Noto Sans KR", system-ui, sans-serif;
-  color: #222;
-  background: #fff;
-  overflow-y: auto;
+  box-sizing: border-box;
 }
 
-/* 상단 배너 */
+body {
+  background: #0b0c10;
+  color: #ddd;
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: #ddd;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #fff;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+
+/* =========================================================
+   [상단 배너 영역]
+   - 사이트 제목 또는 이미지 배너
+   ========================================================= */
 .banner {
-  width: 100%;
-  background: none;
   text-align: center;
-  padding: 8px 0;
+  background: #1c1f26;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 0;
 }
 
 .banner img {
-  max-width: 2000px;
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
+  max-height: 180px;
+  width: auto;
 }
 
-/* ------------------
-본문 + 메뉴 전체 구조 
--------------------- */
+
+/* =========================================================
+   [본문 + 메뉴 컨테이너]
+   - SPA 구조의 메인 본문과 오른쪽 메뉴를 감싸는 래퍼
+   ========================================================= */
 .content {
   display: flex;
-  flex-direction: row;  /* 메뉴 오른쪽 */
   align-items: flex-start;
   justify-content: center;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0px 10px 80px;
-  box-sizing: border-box;
+  padding: 10px;
   gap: 20px;
 }
 
-.content > * {
-  min-width: 0;
-}
 
-/* -------------
-본문 (동적 영역)
------------------ */
+/* =========================================================
+   [메인 본문 영역]
+   - SPA에서 교체되는 중심 콘텐츠
+   ========================================================= */
 #main-content {
   flex: 1;
-  max-width: 800px;
-  padding: 24px;
-  box-sizing: border-box;
+  min-height: 70vh;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow-x: hidden;
 }
 
-#main-content h1 {
-  background: linear-gradient(to right, #3b5c7a, #587597);
-  color: #fff;
+.loading {
   text-align: center;
-  padding: 16px;
-  margin: 0 0 30px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  color: #aaa;
+  font-style: italic;
+  padding: 40px 0;
 }
 
-#main-content p {
-  line-height: 1.8;
-  color: #444;
-}
 
-#main-content img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 16px auto;
-}
-
-/* 강조문이 단독 문단일 때 위쪽 간격 강제 확보 */
-#main-content p strong:only-child {
-  display: block;
-  padding-top: 1.2em;   /* margin 병합 회피용 padding */
-  margin-top: 0;         /* margin 대신 padding으로 제어 */
-  margin-bottom: 0;
-  line-height: 1.6;
-}
-
-/* ---------------
-메뉴 (menu.html)
------------------ */
-
-/* 메뉴 패널 */
+/* =========================================================
+   [오른쪽 메뉴 패널]
+   - 고정형 사이드 메뉴
+   - 배경 이미지: /_Images/fluegel.png
+   ========================================================= */
 #menu-panel {
-  position: relative;
+  width: 280px;
   flex-shrink: 0;
-  align-self: flex-start;
-  background: url("/_Images/fluegel.png") no-repeat center center;
+  background: url("/_Images/fluegel.png") no-repeat center top;
   background-size: cover;
-  border-left: 1px solid #ccc;
-  padding: 16px;
-  margin-top: 24px; /* 메뉴 높이는 여기서 조절 */
-  box-sizing: border-box;
-  border-radius: 0;
-  width: fit-content;
-  max-width: 260px;
-  white-space: nowrap;
-  overflow: hidden; /* 오버레이 경계 정리 */
-}
-
-/* 메뉴 반투명 오버레이 */
-#menu-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25); /* 시안성 향상용 어두운 반투명막 */
-  z-index: 0;
-}
-
-/* 메뉴 내부 내용은 오버레이 위로 */
-#menu-panel * {
-  position: relative;
-  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 20px;
+  color: #eaeaea;
+  position: sticky;
+  top: 20px;
 }
 
 /* 메뉴 제목 */
 #menu-panel h1 {
-  font-size: 15px;
-  color: #f7e6a5;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-  margin: 0 0 10px;
+  font-size: 1.2rem;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 12px;
 }
 
-#menu-panel em.glow {
-  color: #f7e6a5;
-  transition: 0.3s;
+#menu-panel .glow {
+  color: #70a8ff;
+  text-shadow: 0 0 6px rgba(80, 150, 255, 0.8);
 }
 
-#menu-panel em.glow:hover {
-  color: #ffef9c;
-  text-shadow: 0 0 10px rgba(255,230,150,0.8);
+/* 구분선 */
+#menu-panel hr {
+  margin: 12px 0;
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* 메뉴 링크 */
+/* 링크 공통 */
 #menu-panel nav a {
   display: block;
-  color: #fff;
-  text-decoration: none;
-  padding: 4px 6px;
-  border-radius: 0;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-  transition: all 0.2s ease;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: background 0.2s, color 0.2s;
 }
 
 #menu-panel nav a:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
 }
 
 /* 하위 메뉴 그룹 */
-.menu-group {
-  margin-top: 6px;
+#menu-panel .menu-group {
+  margin-top: 10px;
 }
 
-.menu-group ul {
-  margin: 4px 0 8px 10px;
-  padding: 0;
+#menu-panel .menu-group .parent {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#menu-panel .menu-group ul {
   list-style: none;
+  margin-left: 10px;
 }
 
-.menu-group ul li a {
-  font-size: 14px;
-  opacity: 0.9;
+#menu-panel .menu-group ul li a {
+  font-size: 0.9rem;
+  opacity: 0.85;
 }
 
-/* 로딩 상태 */
-.loading {
-  text-align: center;
-  padding: 30px;
-  color: #888;
-  font-style: italic;
-}
 
-/* 반응형 */
-@media (max-width: 900px) {
-  .content {
-    flex-direction: column;
-    padding: 10px;
-  }
-  #menu-panel {
-    width: 100%;
-    border-left: none;
-    border-top: 1px solid #ccc;
-    white-space: normal;
-  }
-  #menu-panel::before {
-    background: rgba(0, 0, 0, 0.3);
-  }
-}
-
-/* ✅ 메뉴를 반응형에서도 오른쪽에 고정 유지 */
-.content {
-  display: flex;
-  align-items: flex-start;
-}
-
-/* 기존에 flex-direction: column; 있는 구문 비활성화 */
+/* =========================================================
+   [반응형 레이아웃 조정]
+   - 화면 폭이 좁을 때 메뉴가 본문 아래로 이동
+   ========================================================= */
 @media screen and (max-width: 1060px) {
   .content {
-    flex-direction: row !important; /* 강제로 가로 정렬 유지 */
+    flex-direction: column;
+    align-items: stretch;
   }
+
   #menu-panel {
-    width: 250px;          /* 메뉴 폭 고정 (원하는 값으로 조정 가능) */
-    min-width: 220px;
-    overflow-y: auto;      /* 세로 스크롤 */
-    height: 100%;
-    position: sticky;
+    width: 100%;
+    position: relative;
     top: 0;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-position: center center;
   }
+
   #main-content {
-    flex: 1;
-    overflow-x: hidden;
+    padding: 20px;
   }
+}
+
+
+/* =========================================================
+   [스크롤바 커스터마이징]
+   ========================================================= */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }
