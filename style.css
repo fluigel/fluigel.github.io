@@ -1,6 +1,5 @@
 /* =========================================================
-   [기본 설정]
-   - 전체 초기화 및 기본 글꼴/배경/링크 색상 지정
+   🌞 GLOBAL BASE (기본 초기화)
    ========================================================= */
 * {
   margin: 0;
@@ -8,129 +7,155 @@
   box-sizing: border-box;
 }
 
-body {
-  background: #0b0c10;
-  color: #ddd;
-  font-family: 'Noto Sans KR', sans-serif;
-  line-height: 1.6;
-  overflow-x: hidden;
+html, body {
+  height: 100%;
+  font-family: "Noto Sans KR", sans-serif;
+  color: #222;
+  background: #fff;
 }
-
-a {
-  text-decoration: none;
-  color: #ddd;
-  transition: color 0.2s;
-}
-
-a:hover {
-  color: #fff;
-}
-
-img {
-  max-width: 100%;
-  display: block;
-}
-
 
 /* =========================================================
-   [상단 배너 영역]
-   - 사이트 제목 또는 이미지 배너
+   🏔️ BANNER (상단 베너 – 가로 전체 + 높이 조절 가능)
    ========================================================= */
 .banner {
+  width: 100vw;          /* 화면 전체 가로 */
+  overflow: hidden;
   text-align: center;
-  background: #1c1f26;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 10px 0;
+  background: #fff;
+  position: relative;
+  z-index: 10;
+  border: none;
 }
 
 .banner img {
-  max-height: 180px;
-  width: auto;
+  display: block;         /* ✅ 인라인 여백 제거 */
+  width: 100%;            /* ✅ 항상 화면 전체를 가로지름 */
+  height: auto;           /* 세로 비율 자동 유지 */
+  max-height: 240px;      /* ✅ 필요 시 이 값만 수정해서 높이 조절 */
+  object-fit: cover;      /* 이미지 비율 유지하며 꽉 채우기 */
+  transition: max-height 0.4s ease; /* 부드럽게 변화 */
 }
 
-
 /* =========================================================
-   [본문 + 메뉴 컨테이너]
-   - SPA 구조의 메인 본문과 오른쪽 메뉴를 감싸는 래퍼
+   🧩 LAYOUT (메인 레이아웃)
    ========================================================= */
 .content {
   display: flex;
-  align-items: flex-start;
+  flex-direction: row;
   justify-content: center;
-  max-width: 1600px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 10px;
   gap: 20px;
+  padding: 0 20px;
 }
 
-
 /* =========================================================
-   [메인 본문 영역]
-   - SPA에서 교체되는 중심 콘텐츠
+   📜 MAIN CONTENT (본문 영역)
    ========================================================= */
 #main-content {
   flex: 1;
+  background: #fff;
+  padding: 45px 60px;
+  line-height: 1.9;
   min-height: 70vh;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  overflow-x: hidden;
+  color: #222;
+  border: none;
+  box-shadow: none;
+  max-width: 900px;
+  margin-top: 0px; /* 여기서 베너와 간격 조절 */
 }
 
-.loading {
-  text-align: center;
-  color: #aaa;
-  font-style: italic;
-  padding: 40px 0;
+/* --- 본문 제목 --- */
+#main-content h1 {
+  background: #3b5c7a; /* 플뤼겔 블루 */
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 600;
+  padding: 20px 14px; /* ✅ 위아래 여백 2배 확대 */
+  border-radius: 4px;
+  margin: 30px 0 25px;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+  text-align: center; /* ✅ 중앙 정렬 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
+/* --- 본문 문단 (Typora plain HTML 대응) --- */
+#main-content p {
+  white-space: pre-line; /* ↲ 줄바꿈 문자(\n)를 <br>처럼 처리 */
+  word-break: keep-all;  /* 한글 단어 단위로 줄바꿈 */
+  line-height: 1.9;
+  margin-bottom: 1.4em;  /* 문단 간 여백 */
+  color: #444;
+}
 
 /* =========================================================
-   [오른쪽 메뉴 패널]
-   - 고정형 사이드 메뉴
-   - 배경 이미지: /_Images/fluegel.png
+   📘 MENU PANEL (오른쪽 메뉴 영역)
    ========================================================= */
 #menu-panel {
+  position: relative;
   width: 280px;
   flex-shrink: 0;
-  background: url("/_Images/fluegel.png") no-repeat center top;
+  color: #fff;
+  padding: 25px 20px;
+  background: url("/_Images/Fluigel.png") no-repeat center top;
   background-size: cover;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 20px;
-  color: #eaeaea;
-  position: sticky;
-  top: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 0; /* ✅ 직각 유지 */
+  margin-top: 78px; /* 여기서 베너와 간격 조절 */
+}
+
+/* 어두운 반투명 레이어 */
+#menu-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 0;
+  border-radius: 0;
+}
+
+/* 메뉴 내부 내용은 오버레이 위에 표시 */
+#menu-panel * {
+  position: relative;
+  z-index: 1;
 }
 
 /* 메뉴 제목 */
 #menu-panel h1 {
   font-size: 1.2rem;
-  color: #fff;
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
+  color: #e6d28a;
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
 }
 
-#menu-panel .glow {
-  color: #70a8ff;
-  text-shadow: 0 0 6px rgba(80, 150, 255, 0.8);
+/* 플뤼겔의 탑 | Tower of Life Energy */
+#menu-panel h1 em.glow {
+  color: #e6d28a; /* ✨ 은은한 황금빛 (기본 상태) */
+  font-style: normal;
+  transition: color 0.4s ease, text-shadow 0.4s ease;
 }
 
-/* 구분선 */
-#menu-panel hr {
-  margin: 12px 0;
-  border: none;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.2);
+#menu-panel h1:hover em.glow {
+  color: #ffeb91; /* 🌟 찬란하지만 부드러운 황금빛 (호버) */
+  text-shadow: 0 0 12px #ffeaaa;
 }
 
-/* 링크 공통 */
+/* 메뉴 링크 */
 #menu-panel nav a {
   display: block;
-  padding: 6px 8px;
-  border-radius: 6px;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
   font-size: 0.95rem;
-  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.2px;
 }
 
 #menu-panel nav a:hover {
@@ -138,14 +163,9 @@ img {
   color: #fff;
 }
 
-/* 하위 메뉴 그룹 */
+/* 메뉴 그룹 */
 #menu-panel .menu-group {
   margin-top: 10px;
-}
-
-#menu-panel .menu-group .parent {
-  font-weight: bold;
-  margin-bottom: 5px;
 }
 
 #menu-panel .menu-group ul {
@@ -153,50 +173,63 @@ img {
   margin-left: 10px;
 }
 
-#menu-panel .menu-group ul li a {
+#menu-panel .menu-group ul a {
   font-size: 0.9rem;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
+/* =========================================================
+   💫 MISC (기타 요소)
+   ========================================================= */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #777;
+  font-style: italic;
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
 
 /* =========================================================
-   [반응형 레이아웃 조정]
-   - 화면 폭이 좁을 때 메뉴가 본문 아래로 이동
+   📱 RESPONSIVE (반응형 레이아웃)
    ========================================================= */
 @media screen and (max-width: 1060px) {
   .content {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    margin: 5px auto;
   }
 
   #menu-panel {
     width: 100%;
-    position: relative;
-    top: 0;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    background-position: center center;
+    text-align: center;
+    background-position: center;
+    margin-top: 20px;
+  }
+
+  #menu-panel nav a {
+    display: inline-block;
+    margin: 4px 6px;
   }
 
   #main-content {
-    padding: 20px;
+    width: 100%;
+    max-width: 100%;
+    padding: 30px;
+    margin-top: 5px;
   }
 }
 
-
-/* =========================================================
-   [스크롤바 커스터마이징]
-   ========================================================= */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
+/* 모바일에서는 자동으로 줄어듦 */
+@media screen and (max-width: 768px) {
+  .banner img {
+    max-height: 160px;    /* ✅ 모바일 버전 기본 높이 */
+  }
 }
