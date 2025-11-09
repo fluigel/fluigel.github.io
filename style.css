@@ -97,7 +97,7 @@ html, body {
   position: relative;
   flex-shrink: 0;
   align-self: flex-start;
-  background: url("_Images/fluegel.png") no-repeat center center;
+  background: url("/_Images/fluegel.png") no-repeat center center;
   background-size: cover;
   border-left: 1px solid #ccc;
   padding: 16px;
