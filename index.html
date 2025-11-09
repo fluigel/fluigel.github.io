@@ -5,10 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>플뤼겔의 탑</title>
 
-  <!-- 모든 경로를 절대경로(/) 기준으로 -->
+  <!-- 절대경로 고정 -->
   <link rel="stylesheet" href="/style.css">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  <script>
+    // ✅ 루트 리소스 강제 고정 (하위폴더에서도 CSS, Favicon 유지)
+    window.addEventListener('DOMContentLoaded', () => {
+      const css = document.querySelector('link[rel="stylesheet"]')
+      const icon = document.querySelector('link[rel="icon"]')
+      if (css) css.href = '/style.css'
+      if (icon) icon.href = '/favicon.ico'
+    })
+  </script>
 </head>
+
 <body>
   <!-- 상단 배너 -->
   <header class="banner">
