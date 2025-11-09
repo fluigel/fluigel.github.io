@@ -1,0 +1,9 @@
+# 심법행공
+
+[심법행공(心法行功)](simbeop-haenggong.html)
+
+[구양법(九陽法)](gu-yang-beop.html)
+
+[해기법(海氣法)](hae-gi-beop.html)
+
+[부동법(不凍法)](budong-beop.html)

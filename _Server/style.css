@@ -1,0 +1,191 @@
+/* -------------------------
+문서 전체 (Index.html) 설정
+--------------------------- */
+
+/* 기본 설정 */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Noto Sans KR", system-ui, sans-serif;
+  color: #222;
+  background: #fff;
+  overflow-y: auto;
+}
+
+/* 상단 배너 */
+.banner {
+  width: 100%;
+  background: none;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.banner img {
+  max-width: 2000px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ------------------
+본문 + 메뉴 전체 구조 
+-------------------- */
+.content {
+  display: flex;
+  flex-direction: row;  /* 메뉴 오른쪽 */
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0px 10px 80px;
+  box-sizing: border-box;
+  gap: 20px;
+}
+
+.content > * {
+  min-width: 0;
+}
+
+/* -------------
+본문 (동적 영역)
+----------------- */
+#main-content {
+  flex: 1;
+  max-width: 800px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+#main-content h1 {
+  background: linear-gradient(to right, #3b5c7a, #587597);
+  color: #fff;
+  text-align: center;
+  padding: 16px;
+  margin: 0 0 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+#main-content p {
+  line-height: 1.8;
+  color: #444;
+}
+
+#main-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px auto;
+}
+
+/* ---------------
+메뉴 (menu.html)
+----------------- */
+
+/* 메뉴 패널 */
+#menu-panel {
+  position: relative;
+  flex-shrink: 0;
+  align-self: flex-start;
+  background: url("_Images/fluegel.png") no-repeat center center;
+  background-size: cover;
+  border-left: 1px solid #ccc;
+  padding: 16px;
+  margin-top: 24px; /* 메뉴 높이는 여기서 조절 */
+  box-sizing: border-box;
+  border-radius: 0;
+  width: fit-content;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden; /* 오버레이 경계 정리 */
+}
+
+/* 메뉴 반투명 오버레이 */
+#menu-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25); /* 시안성 향상용 어두운 반투명막 */
+  z-index: 0;
+}
+
+/* 메뉴 내부 내용은 오버레이 위로 */
+#menu-panel * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 메뉴 제목 */
+#menu-panel h1 {
+  font-size: 15px;
+  color: #f7e6a5;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+  margin: 0 0 10px;
+}
+
+#menu-panel em.glow {
+  color: #f7e6a5;
+  transition: 0.3s;
+}
+
+#menu-panel em.glow:hover {
+  color: #ffef9c;
+  text-shadow: 0 0 10px rgba(255,230,150,0.8);
+}
+
+/* 메뉴 링크 */
+#menu-panel nav a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 6px;
+  border-radius: 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+}
+
+#menu-panel nav a:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* 하위 메뉴 그룹 */
+.menu-group {
+  margin-top: 6px;
+}
+
+.menu-group ul {
+  margin: 4px 0 8px 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-group ul li a {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* 로딩 상태 */
+.loading {
+  text-align: center;
+  padding: 30px;
+  color: #888;
+  font-style: italic;
+}
+
+/* 반응형 */
+@media (max-width: 900px) {
+  .content {
+    flex-direction: column;
+    padding: 10px;
+  }
+  #menu-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #ccc;
+    white-space: normal;
+  }
+  #menu-panel::before {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
