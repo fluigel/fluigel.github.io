@@ -3,20 +3,54 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>
+  <title>플뤼겔의 탑</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="_Images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <div class="container">
-    <aside>
-      <!-- 스크롤 제거 -->
-      <iframe src="menu.html" title="menu" scrolling="no"></iframe>
-    </aside>
-    <main>
-      <iframe src="main.html" name="main" title="main"></iframe>
+  <!-- 상단 배너 -->
+  <header class="banner">
+    <img src="_Images/Banner2.png" alt="Banner">
+  </header>
+
+  <!-- 본문 + 오른쪽 메뉴 -->
+  <section class="content">
+    <main id="main-content">
+      <div class="loading">Loading...</div>
     </main>
-  </div>
+    <aside id="menu-panel"></aside>
+  </section>
+
+  <script>
+    // 메뉴 불러오기
+    fetch('menu.html')
+      .then(r => r.text())
+      .then(html => document.getElementById('menu-panel').innerHTML = html)
+      .catch(() => document.getElementById('menu-panel').innerHTML = '<p style="color:red;">메뉴를 불러오지 못했습니다.</p>')
+
+    // 초기 페이지 로드
+    window.addEventListener('DOMContentLoaded', () => loadPage('main.html'))
+
+    // 메뉴 클릭 시 본문 교체
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[data-page]')
+      if (!a) return
+      e.preventDefault()
+      loadPage(a.getAttribute('data-page'))
+    })
+
+    async function loadPage(page) {
+      const main = document.getElementById('main-content')
+      main.innerHTML = '<div class="loading">Loading...</div>'
+      try {
+        const r = await fetch(page)
+        const t = await r.text()
+        const doc = new DOMParser().parseFromString(t, 'text/html')
+        main.innerHTML = doc.body ? doc.body.innerHTML : doc.innerHTML
+      } catch {
+        main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`
+      }
+    }
+  </script>
 </body>
 </html>
-

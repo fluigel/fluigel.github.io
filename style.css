@@ -1,238 +1,200 @@
-/* ------------------------------------------------
-전체 기본 스타일 HTML 문서 전체의 초기화 및 폰트 설정
--------------------------------------------------- */
+/* -------------------------
+문서 전체 (Index.html) 설정
+--------------------------- */
+
+/* 기본 설정 */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Noto Sans KR", system-ui, sans-serif;
   color: #222;
   background: #fff;
+  overflow-y: auto;
 }
 
-/* ----------------------
-프레임 구조 (index.html)
------------------------- */
-.container {
+/* 상단 배너 */
+.banner {
+  width: 100%;
+  background: none;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.banner img {
+  max-width: 2000px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ------------------
+본문 + 메뉴 전체 구조 
+-------------------- */
+.content {
   display: flex;
-  flex-direction: row-reverse; /* 메뉴를 오른쪽에 둔다 */
-  height: 100vh;
-  overflow: hidden;
+  flex-direction: row;  /* 메뉴 오른쪽 */
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0px 10px 80px;
+  box-sizing: border-box;
+  gap: 20px;
 }
 
-aside {
-  width: 240px;
-  background: #f6f8fa;
-  border-left: 1px solid #ddd;
+.content > * {
+  min-width: 0;
+}
+
+/* -------------
+본문 (동적 영역)
+----------------- */
+#main-content {
+  flex: 1;
+  max-width: 800px;
+  padding: 24px;
   box-sizing: border-box;
 }
 
-main {
-  flex: 1;
-  overflow: hidden;
-}
-
-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-/* ----------------------------------
-메뉴 전용 스타일 (body class="menu")
------------------------------------- */
-
-/* 메뉴 영역 전체 */
-body.menu {
-  position: relative;
+#main-content h1 {
+  background: linear-gradient(to right, #3b5c7a, #587597);
+  color: #fff;
+  text-align: center;
   padding: 16px;
-  background: #f2f2f2 url("_images/fluegel.png") no-repeat center center;
-  background-size: cover;
-  overflow: hidden;
+  margin: 0 0 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-/* 배경 위 얇은 반투명 오버레이 */
-body.menu::before {
+#main-content p {
+  line-height: 1.8;
+  color: #444;
+}
+
+#main-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 16px auto;
+}
+
+/* 강조문이 단독 문단일 때 위쪽 간격 강제 확보 */
+#main-content p strong:only-child {
+  display: block;
+  padding-top: 1.2em;   /* margin 병합 회피용 padding */
+  margin-top: 0;         /* margin 대신 padding으로 제어 */
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+/* ---------------
+메뉴 (menu.html)
+----------------- */
+
+/* 메뉴 패널 */
+#menu-panel {
+  position: relative;
+  flex-shrink: 0;
+  align-self: flex-start;
+  background: url("_Images/fluegel.png") no-repeat center center;
+  background-size: cover;
+  border-left: 1px solid #ccc;
+  padding: 16px;
+  margin-top: 24px; /* 메뉴 높이는 여기서 조절 */
+  box-sizing: border-box;
+  border-radius: 0;
+  width: fit-content;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden; /* 오버레이 경계 정리 */
+}
+
+/* 메뉴 반투명 오버레이 */
+#menu-panel::before {
   content: "";
   position: absolute;
-  inset: 0; /* top, right, bottom, left = 0 */
-  background: rgba(0, 0, 0, 0.25); /* 어두운 반투명 막 (0.2~0.3 추천) */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25); /* 시안성 향상용 어두운 반투명막 */
   z-index: 0;
 }
 
-/* 메뉴 내부 내용은 오버레이 위에 보이게 */
-body.menu * {
+/* 메뉴 내부 내용은 오버레이 위로 */
+#menu-panel * {
   position: relative;
   z-index: 1;
 }
 
 /* 메뉴 제목 */
-body.menu h1 {
-  font-size: 16px;
-  color: #f2f2f2; /* 기본 흰빛 톤 */
+#menu-panel h1 {
+  font-size: 15px;
+  color: #f7e6a5;
   text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-  margin-top: 0;
+  margin: 0 0 10px;
 }
 
-/* 공통 링크 스타일 */
-body.menu nav a {
+#menu-panel em.glow {
+  color: #f7e6a5;
+  transition: 0.3s;
+}
+
+#menu-panel em.glow:hover {
+  color: #ffef9c;
+  text-shadow: 0 0 10px rgba(255,230,150,0.8);
+}
+
+/* 메뉴 링크 */
+#menu-panel nav a {
   display: block;
-  padding: 6px 8px;
+  color: #fff;
   text-decoration: none;
-  color: #f2f2f2; /* 기본 흰색 계열 */
-  border-radius: 4px;
+  padding: 4px 6px;
+  border-radius: 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   transition: all 0.2s ease;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
-/* hover 효과 */
-body.menu nav a:hover {
-  color: #ffffff; /* 완전한 흰빛으로 */
-  background: rgba(255,255,255,0.08);
-  text-shadow: 1px 1px 4px rgba(255,255,255,0.8);
+#menu-panel nav a:hover {
+  background: rgba(255,255,255,0.15);
 }
 
-/* 구분선 */
-body.menu hr {
-  border: 0;
-  border-top: 1px solid rgba(255,255,255,0.3);
-  margin: 10px 0;
-}
-
-/* 트리형 카테고리 (상위 메뉴 그룹) */
+/* 하위 메뉴 그룹 */
 .menu-group {
-  margin-top: 0px;
+  margin-top: 6px;
 }
 
-/* 상위 카테고리 (일반 항목과 동일하게 통일) */
-.menu-group > a.parent {
-  font-weight: normal;
-  color: #f2f2f2; /* 동일 흰빛 계열 */
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-  display: block;
-  margin-bottom: 4px;
-}
-
-/* 하위 카테고리 리스트 */
 .menu-group ul {
-  margin: 0 0 8px 15px; /* 들여쓰기 */
+  margin: 4px 0 8px 10px;
   padding: 0;
   list-style: none;
 }
 
-/* 하위 항목 링크 */
 .menu-group ul li a {
   font-size: 14px;
-  color: #f2f2f2;
   opacity: 0.9;
 }
 
-.menu-group ul li a:hover {
-  color: #ffffff;
-  background: rgba(255,255,255,0.12);
-}
-
-/* 메뉴 항목 간 줄 간격 및 여백 조절 */
-body.menu nav a,
-.menu-group ul li a {
-  line-height: 0.8;
-  margin-bottom: 4px;
-}
-
-/* 타이틀 전체적인 설정 */
-body.menu h1 {
-  font-size: 16px;
-  color: #f7e6a5; /* 부드러운 황금색 */
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-  margin-top: 0;
-}
-
-/* 타이틀의 영어 부분 – 은은한 황금빛 포인트 */
-body.menu h1 em.glow {
-  color: #f7e6a5; /* 기본은 부드러운 황금색 */
-  font-style: italic;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-  transition: all 0.4s ease;
-}
-
-/* 이텔릭 효과 추가 */
-body.menu h1 em.glow {
-  font-style: italic;
-  color: #f7e6a5; /* 부드러운 황금색 */
-  transition: all 0.4s ease;
-  cursor: pointer;
-}
-
-/* hover 시 찬란하게 빛남 */
-body.menu h1 em.glow:hover {
-  color: #ffef9c; /* 조금 더 밝고 따뜻한 금빛 */
-  text-shadow:
-    0 0 6px rgba(255,240,180,0.8),
-    0 0 12px rgba(255,230,150,0.6),
-    0 0 20px rgba(255,210,100,0.4);
-}
-
-/* ------------------------------------
-본문 전용 스타일 (body class="main")
------------------------------------- */
-body.main {
-  margin: 24px auto;   /* 좌우 여백 자동 → 가운데 정렬 효과 */
-  max-width: 800px;    /* 본문 폭 제한 */
-  font-size: 16px;
-  line-height: 1.8;
-}
-
-body.main h1 {
-  margin-top: 0;
-}
-
-body.main p {
-  color: #444;
-}
-
-/* 문단 내 줄바꿈 처리 (Typora plain HTML 대응) */
-body.main p {
-  white-space: pre-line; /* ↲ 줄바꿈 문자(\n)를 <br>처럼 처리 */
-  word-break: keep-all;  /* 한글 단어 단위로 줄바꿈 */
-  line-height: 1.8;
-  color: #444;
-}
-
-/*  본문 제목 배경 */
-body.main h1 {
-  background: linear-gradient(to right, #3b5c7a, #587597); /* 플뤼겔 블루의 은은한 깊이감 */
-  padding: 20px;
-  border-radius: 0; /* ← 둥근 모서리 제거! */
-  font-size: 24px;
+/* 로딩 상태 */
+.loading {
   text-align: center;
-  color: #ffffff; /* 제목 글씨 색 조절은 여기서 */
-  text-shadow: 1px 1px 3px #00000066;
-  margin: 0 0 40px; /* 위쪽 - 좌우 - 아래 여백 */
-  box-shadow: 0 4px 12px #00000033; /* 자연스러운 그림자 */
+  padding: 30px;
+  color: #888;
+  font-style: italic;
 }
 
-/* 본문 이미지 공통 스타일 */
-body.main img {
-  display: block;           /* 줄 바꿈 + 블록화 */
-  max-width: 100%;          /* 화면(부모 영역) 너비 초과 금지 */
-  height: auto;             /* 비율 유지 */
-  margin: 20px auto;        /* 위아래 여백 + 좌우 가운데 정렬 */
+/* 반응형 */
+@media (max-width: 900px) {
+  .content {
+    flex-direction: column;
+    padding: 10px;
+  }
+  #menu-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #ccc;
+    white-space: normal;
+  }
+  #menu-panel::before {
+    background: rgba(0, 0, 0, 0.3);
+  }
 }
-
-/* 모든 본문 iframe 하단 띄우기 */
-.container main iframe {
-  width: 100%;
-  height: calc(100% - 40px); /* 바닥 띄움 크기 조절 */
-  border: none;
-  display: block;
-  box-sizing: border-box;
-  margin-bottom: 40px;
-}
-
-/* ------------------------------------
-반응형 설정 화면 크기에 따라 메뉴 폭 변경
--------------------------------------- */
-@media (max-width: 700px) {
-  aside { width: 180px; }
-}
-
