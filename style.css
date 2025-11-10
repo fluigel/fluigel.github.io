@@ -88,7 +88,7 @@ html, body {
   line-height: 1.9;
   margin-bottom: 1.4em;  /* 문단 간 여백 */
   color: #444;
-} */*/
+}
 
 /* ✅ 본문 이미지 크기 자동 맞춤 */
 #main-content img {
@@ -165,7 +165,7 @@ html, body {
   display: block;
   color: #fff;
   text-decoration: none;
-  padding: 8px 10px;
+  padding: 6px 20px;
   border-radius: 4px;
   transition: all 0.2s ease;
   font-size: 0.95rem;
@@ -229,7 +229,7 @@ html, body {
     height: 100%;
     width: 80%;
     max-width: 300px;
-    background:
+    background: url("./_Images/Fluigel.png") no-repeat center top;
     background-size: cover;  /* 이미지 꽉 채우기 */
     color: #fff;
     overflow-y: auto;
