@@ -236,11 +236,11 @@ html, body {
 }
 
 /* =========================================================
-   📱 MOBILE SECTION (플뤼겔의 탑 - 완전 안정 버전)
+   📱 MOBILE SECTION (플뤼겔의 탑 - 한글 단일형 완전 안정판)
    ========================================================= */
 @media screen and (max-width: 1060px) {
 
-  /* ✅ 모바일에서만 메뉴 버튼 표시 */
+  /* ✅ 메뉴 버튼 – 한글 단일, 반투명 유리 효과 */
   .menu-toggle {
     display: flex;
     align-items: center;
@@ -253,7 +253,7 @@ html, body {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.25);
     color: #e6eaf0;
-    padding: 10px 14px;
+    padding: 8px 12px; /* ✅ 폭 슬림 */
     font-size: 1.3rem;
     border-radius: 10px;
     z-index: 9999;
@@ -269,27 +269,23 @@ html, body {
     box-shadow: 0 6px 14px rgba(0,0,0,0.35);
   }
 
+  /* ✅ “☰ 메뉴” 한글 버전 */
   .menu-toggle::before {
-    content: "☰";
-    font-size: 1.3rem;
+    content: "☰ 메뉴";
+    font-size: 1.2rem;
     line-height: 1;
   }
 
-  .menu-toggle::after {
-    content: "MENU";
-    font-size: 0.9rem;
-    opacity: 0.85;
-  }
-
-  /* ✅ 메뉴 패널: 슬라이드 + 배경 이미지 유지 */
+  /* ✅ 메뉴 패널 */
   #menu-panel {
     position: fixed;
     top: 0;
     right: -100%;
-    height: 100vh;         /* 모든 브라우저 대응 */
-    height: 100dvh;        /* iOS 등 최신 브라우저 대응 */
     width: 80%;
     max-width: 300px;
+    height: 100lvh;  /* ✅ iOS 17+ 및 크롬 최신 대응 */
+    height: 100dvh;  /* ✅ 하단 바 포함 모든 브라우저 대응 */
+    height: 100vh;   /* ✅ 구형 브라우저 대응 */
     background: url("./_Images/Fluigel.png") no-repeat center top;
     background-size: cover;
     color: #fff;
@@ -300,12 +296,11 @@ html, body {
     box-shadow: -3px 0 10px rgba(0,0,0,0.3);
   }
 
-  /* ✅ 메뉴 열렸을 때 */
   #menu-panel.open {
     right: 0;
   }
 
-  /* ✅ 메뉴 열렸을 때 배경 고정 */
+  /* ✅ 메뉴 열릴 때 배경 스크롤 잠금 */
   body.menu-open {
     overflow: hidden;
     touch-action: none;
@@ -320,7 +315,7 @@ html, body {
     z-index: 997;
   }
 
-  /* ✅ 본문 여백 및 배너 보정 */
+  /* ✅ 본문 여백 보정 */
   #main-content {
     padding: 25px;
     max-width: 100%;
@@ -332,7 +327,7 @@ html, body {
 }
 
 /* =========================================================
-   📱 SMALL MOBILE (좁은 화면용 보정)
+   📱 SMALL MOBILE (768px 이하)
    ========================================================= */
 @media screen and (max-width: 768px) {
   #main-content {
