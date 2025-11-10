@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <title>Redirecting...</title>
   <script>
-    // SPA fallback for GitHub Pages
     (function() {
+      // 방문자가 main.html 같은 경로로 직접 접근했을 때
       const redirect = location.pathname + location.search + location.hash;
       sessionStorage.redirect = redirect;
       window.location.replace("/");
