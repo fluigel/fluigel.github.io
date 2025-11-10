@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <link rel="stylesheet" href="./style.css" />
-  <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+  <!-- ✅ 절대경로로 지정 (깃허브 루트 기준) -->
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-  <!-- ✅ 중복 폴더 자동 교정 -->
+  <!-- ✅ 중복폴더 자동 교정 -->
   <script>
     (function fixDoubleFolders() {
       const parts = location.pathname.split("/").filter(Boolean);
@@ -27,7 +28,7 @@
 <body>
   <!-- 🌄 상단 배너 -->
   <header class="banner">
-    <img src="./_Images/Banner2.png" alt="Banner" />
+    <img src="/_Images/Banner2.png" alt="Banner" />
   </header>
 
   <!-- 📜 본문 + 메뉴 -->
@@ -46,7 +47,7 @@
         <a href="#" data-page="Shindan/_list.html">신단(神丹)</a>
 
         <div class="menu-group">
-          <a class="parent" href="#" data-page="Breathing/_list.html">단전(丹田)호흡</a>
+          <a class="parent" href="#" data-page="Breathing/_list.html">단전호흡</a>
           <ul>
             <li><a href="#" data-page="Breathing/Practice/_list.html">정규행공</a></li>
             <li><a href="#" data-page="Breathing/Extension/_list.html">심화학습</a></li>
@@ -54,7 +55,7 @@
         </div>
 
         <div class="menu-group">
-          <a class="parent" href="#" data-page="Extra/_list.html">부록(附錄)</a>
+          <a class="parent" href="#" data-page="Extra/_list.html">부록</a>
           <ul>
             <li><a href="#" data-page="Extra/Meridians/_list.html">경락유통</a></li>
             <li><a href="#" data-page="Extra/Circulation/_list.html">기주행공</a></li>
@@ -63,7 +64,7 @@
         </div>
 
         <div class="menu-group">
-          <a class="parent" href="#" data-page="PalJeongdo/_list.html">팔정도(八正道)</a>
+          <a class="parent" href="#" data-page="PalJeongdo/_list.html">팔정도</a>
           <ul>
             <li><a href="#" data-page="PalJeongdo/Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html">고교신차</a></li>
             <li><a href="#" data-page="PalJeongdo/Link/jeongbeop-saiteu.html">외부링크</a></li>
@@ -82,14 +83,13 @@
     </aside>
   </section>
 
+  <!-- ⚙️ SPA 핵심 엔진 -->
   <script>
-    /* =====================================================
-       깃허브 전용 SPA 엔진 (루트 절대경로 기준)
-       ===================================================== */
     let currentRequest = null;
 
     async function loadPage(page) {
       const main = document.getElementById("main-content");
+      if (!main) return;
       main.innerHTML = '<div class="loading">Loading...</div>';
 
       if (currentRequest) currentRequest.abort?.();
@@ -97,29 +97,42 @@
       currentRequest = controller;
 
       try {
-        // ✅ 항상 루트(/) 기준 절대경로로 요청
-        const cacheBuster = "?_v=" + Date.now();
-        const url = "/" + page + cacheBuster;
-        console.log("📡 Fetch:", url);
+        // ✅ 절대경로로 고정 fetch
+        const fragmentURL = new URL("/" + page, location.origin);
+        const url = new URL(fragmentURL);
+        url.searchParams.set("_v", Date.now());
 
-        const r = await fetch(url, { signal: controller.signal, cache: "no-store" });
+        const r = await fetch(url.toString(), { signal: controller.signal, cache: "no-store" });
         if (!r.ok) throw new Error("HTTP " + r.status);
 
         const t = await r.text();
         const doc = new DOMParser().parseFromString(t, "text/html");
         let html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
 
-        // ✅ 경로 보정 (중복 폴더 방지)
-        const baseDir = page.includes("/") ? page.split("/")[0] + "/" : "";
-        html = html.replace(/(src|href)="(?!https?:|mailto:|tel:|#)([^"]+)"/g, (m, attr, path) => {
-          if (!path) return m;
-          if (path.startsWith("/") || path.startsWith("_")) return `${attr}="${path}"`;
-          if (path.startsWith(baseDir) || path.includes(baseDir + "/")) return `${attr}="${path}"`;
-          const corrected = `${baseDir}${path}`.replace(/\/{2,}/g, "/");
-          return `${attr}="${corrected}"`;
+        // ✅ 조각 내부의 모든 상대경로를 절대경로로 승격
+        const baseForFragment = fragmentURL.toString().replace(/[^/]*$/, "");
+        html = html.replace(/(src|href)="(?!https?:|mailto:|tel:|#)([^"]+)"/g, (_, attr, path) => {
+          try {
+            const abs = new URL(path, baseForFragment).toString();
+            return `${attr}="${abs}"`;
+          } catch {
+            return `${attr}="${path}"`;
+          }
         });
 
         main.innerHTML = html;
+
+        // ✅ 내부 링크를 다시 SPA용으로 재매핑
+        main.querySelectorAll("a[href]").forEach((a) => {
+          const href = a.getAttribute("href") || "";
+          if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
+          const abs = new URL(href, baseForFragment);
+          if (abs.origin === location.origin) {
+            const pagePath = abs.pathname.replace(/^\/+/, "");
+            a.setAttribute("data-page", pagePath);
+            a.setAttribute("href", "#");
+          }
+        });
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error("불러오기 실패:", page, err);
@@ -130,7 +143,7 @@
       }
     }
 
-    /* ✅ 초기 로드 (직접 URL 접근 처리) */
+    /* ✅ 초기 로드 (직접 URL 진입 대응) */
     window.addEventListener("DOMContentLoaded", () => {
       const redirect = sessionStorage.redirect;
       if (redirect) {
