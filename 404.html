@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Redirecting...</title>
   <script>
-    // GitHub Pages의 404요청을 SPA 루트로 되돌리는 리디렉트 코드
-    sessionStorage.redirect = location.pathname + location.search + location.hash  // 사용자가 요청한 경로 임시 저장
-    window.location.replace("/")                 // index.html(루트)로 이동
+    // SPA fallback for GitHub Pages
+    (function() {
+      const redirect = location.pathname + location.search + location.hash;
+      sessionStorage.redirect = redirect;
+      window.location.replace("/");
+    })();
   </script>
 </head>
-<body></body>
+<body>
+  <p>Redirecting...</p>
+</body>
 </html>
