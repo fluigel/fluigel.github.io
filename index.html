@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <!-- ✅ CSS 경로 수정 (상대경로로) -->
+  <!-- ✅ CSS 및 파비콘 경로 고정 -->
   <link rel="stylesheet" href="./style.css" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon" />
 
   <script>
-    // ✅ GitHub Pages용 경로 보정 (루트 이동 시에도 안전)
+    // ✅ GitHub Pages 경로 자동보정
     window.addEventListener("DOMContentLoaded", () => {
       const css = document.querySelector('link[rel="stylesheet"]')
       const icon = document.querySelector('link[rel="icon"]')
@@ -32,7 +32,7 @@
       <div class="loading">Loading...</div>
     </main>
 
-    <!-- 메뉴 -->
+    <!-- 오른쪽 메뉴 -->
     <aside id="menu-panel">
       <h1>플뤼겔의 탑 | <em class="glow">Tower of Life Energy</em></h1>
       <hr />
@@ -116,32 +116,55 @@
     })
 
     // -----------------------------
-    // [4] 본문 교체 + 자동경로보정
+    // [4] 본문 교체 + 자동경로보정 + 안정화
     // -----------------------------
+    let currentRequest = null // 중복요청 방지용
+
     async function loadPage(page) {
       const main = document.getElementById("main-content")
       main.innerHTML = '<div class="loading">Loading...</div>'
 
+      // 🔒 이전 요청 중단
+      if (currentRequest) currentRequest.abort?.()
+      const controller = new AbortController()
+      currentRequest = controller
+
       try {
-        const r = await fetch("./" + page)
-        if (!r.ok) throw new Error()
+        // 캐시 꼬임 방지용
+        const cacheBuster = `?_v=${Date.now()}`
+        const r = await fetch(`./${page}${cacheBuster}`, {
+          signal: controller.signal,
+          cache: "no-store",
+        })
+
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
         const t = await r.text()
         const doc = new DOMParser().parseFromString(t, "text/html")
         let html = doc.body ? doc.body.innerHTML : doc.innerHTML
 
         // -------------------------------------------------
-        // 🧠 이미지·링크 자동보정 (상대경로 → 루트 기준)
+        // 🧠 이미지·링크 자동보정 (상대경로 중복 방지 포함)
         // -------------------------------------------------
         const baseDir = page.substring(0, page.lastIndexOf("/") + 1)
         html = html.replace(/(src|href)="(?!https?:)([^"]+)"/g, (m, attr, path) => {
-          if (path.startsWith("/") || path.startsWith("_")) return `${attr}="./${path.replace(/^\/+/, "")}"`
-          return `${attr}="./${baseDir}${path}".replace(/\/{2,}/g, "/")`
+          // 외부링크나 절대경로(_ 또는 / 시작)는 그대로 둠
+          if (path.startsWith("/") || path.startsWith("_")) return `${attr}="${path}"`
+
+          // 이미 baseDir이 포함되어 있다면 중복 방지
+          if (path.startsWith(baseDir)) return `${attr}="${path}"`
+
+          // 상대경로 조합
+          const corrected = `${baseDir}${path}`.replace(/\/{2,}/g, "/")
+          return `${attr}="${corrected}"`
         })
 
         main.innerHTML = html
       } catch (err) {
-        console.error(err)
+        if (err.name === "AbortError") return
+        console.error("불러오기 실패:", page, err)
         main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`
+      } finally {
+        currentRequest = null
       }
     }
   </script>
