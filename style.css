@@ -201,7 +201,7 @@ html, body {
    ========================================================= */
 @media screen and (max-width: 1060px) {
   .content {
-    flex-direction: column;
+    flex-direction: column-reverse; /* ✅ 메뉴가 위로 오도록 뒤집기 */
     align-items: center;
     margin: 5px auto;
   }
@@ -210,7 +210,10 @@ html, body {
     width: 100%;
     text-align: center;
     background-position: center;
-    margin-top: 20px;
+    margin-top: 0;          /* ✅ 본문 위에 올라가므로 여백 제거 */
+    order: -1;              /* ✅ 혹시 flex-direction 문제 시 보정 */
+    position: relative;
+    z-index: 2;
   }
 
   #menu-panel nav a {
@@ -222,13 +225,13 @@ html, body {
     width: 100%;
     max-width: 100%;
     padding: 30px;
-    margin-top: 5px;
+    margin-top: 10px;       /* ✅ 메뉴와 살짝 간격 */
   }
 }
 
 /* 모바일에서는 자동으로 줄어듦 */
 @media screen and (max-width: 768px) {
   .banner img {
-    max-height: 160px;    /* ✅ 모바일 버전 기본 높이 */
+    max-height: 160px;
   }
 }
