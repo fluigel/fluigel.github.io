@@ -5,33 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <!-- ✅ CSS 및 파비콘 -->
+  <!-- ✅ CSS 및 파비콘 경로 고정 -->
   <link rel="stylesheet" href="./style.css" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon" />
-
-  <script>
-    // ✅ GitHub Pages 경로 자동보정
-    window.addEventListener("DOMContentLoaded", () => {
-      const css = document.querySelector('link[rel="stylesheet"]')
-      const icon = document.querySelector('link[rel="icon"]')
-      if (css && !css.href.includes("style.css")) css.href = "./style.css"
-      if (icon && !icon.href.includes("favicon.ico")) icon.href = "./favicon.ico"
-    })
-  </script>
 </head>
 
 <body>
-  <!-- 🌄 상단 배너 -->
+  <!-- 상단 배너 -->
   <header class="banner">
     <img src="./_Images/Banner2.png" alt="Banner" />
   </header>
 
-  <!-- 📜 본문 + 메뉴 -->
+  <!-- 본문 + 오른쪽 메뉴 -->
   <section class="content">
     <main id="main-content">
       <div class="loading">Loading...</div>
     </main>
 
+    <!-- 오른쪽 메뉴 -->
     <aside id="menu-panel">
       <h1>플뤼겔의 탑 | <em class="glow">Tower of Life Energy</em></h1>
       <hr />
@@ -79,24 +70,72 @@
   </section>
 
   <script>
-    // -----------------------------------------------------
-    // ① 초기 로드 (404 리디렉션 대응)
-    // -----------------------------------------------------
-    window.addEventListener("DOMContentLoaded", () => {
-      const redirect = sessionStorage.redirect
-      sessionStorage.removeItem("redirect")
-      if (redirect) {
-        const path = redirect.replace(/^\//, "")
-        loadPage(path)
-        history.replaceState(null, "", "./")
-      } else {
-        loadPage("main.html")
+    // =====================================================
+    // 🌍 환경별 basePath 자동 인식 (로컬 + GitHub 공용)
+    // =====================================================
+    function getBasePath() {
+      const host = location.hostname
+      if (host.includes("127.0.0.1") || host.includes("localhost")) return "."
+      const parts = location.pathname.split("/").filter(Boolean)
+      return parts.length > 0 ? "/" + parts[0] : ""
+    }
+
+    // =====================================================
+    // 📜 SPA 페이지 로더
+    // =====================================================
+    let currentRequest = null
+
+    async function loadPage(page) {
+      const main = document.getElementById("main-content")
+      main.innerHTML = '<div class="loading">Loading...</div>'
+
+      if (currentRequest) currentRequest.abort?.()
+      const controller = new AbortController()
+      currentRequest = controller
+
+      try {
+        const basePath = getBasePath()
+        const cacheBuster = `?_v=${Date.now()}`
+        const url = `${basePath}/${page}${cacheBuster}`
+
+        console.log("📡 Fetch 시도:", url)
+        const r = await fetch(url, { signal: controller.signal, cache: "no-store" })
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        const t = await r.text()
+        const doc = new DOMParser().parseFromString(t, "text/html")
+        let html = doc.body ? doc.body.innerHTML : doc.innerHTML
+
+        // -------------------------------------------------
+        // 🚫 중복 폴더 방지 (Poem/Poem, Note/Note 등)
+        // -------------------------------------------------
+        const baseDir = page.includes("/") ? page.split("/")[0] + "/" : ""
+        html = html.replace(/(src|href)="(?!https?:)([^"]+)"/g, (m, attr, path) => {
+          if (path.startsWith("/") || path.startsWith("_")) return `${attr}="${path}"`
+          if (path.startsWith(baseDir) || path.includes(baseDir)) return `${attr}="${path}"`
+          return `${attr}="${baseDir}${path}"`
+        })
+
+        main.innerHTML = html
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.error("불러오기 실패:", page, err)
+          main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`
+        }
+      } finally {
+        currentRequest = null
       }
+    }
+
+    // =====================================================
+    // 🚀 초기 로드
+    // =====================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      loadPage("main.html")
     })
 
-    // -----------------------------------------------------
-    // ② 메뉴 클릭 → 본문 교체
-    // -----------------------------------------------------
+    // =====================================================
+    // 🧭 메뉴 클릭 이벤트
+    // =====================================================
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a[data-page]")
       if (!a) return
@@ -106,65 +145,13 @@
       history.pushState({ page }, "", "./" + page)
     })
 
-    // -----------------------------------------------------
-    // ③ 뒤로가기/앞으로가기 대응
-    // -----------------------------------------------------
+    // =====================================================
+    // ⏪ 브라우저 뒤로가기 대응
+    // =====================================================
     window.addEventListener("popstate", (e) => {
       if (e.state && e.state.page) loadPage(e.state.page)
       else loadPage("main.html")
     })
-
-    // -----------------------------------------------------
-    // ④ 본문 교체 함수 (중복요청 방지 + 경로 보정)
-    // -----------------------------------------------------
-    let currentRequest = null
-
-    async function loadPage(page) {
-      const main = document.getElementById("main-content")
-      main.innerHTML = '<div class="loading">Loading...</div>'
-
-      // 중복 요청 방지
-      if (currentRequest) currentRequest.abort?.()
-      const controller = new AbortController()
-      currentRequest = controller
-
-      try {
-        const cacheBuster = `?_v=${Date.now()}`
-        const basePath = window.location.pathname.split("/")[1] || "" // 예: 'Poem'
-        const r = await fetch(`/${basePath}/${page}${cacheBuster}`, {
-          signal: controller.signal,
-          cache: "no-store",
-        })
-
-        if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        const t = await r.text()
-        const doc = new DOMParser().parseFromString(t, "text/html")
-        let html = doc.body ? doc.body.innerHTML : doc.innerHTML
-
-        // 경로 보정
-        const baseDir = page.includes("/") ? page.split("/")[0] + "/" : ""
-        html = html.replace(/(src|href)="(?!https?:)([^"]+)"/g, (m, attr, path) => {
-          if (path.startsWith("/") || path.startsWith("_")) return `${attr}="${path}"`
-
-          // ✅ 이미 baseDir(예: 'Note/')이 앞에 있으면 그대로 둠
-          if (path.startsWith(baseDir)) return `${attr}="${path}"`
-
-          // ✅ baseDir이 파일 경로 안쪽에 중복 포함된 경우 방지
-          if (path.includes(baseDir)) return `${attr}="${path}"`
-
-          const corrected = `${baseDir}${path}`.replace(/\/{2,}/g, "/")
-          return `${attr}="${corrected}"`
-        })
-
-        main.innerHTML = html
-      } catch (err) {
-        if (err.name === "AbortError") return
-        console.error("불러오기 실패:", page, err)
-        main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`
-      } finally {
-        currentRequest = null
-      }
-    }
   </script>
 </body>
 </html>
