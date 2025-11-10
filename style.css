@@ -214,19 +214,35 @@ html, body {
 }
 
 /* =========================================================
-   📱 MOBILE SLIDE MENU (모바일 전용, 중복 레이어 제거 버전)
+   📱 MOBILE SLIDE MENU (최신 통합 버전)
    ========================================================= */
 @media screen and (max-width: 1060px) {
+  /* ✅ 모바일에서만 메뉴 버튼 표시 */
   .menu-toggle {
     display: block;
+    position: fixed;
+    top: 18px;
+    right: 22px;
+    background: rgba(59, 92, 122, 0.85);
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    font-size: 1.2rem;
+    border-radius: 6px;
+    z-index: 999;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .menu-toggle:hover {
+    background: rgba(59, 92, 122, 1);
   }
 
-  /* ✅ 메뉴 패널: 오른쪽 슬라이드 + 밝은 배경 유지 */
+  /* ✅ 메뉴 패널: 오른쪽 슬라이드 + 밝은 배경 */
   #menu-panel {
     position: fixed;
     top: 0;
     right: -100%;
-    height: 100%;
+    height: 100dvh; /* 전체 화면 높이 */
     width: 80%;
     max-width: 300px;
     background: url("./_Images/Fluigel.png") no-repeat center top;
@@ -244,7 +260,7 @@ html, body {
     right: 0;
   }
 
-  /* ✅ 본문 어두운 오버레이 (조금 더 밝게) */
+  /* ✅ 본문 어두운 배경 오버레이 (조금만 어둡게) */
   body.menu-open::before {
     content: "";
     position: fixed;
@@ -253,7 +269,7 @@ html, body {
     z-index: 997;
   }
 
-  /* ✅ 본문 / 배너 여백 보정 */
+  /* ✅ 본문 여백 보정 */
   #main-content {
     padding: 25px;
     max-width: 100%;
@@ -265,11 +281,11 @@ html, body {
 }
 
 @media screen and (max-width: 768px) {
+  /* ✅ 좀 더 컴팩트한 모바일 환경 */
   #main-content {
     padding: 20px;
   }
 
-  /* ✅ 불필요한 그라데이션 제거, 배경 이미지만 유지 */
   #menu-panel {
     width: 85%;
     max-width: 280px;
