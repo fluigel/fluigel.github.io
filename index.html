@@ -122,7 +122,7 @@
       const main = document.getElementById("main-content")
       main.innerHTML = '<div class="loading">Loading...</div>'
       try {
-        const r = await fetch("/" + page)
+        const r = await fetch("./" + page)
         if (!r.ok) throw new Error()
         const t = await r.text()
         const doc = new DOMParser().parseFromString(t, "text/html")

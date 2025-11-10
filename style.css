@@ -99,7 +99,7 @@ html, body {
   flex-shrink: 0;
   color: #fff;
   padding: 25px 20px;
-  background: url("/_Images/Fluigel.png") no-repeat center top;
+  background: url("./_Images/Fluigel.png") no-repeat center top;
   background-size: cover;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
