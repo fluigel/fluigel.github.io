@@ -1,50 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
   <title>Redirecting...</title>
-  <style>
-    body {
-      font-family: "Noto Sans KR", sans-serif;
-      background: #111;
-      color: #ddd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      flex-direction: column;
-    }
-    .msg {
-      text-align: center;
-      line-height: 1.6;
-    }
-    .msg span {
-      display: block;
-      font-size: 0.9rem;
-      color: #999;
-      margin-top: 10px;
-    }
-  </style>
   <script>
-    // ✅ GitHub Pages SPA redirect handler
-    (function() {
-      // 현재 경로를 기억 (예: /Poem/hoyeon-jigi.html)
-      const redirect = location.pathname + location.search + location.hash;
-
-      // sessionStorage에 저장해 index에서 다시 불러올 수 있게 함
-      sessionStorage.redirect = redirect;
-
-      // ✅ 루트로 이동 (index.html로)
-      window.location.replace(location.origin + "/");
-    })();
+    // GitHub Pages의 404요청을 SPA 루트로 되돌리는 리디렉트 코드
+    sessionStorage.redirect = location.pathname  // 사용자가 요청한 경로 임시 저장
+    window.location.replace("/")                 // index.html(루트)로 이동
   </script>
 </head>
-<body>
-  <div class="msg">
-    <p>페이지를 불러오는 중입니다...</p>
-    <span>잠시만 기다려 주세요.</span>
-  </div>
-</body>
+<body></body>
 </html>
