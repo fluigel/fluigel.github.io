@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 🔧 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251110235901" />
+  <link rel="stylesheet" href="/style.css?v=20251111001000" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복 폴더 자동 교정 -->
@@ -106,6 +106,8 @@
           if (!r.ok) throw new Error("HTTP " + r.status);
           const t = await r.text();
           const doc = new DOMParser().parseFromString(t, "text/html");
+
+          // ✅ 기존 스타일 상속 유지 + 콘텐츠 교체 안정화
           let html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
           const baseForFragment = fragmentURL.toString().replace(/[^/]*$/, "");
           html = html.replace(/(src|href)="(?!https?:|mailto:|tel:|#)([^"]+)"/g, (_, attr, path) => {
@@ -116,7 +118,14 @@
               return `${attr}="${path}"`;
             }
           });
-          main.innerHTML = html;
+
+          // ⚡ 스타일 상속 보존 방식으로 삽입
+          main.replaceChildren();
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = html;
+          main.appendChild(wrapper);
+
+          // 내부 링크 보정
           main.querySelectorAll("a[href]").forEach((a) => {
             const href = a.getAttribute("href") || "";
             if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
