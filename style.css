@@ -262,5 +262,44 @@ html, body {
   }
 }
 
+/* ─────────────────────────────────────────────
+   📘 본문 공통 스타일 확장 (가독성 보정용)
+   - 하위 페이지의 글, 인용, 코드, 목록의 일관성 유지
+───────────────────────────────────────────── */
 
+/* 📑 제목(H2~H4) 간격 및 색상 정리 */
+#main-content h2,
+#main-content h3,
+#main-content h4 {
+  margin: 1.6em 0 0.8em;
+  font-weight: 600;
+  color: #223;
+}
+
+/* 🔹 목록 간격 보정 */
+#main-content ul,
+#main-content ol {
+  margin: 0.8em 0 1.4em 1.4em;
+}
+#main-content li {
+  margin: 0.2em 0;
+}
+
+/* 💬 인용문 스타일 */
+#main-content blockquote {
+  margin: 1.2em 0;
+  padding: 0.8em 1em;
+  background: #f7f9fc;
+  border-left: 4px solid #3b5c7a;
+  color: #345;
+}
+
+/* 💻 코드/명령문 스타일 */
+#main-content pre,
+#main-content code {
+  font-family: monospace;
+  background: #f5f5f7;
+  border-radius: 6px;
+  padding: 12px;
+}
 
