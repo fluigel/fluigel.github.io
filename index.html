@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <!-- 절대경로 리소스 -->
-  <link rel="stylesheet" href="/style.css" />
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <!-- ✅ CSS 경로 수정 (상대경로로) -->
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="icon" href="./favicon.ico" type="image/x-icon" />
 
   <script>
-    // ✅ 하위 경로 접근 시 CSS·Favicon 경로 재고정
+    // ✅ GitHub Pages용 경로 보정 (루트 이동 시에도 안전)
     window.addEventListener("DOMContentLoaded", () => {
       const css = document.querySelector('link[rel="stylesheet"]')
       const icon = document.querySelector('link[rel="icon"]')
-      if (css) css.href = "/style.css"
-      if (icon) icon.href = "/favicon.ico"
+      if (css && !css.href.includes("style.css")) css.href = "./style.css"
+      if (icon && !icon.href.includes("favicon.ico")) icon.href = "./favicon.ico"
     })
   </script>
 </head>
@@ -23,7 +23,7 @@
 <body>
   <!-- 상단 배너 -->
   <header class="banner">
-    <img src="/_Images/Banner2.png" alt="Banner" />
+    <img src="./_Images/Banner2.png" alt="Banner" />
   </header>
 
   <!-- 본문 + 오른쪽 메뉴 -->
@@ -32,7 +32,7 @@
       <div class="loading">Loading...</div>
     </main>
 
-    <!-- ✅ menu.html 통합 -->
+    <!-- 메뉴 -->
     <aside id="menu-panel">
       <h1>플뤼겔의 탑 | <em class="glow">Tower of Life Energy</em></h1>
       <hr />
@@ -89,7 +89,7 @@
       if (redirect) {
         const path = redirect.replace(/^\//, "")
         loadPage(path)
-        history.replaceState(null, "", "/")
+        history.replaceState(null, "", "./")
       } else {
         loadPage("main.html")
       }
@@ -104,7 +104,7 @@
       e.preventDefault()
       const page = a.getAttribute("data-page")
       loadPage(page)
-      history.pushState({ page }, "", "/" + page)
+      history.pushState({ page }, "", "./" + page)
     })
 
     // -----------------------------
@@ -116,18 +116,31 @@
     })
 
     // -----------------------------
-    // [4] 본문 교체 로직
+    // [4] 본문 교체 + 자동경로보정
     // -----------------------------
     async function loadPage(page) {
       const main = document.getElementById("main-content")
       main.innerHTML = '<div class="loading">Loading...</div>'
+
       try {
         const r = await fetch("./" + page)
         if (!r.ok) throw new Error()
         const t = await r.text()
         const doc = new DOMParser().parseFromString(t, "text/html")
-        main.innerHTML = doc.body ? doc.body.innerHTML : doc.innerHTML
-      } catch {
+        let html = doc.body ? doc.body.innerHTML : doc.innerHTML
+
+        // -------------------------------------------------
+        // 🧠 이미지·링크 자동보정 (상대경로 → 루트 기준)
+        // -------------------------------------------------
+        const baseDir = page.substring(0, page.lastIndexOf("/") + 1)
+        html = html.replace(/(src|href)="(?!https?:)([^"]+)"/g, (m, attr, path) => {
+          if (path.startsWith("/") || path.startsWith("_")) return `${attr}="./${path.replace(/^\/+/, "")}"`
+          return `${attr}="./${baseDir}${path}".replace(/\/{2,}/g, "/")`
+        })
+
+        main.innerHTML = html
+      } catch (err) {
+        console.error(err)
         main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`
       }
     }
