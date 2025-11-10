@@ -214,29 +214,51 @@ html, body {
 }
 
 /* =========================================================
-   📱 RESPONSIVE (반응형 초기화 버전)
+   📱 MOBILE SLIDE MENU (1060px 이하)
    ========================================================= */
 @media screen and (max-width: 1060px) {
-  .content {
-    flex-direction: column;    /* 세로 배열 */
-    align-items: center;
-    gap: 10px;
-    padding: 0 10px;
+  .menu-toggle {
+    display: block;
   }
 
+  /* ✅ 메뉴 패널: 오른쪽 슬라이드 + 배경 이미지 유지 */
   #menu-panel {
-    width: 100%;
-    margin-top: 0;
-    text-align: center;
-    background-position: center;
-    background-size: cover;
-    padding: 20px 10px;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100%;
+    width: 80%;
+    max-width: 300px;
+    background:
+      linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)),
+      url("./_Images/Fluigel.png") no-repeat center top;
+    background-size: cover;  /* 이미지 꽉 채우기 */
+    color: #fff;
+    overflow-y: auto;
+    transition: right 0.35s ease;
+    z-index: 998;
+    padding: 80px 20px 40px; /* 상단 여백(버튼), 하단 여백 */
+    box-shadow: -3px 0 10px rgba(0,0,0,0.3);
   }
 
+  /* ✅ 메뉴 열렸을 때 */
+  #menu-panel.open {
+    right: 0;
+  }
+
+  /* ✅ 본문 어두운 오버레이 */
+  body.menu-open::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 997;
+  }
+
+  /* ✅ 본문 / 배너 여백 보정 */
   #main-content {
-    width: 100%;
-    max-width: 100%;
     padding: 25px;
+    max-width: 100%;
   }
 
   .banner img {
@@ -250,62 +272,16 @@ html, body {
   }
 
   #menu-panel {
-    padding: 15px 8px;
+    width: 85%;
+    max-width: 280px;
+    padding: 70px 15px 30px;
+    background:
+      linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)),
+      url("./_Images/Fluigel.png") no-repeat center top;
+    background-size: cover;
   }
 
   .banner img {
     max-height: 160px;
-  }
-}
-
-/* 📱 메뉴 토글 버튼 (기본 숨김) */
-.menu-toggle {
-  display: none;
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 999;
-  background: #3b5c7a;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 14px;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-}
-
-/* 1060px 이하에서 활성화 */
-@media screen and (max-width: 1060px) {
-  .menu-toggle { display: block; }
-
-  /* 메뉴를 화면 오른쪽으로 슬라이드되게 */
-  #menu-panel {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    height: 100%;
-    width: 80%;
-    max-width: 300px;
-    background: rgba(0,0,0,0.9);
-    color: #fff;
-    overflow-y: auto;
-    transition: right 0.35s ease;
-    z-index: 998;
-    padding-top: 80px; /* 버튼 아래 여백 */
-  }
-
-  /* 열렸을 때 상태 */
-  #menu-panel.open {
-    right: 0;
-  }
-
-  /* 본문은 메뉴 열릴 때 약간 어둡게 */
-  body.menu-open::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 997;
   }
 }
