@@ -230,8 +230,6 @@ html, body {
     width: 80%;
     max-width: 300px;
     background:
-      linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)),
-      url("./_Images/Fluigel.png") no-repeat center top;
     background-size: cover;  /* 이미지 꽉 채우기 */
     color: #fff;
     overflow-y: auto;
