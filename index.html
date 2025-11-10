@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <!-- 🔧 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251111" />
+  <!-- 🔧 CSS: 절대경로 + 버전 캐시 -->
+  <link rel="stylesheet" href="https://fluigel.github.io/style.css?v=20251111" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복 폴더 자동 교정 -->
@@ -84,7 +84,7 @@
     </aside>
   </section>
 
-  <!-- ⚙️ SPA 엔진 + 메뉴 토글 -->
+  <!-- ⚙️ SPA 엔진 -->
   <script>
     window.addEventListener("DOMContentLoaded", () => {
       let currentRequest = null;
@@ -99,6 +99,7 @@
         currentRequest = controller;
 
         try {
+          // ✅ 절대경로로 변환하여 fetch (하부 폴더에서도 동일하게)
           const fragmentURL = new URL("/" + page, location.origin);
           const url = new URL(fragmentURL);
           url.searchParams.set("_v", Date.now());
@@ -107,34 +108,26 @@
           const t = await r.text();
           const doc = new DOMParser().parseFromString(t, "text/html");
 
-          // ✅ 기존 스타일 상속 유지 + 콘텐츠 교체 안정화
+          // ✅ HTML 절대경로 보정
           let html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
-          const baseForFragment = fragmentURL.toString().replace(/[^/]*$/, "");
           html = html.replace(/(src|href)="(?!https?:|mailto:|tel:|#)([^"]+)"/g, (_, attr, path) => {
-            try {
-              const abs = new URL(path, baseForFragment).toString();
-              return `${attr}="${abs}"`;
-            } catch {
-              return `${attr}="${path}"`;
-            }
+            const abs = new URL(path, location.origin + "/").toString();
+            return `${attr}="${abs}"`;
           });
 
-          // ⚡ 스타일 상속 보존 방식으로 삽입
           main.replaceChildren();
           const wrapper = document.createElement("div");
           wrapper.innerHTML = html;
           main.appendChild(wrapper);
 
-          // 내부 링크 보정
+          // 내부 링크 보정 (SPA 내 전환 유지)
           main.querySelectorAll("a[href]").forEach((a) => {
             const href = a.getAttribute("href") || "";
             if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
-            const abs = new URL(href, baseForFragment);
-            if (abs.origin === location.origin) {
-              const pagePath = abs.pathname.replace(/^\/+/, "");
-              a.setAttribute("data-page", pagePath);
-              a.setAttribute("href", "#");
-            }
+            const abs = new URL(href, location.origin + "/");
+            const pagePath = abs.pathname.replace(/^\/+/, "");
+            a.setAttribute("data-page", pagePath);
+            a.setAttribute("href", "#");
           });
         } catch (err) {
           if (err.name !== "AbortError") {
