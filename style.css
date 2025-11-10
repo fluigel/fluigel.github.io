@@ -74,8 +74,8 @@ html, body {
   font-size: 1.6rem;
   font-weight: 600;
   padding: 14px 12px;
-  border-radius: 4px;
-  margin: 0 0 18px; /* ✅ 위 여백 완전 제거 */
+  border-radius: 0;        /* ✅ 라운드 제거 → 직각 */
+  margin: 0 0 28px;        /* ✅ 아래쪽만 여유있게 */
   line-height: 1.4;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -89,6 +89,21 @@ html, body {
   margin-bottom: 1.4em;  /* 문단 간 여백 */
   color: #444;
 } */*/
+
+/* ✅ 본문 이미지 크기 자동 맞춤 */
+#main-content img {
+  max-width: 100%;     /* 화면(본문 폭)을 넘지 않게 조정 */
+  height: auto;        /* 비율 유지 */
+  display: block;      /* 인라인 여백 제거 */
+  margin: 1.2em auto;  /* 위아래 여백 + 중앙 정렬 */
+  border-radius: 6px;  /* 부드럽게 */
+}
+
+/* ✅ 본문 내 강조글자(볼드) 위쪽에만 간격 2칸 정도 주기 */
+#main-content strong {
+  display: inline-block;     /* 줄 간격 제어를 위해 인라인블록으로 전환 */
+  margin-top: 1.2em;         /* 대략 두 줄 정도 위 여백 */
+}
 
 /* =========================================================
    📘 MENU PANEL (오른쪽 메뉴 영역)
@@ -199,107 +214,47 @@ html, body {
 }
 
 /* =========================================================
-   📱 RESPONSIVE (반응형 레이아웃)
+   📱 RESPONSIVE (반응형 초기화 버전)
    ========================================================= */
 @media screen and (max-width: 1060px) {
   .content {
-    flex-direction: column-reverse; /* ✅ 메뉴가 위로 오도록 뒤집기 */
+    flex-direction: column;    /* 세로 배열 */
     align-items: center;
-    margin: 5px auto;
+    gap: 10px;
+    padding: 0 10px;
   }
 
   #menu-panel {
     width: 100%;
+    margin-top: 0;
     text-align: center;
     background-position: center;
-    margin-top: 0;          /* ✅ 본문 위에 올라가므로 여백 제거 */
-    order: -1;              /* ✅ 혹시 flex-direction 문제 시 보정 */
-    position: relative;
-    z-index: 2;
-  }
-
-  #menu-panel nav a {
-    display: inline-block;
-    margin: 4px 6px;
+    background-size: cover;
+    padding: 20px 10px;
   }
 
   #main-content {
     width: 100%;
     max-width: 100%;
-    padding: 30px;
-    margin-top: 10px;       /* ✅ 메뉴와 살짝 간격 */
+    padding: 25px;
+  }
+
+  .banner img {
+    max-height: 200px;
   }
 }
 
-/* 모바일에서는 자동으로 줄어듦 */
 @media screen and (max-width: 768px) {
+  #main-content {
+    padding: 20px;
+  }
+
+  #menu-panel {
+    padding: 15px 8px;
+  }
+
   .banner img {
     max-height: 160px;
   }
-}
-
-/* 📱 모바일 토글 버튼 */
-.menu-toggle {
-  display: none;
-  position: sticky; top: 0; z-index: 30;
-  margin: 8px 20px 0; padding: 10px 14px;
-  border: 1px solid #ccc; background: #fff; border-radius: 8px;
-  font-size: 0.95rem; cursor: pointer;
-}
-
-/* 1060px 이하: 버튼 표시 & 메뉴 접기 */
-@media screen and (max-width: 1060px) {
-  .menu-toggle { display: inline-block; }
-  #menu-panel {
-    max-height: 0;
-    padding-top: 0; padding-bottom: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
-  }
-  #menu-panel.open {
-    max-height: 1000px;
-    padding-top: 25px; padding-bottom: 20px;
-  }
-}
-
-/* ─────────────────────────────────────────────
-   📘 본문 공통 스타일 확장 (가독성 보정용)
-   - 하위 페이지의 글, 인용, 코드, 목록의 일관성 유지
-───────────────────────────────────────────── */
-
-/* 📑 제목(H2~H4) 간격 및 색상 정리 */
-#main-content h2,
-#main-content h3,
-#main-content h4 {
-  margin: 1.6em 0 0.8em;
-  font-weight: 600;
-  color: #223;
-}
-
-/* 🔹 목록 간격 보정 */
-#main-content ul,
-#main-content ol {
-  margin: 0.8em 0 1.4em 1.4em;
-}
-#main-content li {
-  margin: 0.2em 0;
-}
-
-/* 💬 인용문 스타일 */
-#main-content blockquote {
-  margin: 1.2em 0;
-  padding: 0.8em 1em;
-  background: #f7f9fc;
-  border-left: 4px solid #3b5c7a;
-  color: #345;
-}
-
-/* 💻 코드/명령문 스타일 */
-#main-content pre,
-#main-content code {
-  font-family: monospace;
-  background: #f5f5f7;
-  border-radius: 6px;
-  padding: 12px;
 }
 
