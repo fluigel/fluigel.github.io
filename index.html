@@ -5,9 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <!-- ✅ CSS 및 파비콘 경로 고정 -->
+  <!-- 네가 쓰던 그대로 -->
   <link rel="stylesheet" href="./style.css" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+
+  <script>
+    /* ========== 0) 중복 경로 자동 교정 (직접 URL로 들어온 경우) ========== */
+    (function fixDuplicatedSegments() {
+      var p = location.pathname.split('/').filter(Boolean); // ["Poem","Shindan","Shindan","sindan-haenggong.html"]
+      if (p.length >= 2) {
+        for (var i = 0; i < p.length - 1; i++) {
+          if (p[i] === p[i + 1]) {            // Shindan == Shindan
+            p.splice(i, 1);                   // 하나 제거
+            var fixed = '/' + p.join('/') + location.search + location.hash;
+            if (fixed !== location.pathname + location.search + location.hash) {
+              history.replaceState(null, '', fixed); // 새로고침 없이 경로 교정
+            }
+            break;
+          }
+        }
+      }
+    })();
+  </script>
 </head>
 
 <body>
@@ -70,88 +89,115 @@
   </section>
 
   <script>
-    // =====================================================
-    // 🌍 환경별 basePath 자동 인식 (로컬 + GitHub 공용)
-    // =====================================================
-    function getBasePath() {
-      const host = location.hostname
-      if (host.includes("127.0.0.1") || host.includes("localhost")) return "."
-      const parts = location.pathname.split("/").filter(Boolean)
-      return parts.length > 0 ? "/" + parts[0] : ""
-    }
+    /* ========== 1) 초기 로드: 직접 진입 경로 복구 (404.html 연계 포함) ========== */
+    window.addEventListener("DOMContentLoaded", function () {
+      // 404.html에서 넘겨준 원래 경로 복구
+      var redirect = sessionStorage.redirect;
+      if (redirect) {
+        sessionStorage.removeItem("redirect");
+        // 예: "/Shindan/sindan-haenggong.html" → 앞의 "/" 제거
+        var path = redirect.replace(/^\//, "");
+        loadPage(path);
+        history.replaceState(null, "", "./");
+        return;
+      }
 
-    // =====================================================
-    // 📜 SPA 페이지 로더
-    // =====================================================
-    let currentRequest = null
+      // 주소창이 섹션 하위 파일을 가리킬 때(직접 진입) 그 파일을 불러옴
+      var path = location.pathname.split("/").filter(Boolean); // ["Poem","Shindan","sindan-haenggong.html"]
+      var repo = path[0] || "";                                // "Poem"
+      var tail = path.slice(1).join("/");                      // "Shindan/sindan-haenggong.html" or ""
+      if (tail) {
+        loadPage(tail);
+        history.replaceState(null, "", "./" + tail);
+      } else {
+        loadPage("main.html");
+      }
+    });
+
+    /* ========== 2) 메뉴 클릭: 기본 동작 막고 SPA 로드 ========== */
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest("a[data-page]");
+      if (!a) return;
+      e.preventDefault();
+      var page = a.getAttribute("data-page");
+      loadPage(page);
+      history.pushState({ page: page }, "", "./" + page);
+    });
+
+    /* ========== 3) 앞으로/뒤로 가기 ========== */
+    window.addEventListener("popstate", function (e) {
+      if (e.state && e.state.page) loadPage(e.state.page);
+      else loadPage("main.html");
+    });
+
+    /* ========== 4) 본문 교체 로더 (상대경로 fetch + 중복폴더 방지 + 앵커 정규화) ========== */
+    var currentRequest = null;
 
     async function loadPage(page) {
-      const main = document.getElementById("main-content")
-      main.innerHTML = '<div class="loading">Loading...</div>'
+      var main = document.getElementById("main-content");
+      if (!main) return;
+      main.innerHTML = '<div class="loading">Loading...</div>';
 
-      if (currentRequest) currentRequest.abort?.()
-      const controller = new AbortController()
-      currentRequest = controller
+      if (currentRequest) currentRequest.abort && currentRequest.abort();
+      var controller = new AbortController();
+      currentRequest = controller;
 
       try {
-        const basePath = getBasePath()
-        const cacheBuster = `?_v=${Date.now()}`
-        const url = `${basePath}/${page}${cacheBuster}`
+        var cacheBuster = "?_v=" + Date.now();
+        // 깃허브/로컬 공통: 항상 현재 폴더 기준 상대경로
+        var url = "./" + page + cacheBuster;
 
-        console.log("📡 Fetch 시도:", url)
-        const r = await fetch(url, { signal: controller.signal, cache: "no-store" })
-        if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        const t = await r.text()
-        const doc = new DOMParser().parseFromString(t, "text/html")
-        let html = doc.body ? doc.body.innerHTML : doc.innerHTML
+        var r = await fetch(url, { signal: controller.signal, cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        var t = await r.text();
 
-        // -------------------------------------------------
-        // 🚫 중복 폴더 방지 (Poem/Poem, Note/Note 등)
-        // -------------------------------------------------
-        const baseDir = page.includes("/") ? page.split("/")[0] + "/" : ""
-        html = html.replace(/(src|href)="(?!https?:)([^"]+)"/g, (m, attr, path) => {
-          if (path.startsWith("/") || path.startsWith("_")) return `${attr}="${path}"`
-          if (path.startsWith(baseDir) || path.includes(baseDir)) return `${attr}="${path}"`
-          return `${attr}="${baseDir}${path}"`
-        })
+        var doc = new DOMParser().parseFromString(t, "text/html");
+        var html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
 
-        main.innerHTML = html
+        // (a) src/href 경로 중복 방지 + 자동 보정
+        var baseDir = page.indexOf("/") > -1 ? page.split("/")[0] + "/" : "";
+        html = html.replace(/(src|href)="(?!https?:)([^"]+)"/g, function (m, attr, path) {
+          if (!path) return m;
+          if (path[0] === "/" || path[0] === "_") return attr + '="' + path + '"';
+          if (baseDir && (path.startsWith(baseDir) || path.indexOf(baseDir) !== -1)) {
+            return attr + '="' + path + '"'; // 이미 포함되어 있으면 그대로
+          }
+          return attr + '="' + (baseDir ? (baseDir + path).replace(/\/{2,}/g, "/") : path) + '"';
+        });
+
+        // (b) 본문 내 앵커를 SPA용으로 정규화 (새탭 열어도 중복 줄이기)
+        //  - 외부 링크/해시 제외
+        //  - html 조작 후 한 번 더 DOM에 붙여서 앵커 정규화
+        main.innerHTML = html;
+        normalizeAnchors(main, baseDir);
+
       } catch (err) {
-        if (err.name !== "AbortError") {
-          console.error("불러오기 실패:", page, err)
-          main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`
-        }
+        if (err.name === "AbortError") return;
+        console.error("불러오기 실패:", page, err);
+        main.innerHTML = '<p style="color:red;">불러오기 실패: ' + page + '</p>';
       } finally {
-        currentRequest = null
+        currentRequest = null;
       }
     }
 
-    // =====================================================
-    // 🚀 초기 로드
-    // =====================================================
-    window.addEventListener("DOMContentLoaded", () => {
-      loadPage("main.html")
-    })
+    function normalizeAnchors(root, baseDir) {
+      var anchors = root.querySelectorAll('a[href]');
+      anchors.forEach(function(a){
+        var href = a.getAttribute('href') || '';
+        // 외부/해시/메일/전화 제외
+        if (/^(https?:|#|mailto:|tel:)/i.test(href)) return;
 
-    // =====================================================
-    // 🧭 메뉴 클릭 이벤트
-    // =====================================================
-    document.addEventListener("click", (e) => {
-      const a = e.target.closest("a[data-page]")
-      if (!a) return
-      e.preventDefault()
-      const page = a.getAttribute("data-page")
-      loadPage(page)
-      history.pushState({ page }, "", "./" + page)
-    })
+        // 이미 data-page가 있으면 SPA로 처리
+        var target = href.replace(/^\.\//, ''); // "./x.html" → "x.html"
+        // baseDir이 있고, target이 baseDir로 시작하지 않으면 붙여줌
+        if (baseDir && !target.startsWith(baseDir) && !target.startsWith('/')) {
+          target = (baseDir + target).replace(/\/{2,}/g, '/');
+        }
 
-    // =====================================================
-    // ⏪ 브라우저 뒤로가기 대응
-    // =====================================================
-    window.addEventListener("popstate", (e) => {
-      if (e.state && e.state.page) loadPage(e.state.page)
-      else loadPage("main.html")
-    })
+        a.setAttribute('data-page', target);
+        a.setAttribute('href', '#'); // 기본 내비게이션 차단(새탭 중복경로 예방)
+      });
+    }
   </script>
 </body>
 </html>
