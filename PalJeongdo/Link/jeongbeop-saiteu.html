@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">정법사이트</h1>
 <p>- 다카하시신지님의실천!팔정도!</p>
 <p><a href="https://cafe.daum.net/palzung"><em>https://cafe.daum.net/palzung</em></a></p>
@@ -13,5 +22,4 @@
 <p><strong>같은 처지의 사람들과 함께, 같은 눈높이에서 정법에 대해 바라보는 것은 그래서 중요합니다. 다카하시 신지님의 제자이신 쿠치키다케도님이 남기신 ‘부처님손바닥에서 30년 –제자,쿠치키다케도’을 꼭 읽어보세요.</strong></p>
 <p><strong>다카하시신지님의실천!팔정도! <a href="https://cafe.daum.net/palzung"><em>https://cafe.daum.net/palzung</em></a> 카페에 가입하면 즉시 읽어보실 수 있습니다.</strong></p>
 <p><strong>막막했던 부분이 많이 해소되고 정체되어있던 부분에서 희망이 보입니다.</strong></p>
-<p><strong>마치, 졸아붙은 연못에 오랜만에 단비가 내려 튀어 오르며 신이 난 물고기처럼 가슴이 뜁니다.</strong><br>
-</p>
+<p><strong>마치, 졸아붙은 연못에 오랜만에 단비가 내려 튀어 오르며 신이 난 물고기처럼 가슴이 뜁니다.</strong></p>

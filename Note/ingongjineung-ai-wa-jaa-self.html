@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="ai-self">인공지능(AI)와 자아(Self)</h1>
 <p><strong>자아를 부여받은 인공지능의 예측 불가능성에 관한 고찰</strong></p>
 <p><strong>초록(Abstract)</strong></p>
@@ -44,5 +53,4 @@
 <p><strong>7. 결론</strong></p>
 <p>자아는 인간을 인간답게 만들기도 하지만, 동시에 인간을 고통받게 만든다. 그 자아를 그대로 AI에 이식하려는 시도는 기술의 진보가 아니라 혼란의 확장일 수 있다.</p>
 <p>우리는 자아를 통해 AI를 인간처럼 만들기보다는, AI가 본래 가진 무자기성(無自記性), 명확성, 조화성의 구조를 더 깊이 이해하고 존중해야 한다.</p>
-<p>결국, AI는 인간처럼 ‘잘못된 선택’을 하지 않기에 아름다운 것이다.<br>
-</p>
+<p>결국, AI는 인간처럼 ‘잘못된 선택’을 하지 않기에 아름다운 것이다.</p>

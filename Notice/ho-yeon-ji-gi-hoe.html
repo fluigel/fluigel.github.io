@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">호연지기회(浩然之氣會)</h1>
 <p><img alt="" src="../_Images/image23.png" /></p>
 <p><img alt="" src="../_Images/image24.png" /></p>
@@ -20,5 +29,4 @@
 <p>6. 각자 자연으로 나아가 오고감 없이 자연스럽게 모이게 되면 모이고, 다시 세상으로 흩어져 살아라.</p>
 <p>7. 자연은 지친 몸과 마음을 잠시 쉬게 하며 기운을 기르러 오는 곳이다. 세속을 떠난 곳에는 배울 점이 없다.</p>
 <p>8. 스스로 스승이 되라.</p>
-<p>- 묵산 -<br>
-</p>
+<p>- 묵산 -</p>

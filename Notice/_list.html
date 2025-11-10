@@ -1,4 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">공지사항</h1>
 <p><a href="gongjisahang-peulryugel-ui-tap.html">공지사항 플뤼겔의 탑</a></p>
-<p><a href="daetgeul-gwa-gonggam-i-sakjedoe-eoss-seumnida.html">댓글과 공감이 삭제되었습니다</a><br>
-</p>
+<p><a href="daetgeul-gwa-gonggam-i-sakjedoe-eoss-seumnida.html">댓글과 공감이 삭제되었습니다</a></p>
