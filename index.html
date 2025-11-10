@@ -145,7 +145,13 @@
         const baseDir = page.includes("/") ? page.split("/")[0] + "/" : ""
         html = html.replace(/(src|href)="(?!https?:)([^"]+)"/g, (m, attr, path) => {
           if (path.startsWith("/") || path.startsWith("_")) return `${attr}="${path}"`
+
+          // ✅ 이미 baseDir(예: 'Note/')이 앞에 있으면 그대로 둠
           if (path.startsWith(baseDir)) return `${attr}="${path}"`
+
+          // ✅ baseDir이 파일 경로 안쪽에 중복 포함된 경우 방지
+          if (path.includes(baseDir)) return `${attr}="${path}"`
+
           const corrected = `${baseDir}${path}`.replace(/\/{2,}/g, "/")
           return `${attr}="${corrected}"`
         })
