@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">심화학습</h1>
 <p><a href="gi-reul-neukkyeo-boja.html">기(氣)를 느껴보자</a></p>
 <p><a href="juhwa-ibma-e-daehae-yeo.html">주화입마(走火入魔)에 대하여</a></p>
