@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">정규행공</h1>
 <p><a href="gangjwa-reul-sijak-hamyeo.html">강좌를 시작하며</a></p>
 <p><a href="danjeon-hoheup-gaeyo.html">단전호흡(丹田呼吸) 개요</a></p>
