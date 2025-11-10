@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <!-- ✅ CSS 및 파비콘 경로 고정 -->
+  <!-- ✅ CSS 및 파비콘 -->
   <link rel="stylesheet" href="./style.css" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon" />
 
@@ -21,18 +21,17 @@
 </head>
 
 <body>
-  <!-- 상단 배너 -->
+  <!-- 🌄 상단 배너 -->
   <header class="banner">
     <img src="./_Images/Banner2.png" alt="Banner" />
   </header>
 
-  <!-- 본문 + 오른쪽 메뉴 -->
+  <!-- 📜 본문 + 메뉴 -->
   <section class="content">
     <main id="main-content">
       <div class="loading">Loading...</div>
     </main>
 
-    <!-- 오른쪽 메뉴 -->
     <aside id="menu-panel">
       <h1>플뤼겔의 탑 | <em class="glow">Tower of Life Energy</em></h1>
       <hr />
@@ -80,9 +79,9 @@
   </section>
 
   <script>
-    // -----------------------------
-    // [1] 초기 로드
-    // -----------------------------
+    // -----------------------------------------------------
+    // ① 초기 로드 (404 리디렉션 대응)
+    // -----------------------------------------------------
     window.addEventListener("DOMContentLoaded", () => {
       const redirect = sessionStorage.redirect
       sessionStorage.removeItem("redirect")
@@ -95,9 +94,9 @@
       }
     })
 
-    // -----------------------------
-    // [2] 메뉴 클릭 → 본문 교체
-    // -----------------------------
+    // -----------------------------------------------------
+    // ② 메뉴 클릭 → 본문 교체
+    // -----------------------------------------------------
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a[data-page]")
       if (!a) return
@@ -107,32 +106,32 @@
       history.pushState({ page }, "", "./" + page)
     })
 
-    // -----------------------------
-    // [3] 뒤로가기/앞으로가기 대응
-    // -----------------------------
+    // -----------------------------------------------------
+    // ③ 뒤로가기/앞으로가기 대응
+    // -----------------------------------------------------
     window.addEventListener("popstate", (e) => {
       if (e.state && e.state.page) loadPage(e.state.page)
       else loadPage("main.html")
     })
 
-    // -----------------------------
-    // [4] 본문 교체 + 자동경로보정 + 안정화
-    // -----------------------------
-    let currentRequest = null // 중복요청 방지용
+    // -----------------------------------------------------
+    // ④ 본문 교체 함수 (중복요청 방지 + 경로 보정)
+    // -----------------------------------------------------
+    let currentRequest = null
 
     async function loadPage(page) {
       const main = document.getElementById("main-content")
       main.innerHTML = '<div class="loading">Loading...</div>'
 
-      // 🔒 이전 요청 중단
+      // 중복 요청 방지
       if (currentRequest) currentRequest.abort?.()
       const controller = new AbortController()
       currentRequest = controller
 
       try {
-        // 캐시 꼬임 방지용
         const cacheBuster = `?_v=${Date.now()}`
-        const r = await fetch(`./${page}${cacheBuster}`, {
+        const basePath = window.location.pathname.split("/")[1] || "" // 예: 'Poem'
+        const r = await fetch(`/${basePath}/${page}${cacheBuster}`, {
           signal: controller.signal,
           cache: "no-store",
         })
@@ -142,18 +141,11 @@
         const doc = new DOMParser().parseFromString(t, "text/html")
         let html = doc.body ? doc.body.innerHTML : doc.innerHTML
 
-        // -------------------------------------------------
-        // 🧠 이미지·링크 자동보정 (상대경로 중복 방지 포함)
-        // -------------------------------------------------
+        // 경로 보정
         const baseDir = page.includes("/") ? page.split("/")[0] + "/" : ""
         html = html.replace(/(src|href)="(?!https?:)([^"]+)"/g, (m, attr, path) => {
-          // 외부링크나 절대경로(_ 또는 / 시작)는 그대로 둠
           if (path.startsWith("/") || path.startsWith("_")) return `${attr}="${path}"`
-
-          // 이미 baseDir이 포함되어 있다면 중복 방지
           if (path.startsWith(baseDir)) return `${attr}="${path}"`
-
-          // 상대경로 조합
           const corrected = `${baseDir}${path}`.replace(/\/{2,}/g, "/")
           return `${attr}="${corrected}"`
         })
