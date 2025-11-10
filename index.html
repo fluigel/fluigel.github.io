@@ -6,11 +6,11 @@
   <title>플뤼겔의 탑</title>
 
   <!-- ✅ 절대경로로 지정 (깃허브 루트 기준) -->
-  <link rel="stylesheet" href="/style.css?v=20251110205343" />
+  <link rel="stylesheet" href="/style.css?v=20251110205347" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
-  <script src="/main.js?v=20251110205344">
+  <script>
     (function fixDoubleFolders() {
       const parts = location.pathname.split("/").filter(Boolean);
       for (let i = 0; i < parts.length - 1; i++) {
@@ -84,7 +84,7 @@
   </section>
 
   <!-- ⚙️ SPA 핵심 엔진 -->
-  <script src="/main.js?v=20251110205345">
+  <script>
     let currentRequest = null;
 
     async function loadPage(page) {
