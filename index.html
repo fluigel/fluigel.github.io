@@ -5,18 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <!-- 절대경로로 고정된 전역 스타일 -->
-  <link rel="stylesheet" href="/style.css?v=202511119239" />
+  <!-- 깃허브 리포지토리 내 상대경로로 고정 -->
+  <link rel="stylesheet" href="./style.css?v=20251110227774" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <!-- ✅ 중복폴더 자동 교정 -->
+  <script>
+    (function fixDoubleFolders() {
+      const parts = location.pathname.split("/").filter(Boolean);
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (parts[i] === parts[i + 1]) {
+          parts.splice(i, 1);
+          const fixed = "/" + parts.join("/") + location.search + location.hash;
+          history.replaceState(null, "", fixed);
+          break;
+        }
+      }
+    })();
+  </script>
 </head>
 
 <body>
-  <!-- 상단 배너 -->
+  <!-- 🌄 상단 배너 -->
   <header class="banner">
     <img src="/_Images/Banner2.png" alt="Banner" />
   </header>
 
-  <!-- 본문 + 메뉴 -->
+  <!-- 📜 본문 + 메뉴 -->
   <section class="content">
     <main id="main-content">
       <div class="loading">Loading...</div>
@@ -68,120 +83,99 @@
     </aside>
   </section>
 
-  <!-- ⚙️ 안정형 SPA 스크립트 -->
+  <!-- ⚙️ SPA 핵심 엔진 -->
   <script>
-  let currentRequest = null;
+    let currentRequest = null;
 
-  async function loadPage(page) {
-    const main = document.getElementById("main-content");
-    if (!main) return;
-    main.innerHTML = '<div class="loading">Loading...</div>';
+    async function loadPage(page) {
+      const main = document.getElementById("main-content");
+      if (!main) return;
+      main.innerHTML = '<div class="loading">Loading...</div>';
 
-    if (currentRequest) currentRequest.abort?.();
-    const controller = new AbortController();
-    currentRequest = controller;
+      if (currentRequest) currentRequest.abort?.();
+      const controller = new AbortController();
+      currentRequest = controller;
 
-    try {
-      const fragmentURL = new URL("/" + page.replace(/^\\/+/,""), location.origin);
-      const url = new URL(fragmentURL);
-      url.searchParams.set("_v", Date.now()); // 캐시 무효화
+      try {
+        // ✅ 절대경로로 고정 fetch
+        const fragmentURL = new URL("/" + page, location.origin);
+        const url = new URL(fragmentURL);
+        url.searchParams.set("_v", Date.now());
 
-      const r = await fetch(url.toString(), { signal: controller.signal, cache: "reload" });
-      if (!r.ok) throw new Error("HTTP " + r.status);
+        const r = await fetch(url.toString(), { signal: controller.signal, cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
 
-      let t = await r.text();
-      const doc = new DOMParser().parseFromString(t, "text/html");
-      let html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
+        const t = await r.text();
+        const doc = new DOMParser().parseFromString(t, "text/html");
+        let html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
 
-      // ✅ 상대경로 → 절대경로 변환
-      const base = fragmentURL.toString().replace(/[^/]*$/, "");
-      html = html.replace(/(src|href)=\"(?!https?:|mailto:|tel:|#)([^\"]+)\"/g, (_, attr, path) => {
-        try {
-          if (path.includes("style.css")) return `${attr}="/style.css"`;
-          if (path.includes("favicon.ico")) return `${attr}="/favicon.ico"`;
-          const abs = new URL(path, base).toString();
-          return `${attr}="${abs}"`;
-        } catch {
-          return `${attr}="${path}"`;
+        // ✅ 조각 내부의 모든 상대경로를 절대경로로 승격
+        const baseForFragment = fragmentURL.toString().replace(/[^/]*$/, "");
+        html = html.replace(/(src|href)="(?!https?:|mailto:|tel:|#)([^"]+)"/g, (_, attr, path) => {
+          try {
+            const abs = new URL(path, baseForFragment).toString();
+            return `${attr}="${abs}"`;
+          } catch {
+            return `${attr}="${path}"`;
+          }
+        });
+
+        main.innerHTML = html;
+
+        // ✅ 내부 링크를 다시 SPA용으로 재매핑
+        main.querySelectorAll("a[href]").forEach((a) => {
+          const href = a.getAttribute("href") || "";
+          if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
+          const abs = new URL(href, baseForFragment);
+          if (abs.origin === location.origin) {
+            const pagePath = abs.pathname.replace(/^\/+/, "");
+            a.setAttribute("data-page", pagePath);
+            a.setAttribute("href", "#");
+          }
+        });
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.error("불러오기 실패:", page, err);
+          main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`;
         }
-      });
-
-      main.innerHTML = html;
-
-      // ✅ 내부 링크를 다시 SPA용으로 재매핑
-      main.querySelectorAll("a[href]").forEach((a) => {
-        const href = a.getAttribute("href") || "";
-        if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
-        const abs = new URL(href, base);
-        if (abs.origin === location.origin) {
-          const pagePath = abs.pathname.replace(/^\\/+/,"");
-          a.setAttribute("data-page", pagePath);
-          a.setAttribute("href", "#");
-        }
-      });
-
-      // ✅ 스타일 재적용 보장 (하위 폴더 캐시 방지)
-      const css = document.querySelector('link[href*="style.css"]');
-      if (css) {
-        css.setAttribute("href", "/style.css?v=" + Date.now());
-      }
-
-    } catch (err) {
-      if (err.name !== "AbortError") {
-        console.error("불러오기 실패:", page, err);
-        main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`;
-      }
-    } finally {
-      currentRequest = null;
-    }
-  }
-
-  // 초기 로드
-  window.addEventListener("DOMContentLoaded", () => {
-    const redirect = sessionStorage.redirect;
-    if (redirect) {
-      sessionStorage.removeItem("redirect");
-      loadPage(redirect.replace(/^\\/+/,""));
-      return;
-    }
-
-    const path = location.pathname.replace(/^\\/+/,"");
-    if (path && !path.endsWith("/")) {
-      loadPage(path);
-      history.replaceState({ page: path }, "", "/" + path);
-    } else {
-      loadPage("main.html");
-    }
-  });
-
-  // 메뉴 클릭
-  document.addEventListener("click", (e) => {
-    const a = e.target.closest("a[data-page]");
-    if (!a) return;
-    e.preventDefault();
-    const page = a.getAttribute("data-page");
-    loadPage(page);
-    history.pushState({ page }, "", location.origin + "/" + page);
-  });
-
-  // 뒤로가기 / 앞으로가기
-  window.addEventListener("popstate", (e) => {
-    if (e.state && e.state.page) loadPage(e.state.page);
-    else loadPage("main.html");
-  });
-
-  // 중복폴더 자동정리 (/Poem/Poem 등)
-  (function fixDoubleFolders() {
-    const parts = location.pathname.split("/").filter(Boolean);
-    for (let i = 0; i < parts.length - 1; i++) {
-      if (parts[i] === parts[i + 1]) {
-        parts.splice(i, 1);
-        const fixed = "/" + parts.join("/") + location.search + location.hash;
-        history.replaceState(null, "", fixed);
-        break;
+      } finally {
+        currentRequest = null;
       }
     }
-  })();
+
+    /* ✅ 초기 로드 (직접 URL 진입 대응) */
+    window.addEventListener("DOMContentLoaded", () => {
+      const redirect = sessionStorage.redirect;
+      if (redirect) {
+        sessionStorage.removeItem("redirect");
+        loadPage(redirect.replace(/^\//, ""));
+        return;
+      }
+
+      const path = location.pathname.replace(/^\/+/, "");
+      if (path && !path.endsWith("/")) {
+        loadPage(path);
+        history.replaceState({ page: path }, "", "/" + path);
+      } else {
+        loadPage("main.html");
+      }
+    });
+
+    /* ✅ 메뉴 클릭 시 SPA 이동 */
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest("a[data-page]");
+      if (!a) return;
+      e.preventDefault();
+      const page = a.getAttribute("data-page");
+      loadPage(page);
+      history.pushState({ page }, "", location.origin + "/" + page);
+    });
+
+    /* ✅ 브라우저 뒤로/앞으로가기 */
+    window.addEventListener("popstate", (e) => {
+      if (e.state && e.state.page) loadPage(e.state.page);
+      else loadPage("main.html");
+    });
   </script>
 </body>
 </html>
