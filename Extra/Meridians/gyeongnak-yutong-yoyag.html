@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">경락유통 요약</h1>
 <p>수련자가 정좌하고 앉아있는 자세에서 인체중심선(임맥)을 기준으로 가까운 쪽 안쪽</p>
 <p>인체중심선을 기준으로 먼 쪽을 바깥쪽으로 해두었다.</p>
@@ -24,5 +33,4 @@
 <p>족소양담경(足少陽膽經)</p>
 <p>동자료(눈꼬리 옆) ~ 규음(약지 바깥 쪽)</p>
 <p>족궐음간경(足厥陰肝經)</p>
-<p>대돈(엄지 바깥 쪽) ~ 기문(젖꼭지 아래 갈비뼈 사이)<br>
-</p>
+<p>대돈(엄지 바깥 쪽) ~ 기문(젖꼭지 아래 갈비뼈 사이)</p>

@@ -1,8 +1,16 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">기주행공</h1>
 <p><a href="gi-ju-haenggong.html">기주행공(氣周行功)</a></p>
 <p><a href="yang-eum-beop.html">양음법(陽陰法)</a></p>
 <p><a href="jeonhu-beop.html">전후법(前後法)</a></p>
 <p><a href="daegak-jucheon.html">대각주천(對角周天)</a></p>
 <p><a href="jeok-ju-cheon.html">적주천(適周天)</a></p>
-<p><a href="i-ju-cheon.html">이주천(移周天)</a><br>
-</p>
+<p><a href="i-ju-cheon.html">이주천(移周天)</a></p>

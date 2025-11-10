@@ -1,6 +1,14 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">에스페란토</h1>
 <p><a href="eseuperanto-hakdang.html">에스페란토 학당</a></p>
 <p><a href="eseuperanto-alpabaet.html">에스페란토 알파벳</a></p>
 <p><a href="eseuperanto-gandan-gyuchig.html">에스페란토 간단 규칙</a></p>
-<p><a href="swipgo-yuyonghan-yeohaeng-eseuperanto.html">쉽고 유용한 여행 에스페란토</a><br>
-</p>
+<p><a href="swipgo-yuyonghan-yeohaeng-eseuperanto.html">쉽고 유용한 여행 에스페란토</a></p>

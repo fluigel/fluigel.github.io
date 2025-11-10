@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">기경팔맥 요약</h1>
 <p>아래는 기경팔맥의 요약이다.</p>
 <p>양교맥(陽蹻脈)</p>
@@ -9,5 +18,4 @@
 <p>음유맥(陰維脈)</p>
 <p>축빈(정강이 안쪽 중간) ~ 염천(목과 턱의 경계)</p>
 <p>충맥(衝脈)</p>
-<p>기충(사타쿠니) ~ 유문(명치 밑 갈비뼈 아래)<br>
-</p>
+<p>기충(사타쿠니) ~ 유문(명치 밑 갈비뼈 아래)</p>

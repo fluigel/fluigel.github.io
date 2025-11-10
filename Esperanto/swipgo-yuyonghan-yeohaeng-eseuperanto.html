@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">쉽고 유용한 여행 에스페란토</h1>
 <p><strong>————————————————————————————————————————————————————</strong></p>
 <p><strong>여기서 어떻게 가나요?</strong></p>
@@ -41,5 +50,4 @@
 <p>일몰 - 순수비로 - Sunsubiro</p>
 <p>풍경 - 페이자조 - Pejzaĝo</p>
 <p>쉬다 - 리포지 – Ripozi</p>
-<p><strong>————————————————————————————————————————————————————</strong><br>
-</p>
+<p><strong>————————————————————————————————————————————————————</strong></p>
