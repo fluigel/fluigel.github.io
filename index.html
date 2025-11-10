@@ -37,7 +37,8 @@
       <div class="loading">Loading...</div>
     </main>
 
-    <aside id="menu-panel">
+  <button id="menu-toggle" class="menu-toggle">☰ 메뉴</button>
+  <aside id="menu-panel">
       <h1>플뤼겔의 탑 | <em class="glow">Tower of Life Energy</em></h1>
       <hr />
       <nav>
@@ -177,5 +178,27 @@
       else loadPage("main.html");
     });
   </script>
+
+  <!-- 모바일 토글 스크립트 -->
+  <script>
+  const toggleBtn = document.getElementById('menu-toggle');
+  const menuPanel = document.getElementById('menu-panel');
+
+  toggleBtn.addEventListener('click', () => {
+    const open = menuPanel.classList.toggle('open');
+    document.body.classList.toggle('menu-open', open);
+  });
+
+  // 메뉴 바깥 클릭 시 자동 닫힘
+  document.addEventListener('click', (e) => {
+    if (menuPanel.classList.contains('open') &&
+        !e.target.closest('#menu-panel') &&
+        !e.target.closest('#menu-toggle')) {
+      menuPanel.classList.remove('open');
+      document.body.classList.remove('menu-open');
+    }
+  });
+</script>
+
 </body>
 </html>
