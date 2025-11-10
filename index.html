@@ -7,6 +7,10 @@
 
   <!-- ✅ 절대경로로 지정 (깃허브 루트 기준) -->
   <link rel="stylesheet" href="/style.css" />
+  <script>
+  const link = document.getElementById('main-css');
+  link.href = `/style.css?v=${Date.now()}`;
+  </script>
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
