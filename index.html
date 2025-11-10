@@ -8,14 +8,14 @@
   <link rel="stylesheet" href="./style.css" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon" />
 
+  <!-- ✅ 중복 폴더 자동 교정 -->
   <script>
-    // ✅ 중복폴더 자동 교정 (예: /Shindan/Shindan/x.html → /Shindan/x.html)
-    (function fixDuplicatedPath() {
-      const seg = location.pathname.split("/").filter(Boolean);
-      for (let i = 0; i < seg.length - 1; i++) {
-        if (seg[i] === seg[i + 1]) {
-          seg.splice(i, 1);
-          const fixed = "/" + seg.join("/") + location.search + location.hash;
+    (function fixDoubleFolders() {
+      const parts = location.pathname.split("/").filter(Boolean);
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (parts[i] === parts[i + 1]) {
+          parts.splice(i, 1);
+          const fixed = "/" + parts.join("/") + location.search + location.hash;
           history.replaceState(null, "", fixed);
           break;
         }
@@ -25,12 +25,12 @@
 </head>
 
 <body>
-  <!-- 상단 배너 -->
+  <!-- 🌄 상단 배너 -->
   <header class="banner">
     <img src="./_Images/Banner2.png" alt="Banner" />
   </header>
 
-  <!-- 본문 + 메뉴 -->
+  <!-- 📜 본문 + 메뉴 -->
   <section class="content">
     <main id="main-content">
       <div class="loading">Loading...</div>
@@ -84,7 +84,7 @@
 
   <script>
     /* =====================================================
-       SPA 로딩 엔진 (GitHub Pages 절대경로 기준)
+       깃허브 전용 SPA 엔진 (루트 절대경로 기준)
        ===================================================== */
     let currentRequest = null;
 
@@ -97,7 +97,7 @@
       currentRequest = controller;
 
       try {
-        // ✅ 깃허브 기준 절대경로 fetch (루트 기준)
+        // ✅ 항상 루트(/) 기준 절대경로로 요청
         const cacheBuster = "?_v=" + Date.now();
         const url = "/" + page + cacheBuster;
         console.log("📡 Fetch:", url);
@@ -109,12 +109,12 @@
         const doc = new DOMParser().parseFromString(t, "text/html");
         let html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
 
-        // ✅ 상대경로 중복 방지 + 자동 보정
+        // ✅ 경로 보정 (중복 폴더 방지)
         const baseDir = page.includes("/") ? page.split("/")[0] + "/" : "";
         html = html.replace(/(src|href)="(?!https?:|mailto:|tel:|#)([^"]+)"/g, (m, attr, path) => {
           if (!path) return m;
           if (path.startsWith("/") || path.startsWith("_")) return `${attr}="${path}"`;
-          if (path.startsWith(baseDir) || path.includes(baseDir)) return `${attr}="${path}"`;
+          if (path.startsWith(baseDir) || path.includes(baseDir + "/")) return `${attr}="${path}"`;
           const corrected = `${baseDir}${path}`.replace(/\/{2,}/g, "/");
           return `${attr}="${corrected}"`;
         });
@@ -130,7 +130,7 @@
       }
     }
 
-    // ✅ 초기 로드 (직접 URL 접근 대응)
+    /* ✅ 초기 로드 (직접 URL 접근 처리) */
     window.addEventListener("DOMContentLoaded", () => {
       const redirect = sessionStorage.redirect;
       if (redirect) {
@@ -138,6 +138,7 @@
         loadPage(redirect.replace(/^\//, ""));
         return;
       }
+
       const path = location.pathname.replace(/^\/+/, "");
       if (path && !path.endsWith("/")) {
         loadPage(path);
@@ -147,7 +148,7 @@
       }
     });
 
-    // ✅ 메뉴 클릭 이벤트
+    /* ✅ 메뉴 클릭 시 SPA 이동 */
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a[data-page]");
       if (!a) return;
@@ -157,7 +158,7 @@
       history.pushState({ page }, "", "/" + page);
     });
 
-    // ✅ 뒤로가기 / 앞으로가기
+    /* ✅ 브라우저 뒤로/앞으로가기 */
     window.addEventListener("popstate", (e) => {
       if (e.state && e.state.page) loadPage(e.state.page);
       else loadPage("main.html");
