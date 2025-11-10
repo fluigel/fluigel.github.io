@@ -155,7 +155,7 @@
       e.preventDefault();
       const page = a.getAttribute("data-page");
       loadPage(page);
-      history.pushState({ page }, "", "/" + page);
+      history.pushState({ page }, "", location.origin + "/" + page);
     });
 
     /* ✅ 브라우저 뒤로/앞으로가기 */
