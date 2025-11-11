@@ -76,9 +76,6 @@ html, body {
   padding: 14px 12px;
   border-radius: 0;        /* ✅ 라운드 제거 → 직각 */
   margin: 0 0 28px;        /* ✅ 아래쪽만 여유있게 */
-  margin-top: 10px;
-  margin-bottom: 24px;
-  letter-spacing: 0.3px;
   line-height: 1.4;
   text-align: left;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -91,18 +88,6 @@ html, body {
   line-height: 1.9;
   margin-bottom: 1.4em;  /* 문단 간 여백 */
   color: #444;
-}
-
-/* 공통 링크 스타일 */
-#main-content a {
-  color: #3b5c7a;
-  text-decoration: underline;
-  transition: color 0.2s ease;
-}
-
-/* 공통 링크 hover */
-#main-content a:hover {
-  color: #e6d28a;
 }
 
 /* ✅ 본문 이미지 크기 자동 맞춤 */
@@ -123,11 +108,13 @@ html, body {
 /* =========================================================
    📘 MENU PANEL (오른쪽 메뉴 영역)
    ========================================================= */
-#menu-panel {
+
+/* 메뉴 영역 전체 */
+  #menu-panel {
   position: relative;
   width: 280px;
   flex-shrink: 0;
-  color: #fff;
+  color: #f2f2f2;
   padding: 25px 20px;
   background: url("./_Images/Fluigel.png") no-repeat center top;
   background-size: cover;
@@ -136,8 +123,6 @@ html, body {
   border-radius: 0; /* ✅ 직각 유지 */
   margin-top: 45px; /* 여기서 베너와 간격 조절 */
 }
-
-
 
 /* 어두운 반투명 레이어 */
 #menu-panel::before {
@@ -155,51 +140,48 @@ html, body {
   z-index: 1;
 }
 
-/* 메뉴 제목 */
+/* 타이틀 전체적인 설정 */
 #menu-panel h1 {
-  font-size: 1.2rem;
-  text-align: center;
-  margin-bottom: 15px;
-  color: #e6d28a;
-  font-weight: 600;
-  text-shadow:
-    0 0 4px rgba(255, 240, 150, 0.4),
-    0 0 12px rgba(255, 230, 90, 0.2);
-  letter-spacing: 0.5px;
-
+  font-size: 16px;
+  color: #f7e6a5; /* 부드러운 황금색 */
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+  margin-top: 0;
 }
 
-/* 플뤼겔의 탑 | Tower of Life Energy */
+/* 타이틀의 영어 부분 – 은은한 황금빛 포인트 */
 #menu-panel h1 em.glow {
-  color: #e6d28a; /* ✨ 은은한 황금빛 (기본 상태) */
-  font-style: normal;
-  transition: color 0.4s ease, text-shadow 0.4s ease;
+  color: #f7e6a5; /* 기본은 부드러운 황금색 */
+  font-style: italic;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  transition: all 0.4s ease;
+  cursor: pointer;
 }
 
+/* hover 시 찬란하게 빛남 */
 #menu-panel h1:hover em.glow {
-  color: #ffeb91; /* 🌟 찬란하지만 부드러운 황금빛 (호버) */
-  text-shadow: 0 0 12px #ffeaaa;
+  color: #ffef9c; /* 조금 더 밝고 따뜻한 금빛 */
+  text-shadow:
+    0 0 6px rgba(255,240,180,0.8),
+    0 0 12px rgba(255,230,150,0.6),
+    0 0 20px rgba(255,210,100,0.4);
 }
 
-/* 메뉴 링크 */
+/* 공통 링크 스타일 */
 #menu-panel nav a {
   display: block;
-  color: #f2f2f2;
+  padding: 6px 8px;
   text-decoration: none;
-  padding: 6px 20px;
+  color: #f2f2f2; /* 기본 흰색 계열 */
   border-radius: 4px;
-  font-size: 0.95rem;
-  letter-spacing: 0.2px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); /* 💡입체감 */
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
+/* hover 효과 */
 #menu-panel nav a:hover {
-  color: #fffbe6; /* 따뜻한 빛 */
-  text-shadow:
-    0 0 6px rgba(255, 255, 200, 0.9),
-    0 0 12px rgba(255, 255, 180, 0.7); /* ✨빛나는 효과 */
-  transform: translateX(3px); /* 살짝 오른쪽으로 이동 */
+  color: #ffffff; /* 완전한 흰빛으로 */
+  background: rgba(255,255,255,0.08);
+  text-shadow: 1px 1px 4px rgba(255,255,255,0.8);
 }
 
 /* 메뉴 그룹 */
