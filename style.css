@@ -294,13 +294,12 @@ html, body {
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: 100lvh;  /* ✅ iOS 17+ 및 크롬 최신 대응 */
-    height: 100dvh;  /* ✅ 하단 바 포함 모든 브라우저 대응 */
-    height: 100vh;   /* ✅ 구형 브라우저 대응 */
+    height: 100vh;  /* 고정 높이로 잘림 방지 */
     background: url("./_Images/Fluigel.png") no-repeat center top;
     background-size: cover;
     color: #fff;
-    overflow-y: auto;
+    overflow-y: auto;  /* ✅ 메뉴 내부 스크롤 허용 */
+    -webkit-overflow-scrolling: touch;  /* ✅ iOS 부드러운 스크롤 */
     transition: right 0.35s ease;
     z-index: 998;
     padding: 80px 20px 40px;
@@ -314,7 +313,7 @@ html, body {
   /* ✅ 메뉴 열릴 때 배경 스크롤 잠금 */
   body.menu-open {
     overflow: hidden;
-    touch-action: none;
+    height: 100%;
   }
 
   /* ✅ 어두운 배경 오버레이 */
