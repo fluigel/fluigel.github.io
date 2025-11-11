@@ -295,45 +295,33 @@ html, body {
     line-height: 1;
   }
 
-  /* ✅ 메뉴 패널 */
+  /* ✅ 메뉴 패널 – 안정판 (끝까지 스크롤 + 배경 이어짐) */
   #menu-panel {
     position: fixed;
     top: 0;
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: calc(var(--vh, 1vh) * 100) !important; /* 실제 화면 높이 */
+    height: calc(var(--vh, 1vh) * 101) !important; /* ✅ 1% 여유 */
     min-height: 100%;
-    background: url("./_Images/Fluigel.png") no-repeat center top;
+    background: url("./_Images/Fluigel.png") repeat-y center top; /* ✅ 자연스러운 배경 반복 */
     background-size: cover;
     color: #fff;
     overflow-y: auto;
     transition: right 0.35s ease;
     z-index: 998;
-    padding: 80px 20px 40px;
+    padding: 80px 20px 80px; /* ✅ 하단 여유 */
     box-shadow: -3px 0 10px rgba(0,0,0,0.3);
+  }
+
+  #menu-panel::after {
+    content: "";
+    display: block;
+    height: 40px; /* ✅ 스크롤 끝 완충 여백 */
   }
 
   #menu-panel.open {
     right: 0;
-  }
-
-  /* ✅ 메뉴 열릴 때 배경 스크롤 잠금 */
-  body.menu-open {
-    overflow: hidden;
-    touch-action: none;
-  }
-
-  /* ✅ 어두운 배경 오버레이 (전체 화면 덮기) */
-  body.menu-open::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: calc(var(--vh, 1vh) * 100) !important;  /* 메뉴 패널과 동일 높이 계산 */
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 997;
   }
 
   /* ✅ 본문 여백 보정 */
