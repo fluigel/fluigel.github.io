@@ -131,9 +131,10 @@ html, body {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.18);  /* 밝기 살짝 줄이기 */
+  backdrop-filter: blur(3px);
+  pointer-events: none;
   z-index: 0;
-  border-radius: 0;
 }
 
 /* 메뉴 내부 내용은 오버레이 위에 표시 */
@@ -300,6 +301,8 @@ html, body {
     z-index: 998;
     padding: 80px 20px 40px;
     box-shadow: -3px 0 10px rgba(0,0,0,0.3);
+    -webkit-overflow-scrolling: touch; /* iOS 스크롤 부드럽게 */
+    overscroll-behavior: contain;      /* 상단 당김 시 bounce 방지 */
   }
 
   #menu-panel.open {
