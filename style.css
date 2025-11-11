@@ -130,9 +130,6 @@ html, body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 0; /* ✅ 직각 유지 */
   margin-top: 45px; /* 여기서 베너와 간격 조절 */
-  overflow-y: auto;
-  max-height: 100vh;  /* 뷰포트 높이에 맞춤 */
-  -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
 }
 
 /* 어두운 반투명 레이어 */
@@ -307,6 +304,9 @@ html, body {
     z-index: 998;
     padding: 80px 20px 40px;
     box-shadow: -3px 0 10px rgba(0,0,0,0.3);
+    overflow-y: auto;
+    max-height: 100vh;  /* 뷰포트 높이에 맞춤 */
+    -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
   }
 
   #menu-panel.open {
