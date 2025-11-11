@@ -19,7 +19,7 @@ html, body {
    🏔️ BANNER (상단 베너 – 가로 전체 + 높이 조절 가능)
    ========================================================= */
 .banner {
-  width: 100vw;          /* 화면 전체 가로 */
+  width: 100%;          /* 화면 전체 가로 */
   overflow: hidden;
   text-align: center;
   background: #fff;
@@ -112,6 +112,8 @@ html, body {
 .site-footer {
   text-align: center;
   padding: 20px 10px;
+  width: 100%;
+  max-width: 100%;
   font-size: 0.9rem;
   color: #666;
   background: #f8f8f8;
