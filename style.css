@@ -392,3 +392,19 @@ html, body {
     max-height: 160px;
   }
 }
+
+/* =========================================================
+   🌫️ 메뉴 오버레이 (JS로 동적 생성)
+   ========================================================= */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 996;
+}
+
+.menu-overlay.show {
+  opacity: 1;
+}
