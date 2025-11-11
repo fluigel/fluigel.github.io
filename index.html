@@ -199,7 +199,18 @@
     }
   });
 </script>
-  <footer class="site-footer">
+
+<!-- ✅ 모바일 메뉴 높이 보정 -->
+<script>
+  function setVhVariable() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  setVhVariable();
+  window.addEventListener('resize', setVhVariable);
+</script>
+
+<footer class="site-footer">
     <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
   </footer>
 </body>

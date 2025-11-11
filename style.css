@@ -297,22 +297,7 @@ html, body {
 
   /* ✅ 메뉴 패널 */
   #menu-panel {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 80%;
-    max-width: 300px;
-    height: 100lvh;  /* ✅ iOS 17+ 및 크롬 최신 대응 */
-    height: 100dvh;  /* ✅ 하단 바 포함 모든 브라우저 대응 */
-    height: 100vh;   /* ✅ 구형 브라우저 대응 */
-    background: url("./_Images/Fluigel.png") no-repeat center top;
-    background-size: cover;
-    color: #fff;
-    overflow-y: auto;
-    transition: right 0.35s ease;
-    z-index: 998;
-    padding: 80px 20px 40px;
-    box-shadow: -3px 0 10px rgba(0,0,0,0.3);
+#menu-panel {
   }
 
   #menu-panel.open {
