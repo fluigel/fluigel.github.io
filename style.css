@@ -12,6 +12,7 @@ html, body {
   font-family: "Noto Sans KR", sans-serif;
   color: #222;
   background: #fff;
+  overflow-x: hidden;  /* 좌우 스크롤 완전 차단 */
 }
 
 /* =========================================================
