@@ -371,22 +371,3 @@ html, body {
     max-height: 160px;
   }
 }
-
-/* =========================================================
-   🩹 MOBILE SCROLL FIX (스크롤 끝까지 안 보이는 문제 수정)
-   ========================================================= */
-html, body {
-  min-height: 100%;
-  height: auto; /* ✅ 강제 높이 해제 */
-}
-
-#menu-panel {
-  height: auto; /* ✅ 고정값 대신 내용기준 */
-  min-height: 100dvh; /* ✅ 브라우저 높이보다 작으면 확장 */
-}
-
-/* 메뉴 닫힐 때 스크롤 완전 복원 */
-body:not(.menu-open) {
-  overflow-y: auto !important;
-  touch-action: auto !important;
-}
