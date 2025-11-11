@@ -302,19 +302,17 @@ html, body {
     right: -100%;
     width: 80%;
     max-width: 300px;
-
-    /* ✅ 핵심 수정 */
-    height: calc(var(--vh, 1vh) * 100) !important;
-    min-height: 100%;
-
-    background: url(./_Images/Fluigel.png) no-repeat center top;
+    height: 100lvh;  /* ✅ iOS 17+ 및 크롬 최신 대응 */
+    height: 100dvh;  /* ✅ 하단 바 포함 모든 브라우저 대응 */
+    height: 100vh;   /* ✅ 구형 브라우저 대응 */
+    background: url("./_Images/Fluigel.png") no-repeat center top;
     background-size: cover;
     color: #fff;
     overflow-y: auto;
     transition: right 0.35s ease;
     z-index: 998;
     padding: 80px 20px 40px;
-    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: -3px 0 10px rgba(0,0,0,0.3);
   }
 
   #menu-panel.open {
@@ -372,4 +370,23 @@ html, body {
   .banner img {
     max-height: 160px;
   }
+}
+
+/* =========================================================
+   🩹 MOBILE SCROLL FIX (스크롤 끝까지 안 보이는 문제 수정)
+   ========================================================= */
+html, body {
+  min-height: 100%;
+  height: auto; /* ✅ 강제 높이 해제 */
+}
+
+#menu-panel {
+  height: auto; /* ✅ 고정값 대신 내용기준 */
+  min-height: 100dvh; /* ✅ 브라우저 높이보다 작으면 확장 */
+}
+
+/* 메뉴 닫힐 때 스크롤 완전 복원 */
+body:not(.menu-open) {
+  overflow-y: auto !important;
+  touch-action: auto !important;
 }
