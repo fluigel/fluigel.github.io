@@ -315,6 +315,12 @@ html, body {
     z-index: 997;
   }
 
+  /* 모바일 스크롤 버그 예방 */
+  html.menu-open {
+     overflow: hidden;
+     height: 100%;
+  }
+
   /* ✅ 본문 여백 보정 */
   #main-content {
     padding: 25px;
