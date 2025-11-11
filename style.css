@@ -332,20 +332,6 @@ html, body {
   }
 }
 
-/* 메뉴가 닫혔을 때 터치 차단 방지 */
-#menu-panel:not(.open) {
-  pointer-events: none;     /* 메뉴 닫히면 클릭·터치 무시 */
-  visibility: hidden;       /* 스크린 리더/탭 포커스도 제외 */
-  transition: right 0.35s ease, visibility 0s linear 0.35s;
-}
-
-/* 메뉴가 열릴 때는 다시 활성화 */
-#menu-panel.open {
-  pointer-events: auto;
-  visibility: visible;
-  transition: right 0.35s ease;
-}
-
 /* =========================================================
    📱 SMALL MOBILE (768px 이하)
    ========================================================= */

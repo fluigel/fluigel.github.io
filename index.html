@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251111040908" />
+  <link rel="stylesheet" href="/style.css?v=20251111040910" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -200,5 +200,18 @@
   });
 </script>
 
+<!--📱 메뉴 스크롤 잠김 방지 -->
+<script>
+function fixMenuHeight() {
+  const menu = document.getElementById('menu-panel');
+  if (!menu) return;
+  menu.style.height = window.innerHeight + 'px';
+}
+
+// 최초 1회 + 창 크기 변경 시 갱신
+window.addEventListener('load', fixMenuHeight);
+window.addEventListener('resize', fixMenuHeight);
+window.addEventListener('orientationchange', fixMenuHeight);
+</script>
 </body>
 </html>
