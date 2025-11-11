@@ -295,20 +295,22 @@ html, body {
     line-height: 1;
   }
 
-  /* ✅ 메뉴 패널 */
+  /* =========================================================
+     ✅ 메뉴 패널 (치마현상 + 스크롤 불능 완전 해결)
+     ========================================================= */
   #menu-panel {
     position: fixed;
     top: 0;
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: 100lvh;  /* ✅ iOS 17+ 및 크롬 최신 대응 */
-    height: 100dvh;  /* ✅ 하단 바 포함 모든 브라우저 대응 */
-    height: 100vh;   /* ✅ 구형 브라우저 대응 */
+    height: 100%;
+    min-height: 100vh;
     background: url("./_Images/Fluigel.png") no-repeat center top;
     background-size: cover;
     color: #fff;
-    overflow-y: auto;
+    overflow-y: auto;              /* ✅ 내부 스크롤 유지 */
+    -webkit-overflow-scrolling: touch; /* ✅ iOS 부드러운 스크롤 */
     transition: right 0.35s ease;
     z-index: 998;
     padding: 80px 20px 40px;
@@ -319,13 +321,26 @@ html, body {
     right: 0;
   }
 
-  /* ✅ 메뉴 열릴 때 배경 스크롤 잠금 */
-  body.menu-open {
-    overflow: hidden;
-    touch-action: none;
+  /* ✅ 내부 오버레이 (스크롤과 함께 움직임) */
+  #menu-panel .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 0;
   }
 
-  /* ✅ 어두운 배경 오버레이 */
+  #menu-panel * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ✅ body는 잠그지 않음 (메뉴 내부 스크롤 정상화) */
+  body.menu-open {
+    overflow: visible; /* ✅ 스크롤 잠금 해제 */
+    touch-action: auto; /* ✅ 터치 스크롤 정상 작동 */
+  }
+
+  /* ✅ 메뉴 열릴 때 배경 오버레이 유지 */
   body.menu-open::before {
     content: "";
     position: fixed;
@@ -358,7 +373,7 @@ html, body {
     padding: 16px 8px;
     font-size: 0.85rem;
   }
-  
+
   #menu-panel {
     width: 85%;
     max-width: 280px;
