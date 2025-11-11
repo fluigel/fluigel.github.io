@@ -295,22 +295,20 @@ html, body {
     line-height: 1;
   }
 
-  /* =========================================================
-     ✅ 메뉴 패널 (치마현상 + 스크롤 불능 완전 해결)
-     ========================================================= */
+  /* ✅ 메뉴 패널 */
   #menu-panel {
     position: fixed;
     top: 0;
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: 100%;
-    min-height: 100vh;
+    height: 100lvh;  /* ✅ iOS 17+ 및 크롬 최신 대응 */
+    height: 100dvh;  /* ✅ 하단 바 포함 모든 브라우저 대응 */
+    height: 100vh;   /* ✅ 구형 브라우저 대응 */
     background: url("./_Images/Fluigel.png") no-repeat center top;
     background-size: cover;
     color: #fff;
-    overflow-y: auto;              /* ✅ 내부 스크롤 유지 */
-    -webkit-overflow-scrolling: touch; /* ✅ iOS 부드러운 스크롤 */
+    overflow-y: auto;
     transition: right 0.35s ease;
     z-index: 998;
     padding: 80px 20px 40px;
@@ -321,38 +319,19 @@ html, body {
     right: 0;
   }
 
-  /* ✅ 화면 고정형 오버레이 (내부 스크롤과 분리, 치마현상 완전 제거) */
-  #menu-panel::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 80%;
-    max-width: 300px;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.25);
-    z-index: 997;
-    pointer-events: none;  /* ✅ 클릭/스크롤 간섭 방지 */
-  }
-
-  #menu-panel * {
-    position: relative;
-    z-index: 998; /* ✅ 메뉴 항목은 항상 오버레이 위 */
-  }
-
-  /* ✅ body는 잠그지 않음 (메뉴 내부 스크롤 정상화) */
+  /* ✅ 메뉴 열릴 때 배경 스크롤 잠금 */
   body.menu-open {
-    overflow: visible !important; /* ✅ 스크롤 잠금 해제 */
-    touch-action: auto !important; /* ✅ 터치 스크롤 정상 작동 */
+    overflow: hidden;
+    touch-action: none;
   }
 
-  /* ✅ 메뉴 열릴 때 배경 오버레이 유지 */
+  /* ✅ 어두운 배경 오버레이 */
   body.menu-open::before {
     content: "";
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.3);
-    z-index: 996;
+    z-index: 997;
   }
 
   /* ✅ 본문 여백 보정 */
@@ -379,7 +358,7 @@ html, body {
     padding: 16px 8px;
     font-size: 0.85rem;
   }
-
+  
   #menu-panel {
     width: 85%;
     max-width: 280px;
@@ -391,20 +370,4 @@ html, body {
   .banner img {
     max-height: 160px;
   }
-}
-
-/* =========================================================
-   🌫️ 메뉴 오버레이 (JS로 동적 생성)
-   ========================================================= */
-.menu-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  z-index: 996;
-}
-
-.menu-overlay.show {
-  opacity: 1;
 }

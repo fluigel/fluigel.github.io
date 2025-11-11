@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=2051799043921" />
+  <link rel="stylesheet" href="/style.css?v=2051799043924" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -198,39 +198,6 @@
       document.body.classList.remove('menu-open');
     }
   });
-</script>
-
-<script>
-/* =========================================================
-   ⚙️ 플뤼겔의 탑 - SPA 메뉴 제어 스크립트 안정판
-   ========================================================= */
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleBtn = document.querySelector(".menu-toggle")
-  const menuPanel = document.querySelector("#menu-panel")
-  const body = document.body
-
-  // 🔹 메뉴 열기 / 닫기
-  toggleBtn.addEventListener("click", () => {
-    const isOpen = menuPanel.classList.toggle("open")
-    body.classList.toggle("menu-open", isOpen)
-
-    // 🔹 오버레이 생성/제거
-    let overlay = document.querySelector(".menu-overlay")
-    if (isOpen) {
-      if (!overlay) {
-        overlay = document.createElement("div")
-        overlay.className = "menu-overlay"
-        document.body.appendChild(overlay)
-      }
-      requestAnimationFrame(() => overlay.classList.add("show"))
-    } else {
-      if (overlay) {
-        overlay.classList.remove("show")
-        setTimeout(() => overlay.remove(), 300)
-      }
-    }
-  })
-})
 </script>
   <footer class="site-footer">
     <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
