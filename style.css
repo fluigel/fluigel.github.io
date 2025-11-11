@@ -309,9 +309,9 @@ html, body {
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: calc(var(--vh, 1vh) * 100) !important; /* 실제 화면 높이 */
+    height: calc(var(--vh, 1vh) * 100) !important;
     min-height: 100%;
-    background: url("./_Images/Fluigel.png") no-repeat center top;
+    background: url("./_Images/Fluigel.png") repeat-y center top; /* ✅ 변경됨 */
     background-size: cover;
     color: #fff;
     overflow-y: auto;
