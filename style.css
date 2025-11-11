@@ -126,17 +126,24 @@ html, body {
 
 /* 메뉴 영역 전체 */
 #menu-panel {
-  position: relative;
-  width: 280px;
-  flex-shrink: 0;
-  color: #fff;
-  padding: 25px 20px;
-  background: url("./_Images/Fluigel.png") no-repeat center top;
-  background-size: cover;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 0; /* ✅ 직각 유지 */
-  margin-top: 45px; /* 여기서 베너와 간격 조절 */
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+
+    /* ✅ 핵심 수정 */
+    height: calc(var(--vh, 1vh) * 100) !important;
+    min-height: 100%;
+
+    background: url(./_Images/Fluigel.png) no-repeat center top;
+    background-size: cover;
+    color: #fff;
+    overflow-y: auto;
+    transition: right 0.35s ease;
+    z-index: 998;
+    padding: 80px 20px 40px;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
 }
 
 /* 어두운 반투명 레이어 */
