@@ -321,23 +321,29 @@ html, body {
     right: 0;
   }
 
-  /* ✅ 내부 오버레이 (스크롤과 함께 움직임) */
-  #menu-panel .overlay {
-    position: absolute;
-    inset: 0;
+  /* ✅ 화면 고정형 오버레이 (내부 스크롤과 분리, 치마현상 완전 제거) */
+  #menu-panel::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.25);
-    z-index: 0;
+    z-index: 997;
+    pointer-events: none;  /* ✅ 클릭/스크롤 간섭 방지 */
   }
 
   #menu-panel * {
     position: relative;
-    z-index: 1;
+    z-index: 998; /* ✅ 메뉴 항목은 항상 오버레이 위 */
   }
 
   /* ✅ body는 잠그지 않음 (메뉴 내부 스크롤 정상화) */
   body.menu-open {
-    overflow: visible; /* ✅ 스크롤 잠금 해제 */
-    touch-action: auto; /* ✅ 터치 스크롤 정상 작동 */
+    overflow: visible !important; /* ✅ 스크롤 잠금 해제 */
+    touch-action: auto !important; /* ✅ 터치 스크롤 정상 작동 */
   }
 
   /* ✅ 메뉴 열릴 때 배경 오버레이 유지 */
@@ -346,7 +352,7 @@ html, body {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.3);
-    z-index: 997;
+    z-index: 996;
   }
 
   /* ✅ 본문 여백 보정 */
