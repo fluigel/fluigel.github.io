@@ -295,16 +295,14 @@ html, body {
     line-height: 1;
   }
 
-  /* ✅ 메뉴 패널 */
+  /* ✅ 메뉴 패널 (100vh → calc(var(--vh))로 교체됨) */
   #menu-panel {
     position: fixed;
     top: 0;
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: 100lvh;  /* ✅ iOS 17+ 및 크롬 최신 대응 */
-    height: 100dvh;  /* ✅ 하단 바 포함 모든 브라우저 대응 */
-    height: 100vh;   /* ✅ 구형 브라우저 대응 */
+    height: calc(var(--vh, 1vh) * 100);  /* ✅ 실제 화면 높이로 동적 계산 */
     background: url("./_Images/Fluigel.png") no-repeat center top;
     background-size: cover;
     color: #fff;
@@ -342,32 +340,5 @@ html, body {
 
   .banner img {
     max-height: 200px;
-  }
-}
-
-/* =========================================================
-   📱 SMALL MOBILE (768px 이하)
-   ========================================================= */
-@media screen and (max-width: 768px) {
-  #main-content {
-    padding: 20px;
-  }
-
-  /* 모바일용 FOOTER */
-  .site-footer {
-    padding: 16px 8px;
-    font-size: 0.85rem;
-  }
-  
-  #menu-panel {
-    width: 85%;
-    max-width: 280px;
-    padding: 70px 15px 30px;
-    background: url("./_Images/Fluigel.png") no-repeat center top;
-    background-size: cover;
-  }
-
-  .banner img {
-    max-height: 160px;
   }
 }
