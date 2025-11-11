@@ -105,6 +105,17 @@ html, body {
   margin-top: 1.2em;         /* 대략 두 줄 정도 위 여백 */
 }
 
+/* FOOTER (하단 카피라이트 영역) */
+.site-footer {
+  text-align: center;
+  padding: 20px 10px;
+  font-size: 0.9rem;
+  color: #666;
+  background: #f8f8f8;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+}
+
 /* =========================================================
    📘 MENU PANEL (오른쪽 메뉴 영역)
    ========================================================= */
@@ -329,6 +340,14 @@ html, body {
 
   .banner img {
     max-height: 200px;
+  }
+}
+
+/* 모바일용 FOOTER */
+@media screen and (max-width: 768px) {
+  .site-footer {
+    padding: 16px 8px;
+    font-size: 0.85rem;
   }
 }
 
