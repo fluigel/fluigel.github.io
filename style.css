@@ -317,7 +317,7 @@ html, body {
   #menu-panel::after {
     content: "";
     display: block;
-    height: 40px; /* ✅ 스크롤 끝 완충 여백 */
+    height: 10px; /* ✅ 스크롤 끝 완충 여백 */
   }
 
   #menu-panel.open {
