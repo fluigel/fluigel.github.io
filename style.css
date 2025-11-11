@@ -113,6 +113,7 @@ html, body {
   color: #666;
   background: #f8f8f8;
   border-top: 1px solid #ddd;
+  margin-top: 40px;
 }
 
 /* =========================================================
@@ -130,6 +131,9 @@ html, body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 0; /* ✅ 직각 유지 */
   margin-top: 45px; /* 여기서 베너와 간격 조절 */
+  overflow-y: auto;
+  max-height: 100vh;  /* 뷰포트 높이에 맞춤 */
+  -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
 }
 
 /* 어두운 반투명 레이어 */
@@ -293,12 +297,13 @@ html, body {
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: 100vh;  /* 고정 높이로 잘림 방지 */
+    height: 100lvh;  /* ✅ iOS 17+ 및 크롬 최신 대응 */
+    height: 100dvh;  /* ✅ 하단 바 포함 모든 브라우저 대응 */
+    height: 100vh;   /* ✅ 구형 브라우저 대응 */
     background: url("./_Images/Fluigel.png") no-repeat center top;
     background-size: cover;
     color: #fff;
-    overflow-y: auto;  /* ✅ 메뉴 내부 스크롤 허용 */
-    -webkit-overflow-scrolling: touch;  /* ✅ iOS 부드러운 스크롤 */
+    overflow-y: auto;
     transition: right 0.35s ease;
     z-index: 998;
     padding: 80px 20px 40px;
@@ -312,7 +317,7 @@ html, body {
   /* ✅ 메뉴 열릴 때 배경 스크롤 잠금 */
   body.menu-open {
     overflow: hidden;
-    height: 100%;
+    touch-action: none;
   }
 
   /* ✅ 어두운 배경 오버레이 */
@@ -322,12 +327,6 @@ html, body {
     inset: 0;
     background: rgba(0, 0, 0, 0.3);
     z-index: 997;
-  }
-
-  /* 모바일 스크롤 버그 예방 */
-  html.menu-open {
-     overflow: hidden;
-     height: 100%;
   }
 
   /* ✅ 본문 여백 보정 */
@@ -341,14 +340,6 @@ html, body {
   }
 }
 
-/* 모바일용 FOOTER */
-@media screen and (max-width: 768px) {
-  .site-footer {
-    padding: 16px 8px;
-    font-size: 0.85rem;
-  }
-}
-
 /* =========================================================
    📱 SMALL MOBILE (768px 이하)
    ========================================================= */
@@ -356,6 +347,14 @@ html, body {
   #main-content {
     padding: 20px;
   }
+
+  /* 모바일용 FOOTER */
+@media screen and (max-width: 768px) {
+  .site-footer {
+    padding: 16px 8px;
+    font-size: 0.85rem;
+  }
+}
 
   #menu-panel {
     width: 85%;
