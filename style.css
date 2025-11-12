@@ -265,7 +265,15 @@ html, body {
    ========================================================= */
 @media screen and (max-width: 1060px) {
 
-  /* ✅ 메뉴 패널 – 레이어 제거, 필터만 적용 */
+  /* ✅ flex 기반 반응형 – 확장 가능한 구조 */
+  .content {
+    display: flex;
+    flex-direction: column;  /* PC: 가로 / 모바일: 세로 */
+    align-items: stretch;    /* 각 요소 폭 100% 확장 */
+    padding: 0;
+  }
+
+  /* ✅ 메뉴 패널 – 독립 레이어 (충돌 없음) */
   #menu-panel {
     position: fixed;
     top: 0;
@@ -286,12 +294,13 @@ html, body {
     border-left: 1px solid rgba(255, 255, 255, 0.15);
   }
 
-  /* ✅ 불필요한 레이어 완전 제거 */
+  /* ✅ 불필요한 어두운 레이어 제거 */
   #menu-panel::before {
     display: none !important;
     content: none !important;
   }
 
+  /* ✅ 메뉴 오픈 시 패널 등장 */
   #menu-panel.open {
     right: 0;
   }
@@ -311,16 +320,18 @@ html, body {
     opacity: 0.95;
   }
 
-  /* ✅ 본문 여백 보정 */
+  /* ✅ 본문 – 폭 전체 확장 + 여백 조정 */
   #main-content {
-    padding: 25px;
+    flex: 1 1 auto;
     max-width: 100%;
+    width: 100%;
+    padding: 25px 20px;
   }
 
   .banner img {
     max-height: 200px;
   }
-  
+
   /* ✅ 메뉴 버튼 – 반투명 유리 효과 */
   .menu-toggle {
     display: flex;
