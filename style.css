@@ -250,6 +250,7 @@ html, body {
   cursor: pointer;
   transition: background 0.2s ease;
 }
+
 .menu-toggle:hover {
   background: rgba(59, 92, 122, 1);
 }
@@ -290,37 +291,29 @@ html, body {
 
   /* ✅ “☰ 메뉴” 한글 버전 */
   .menu-toggle::before {
-    content: "☰ 메뉴";
-    font-size: 1.2rem;
-    line-height: 1;
-    position: fixed; /* ✅ 스크롤 영역 전체 덮음 */
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.25); /* 반투명 어둡게 */
-    z-index: 0;
-    pointer-events: none; /* 클릭 방지 */
-
+  display: none !important;
   }
 
   /* ✅ 메뉴 패널 – 안정판 (끝까지 스크롤 + 배경 이어짐) */
   #menu-panel {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 80%;
-    max-width: 300px;
-    height: calc(var(--vh, 1vh) * 101) !important; /* ✅ 1% 여유 */
-    min-height: 100%;
-    background: url("./_Images/Fluigel.png") repeat-y center top; /* ✅ 자연스러운 배경 반복 */
-    background-size: cover;
-    color: #fff;
-    overflow-y: auto;
-    transition: right 0.35s ease;
-    z-index: 998;
-    padding: 80px 20px 80px; /* ✅ 하단 여유 */
-    box-shadow: -3px 0 10px rgba(0,0,0,0.3);
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 80%;
+  max-width: 300px;
+  height: calc(var(--vh, 1vh) * 101);
+  min-height: 100%;
+  /* 🔹 레이어 삭제 후 직접 필터 적용 */
+  background: rgba(20, 20, 20, 0.65)
+    url("./_Images/Fluigel.png") repeat-y center top / cover;
+  backdrop-filter: blur(8px) brightness(0.9); /* ✨ 블러 + 밝기 보정 */
+  color: #fff;
+  overflow-y: auto;
+  transition: right 0.35s ease;
+  z-index: 998;
+  padding: 80px 20px 80px;
+  box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   #menu-panel::after {
