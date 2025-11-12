@@ -250,7 +250,6 @@ html, body {
   cursor: pointer;
   transition: background 0.2s ease;
 }
-
 .menu-toggle:hover {
   background: rgba(59, 92, 122, 1);
 }
