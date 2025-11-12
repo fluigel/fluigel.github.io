@@ -189,7 +189,7 @@ html, body {
   display: block;
   color: #fff;
   text-decoration: none;
-  padding: 3px 16px;   /* 문단 간격과 관계 O */
+  padding: 6px 20px;   /* 문단 간격과 관계 O */
   line-height: 1.5;    /* 문단 간격을 명시해 조절 */
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -273,13 +273,6 @@ html, body {
     padding: 0;
   }
 
-  /* 모바일에서 문단 깔끔하게 정렬 */
-  #main-content p {
-    text-align: left !important;
-    text-justify: auto !important;
-    word-break: keep-all !important;
-  }
-
   /* ✅ 메뉴 패널 – 독립 레이어 (충돌 없음) */
   #menu-panel {
     position: fixed;
@@ -310,6 +303,14 @@ html, body {
   /* ✅ 메뉴 오픈 시 패널 등장 */
   #menu-panel.open {
     right: 0;
+  }
+
+  /* 모바일에서 문단 깔끔하게 정렬 */
+  #main-content p {
+    text-align: left !important;
+    text-justify: auto !important;
+    word-break: break-word !important;  /* ← 모바일에서는 자연스러운 줄바꿈 */
+    line-height: 1.6;
   }
 
   /* ✅ 메뉴 글씨 가독성 보강 */
