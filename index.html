@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113071201" />
+  <link rel="stylesheet" href="/style.css?v=20251113071202" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -199,7 +199,6 @@
     }
   });
   </script>
-
   
   <!-- 실제 모바일 화면높이를 계산해 --vh로 전달 -->
   <script>
@@ -209,6 +208,50 @@
     }
     setVhVariable();
     window.addEventListener('resize', setVhVariable);
+  </script>
+
+  <!-- 모바일 문장정렬 자동 감지 엔진(JS) -->
+  <script>
+    function detectPoems() {
+      const paras = document.querySelectorAll("#main-content p");
+
+      paras.forEach(p => {
+        const text = p.innerText.trim();
+        if (!text) return;
+
+        const lines = text.split('\n').filter(l => l.trim() !== "");
+        const avgLength = text.length / lines.length;
+
+        let isPoem = false;
+
+        // 조건 1: 줄 수 3개 이상 + 줄 길이 들쭉날쭉
+        if (lines.length >= 3) {
+          const lengths = lines.map(l => l.trim().length);
+          const variance = Math.max(...lengths) - Math.min(...lengths);
+          if (variance >= 8) isPoem = true;
+        }
+
+        // 조건 2: 전체 평균 문장 길이가 짧음
+        if (avgLength < 22) isPoem = true;
+
+        // 조건 3: 문장 끝에 마침표 거의 없음
+        const periodCount = (text.match(/\./g) || []).length;
+        if (periodCount <= 1 && lines.length >= 3) isPoem = true;
+
+        // 적용
+        if (isPoem) {
+          p.classList.add("auto-poem");
+        }
+      });
+    }
+
+    // SPA에서 페이지 로드 후 자동 실행
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(detectPoems, 10);
+    });
+    document.addEventListener("click", () => {
+      setTimeout(detectPoems, 10);
+    });
   </script>
 
   <footer class="site-footer">

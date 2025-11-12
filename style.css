@@ -305,12 +305,21 @@ html, body {
     right: 0;
   }
 
-  /* 모바일에서 문단 깔끔하게 정렬 */
-  #main-content p {
+  /* 📌 자동 감지된 시 — 구조 유지 */
+  #main-content p.auto-poem {
+    white-space: pre-line !important;
     text-align: left !important;
+    word-break: keep-all !important;
     text-justify: auto !important;
-    word-break: break-word !important;  /* ← 모바일에서는 자연스러운 줄바꿈 */
-    line-height: 1.6;
+  }
+
+  /* 📌 일반 문단 — 오른쪽 정렬 매끈하게 */
+  #main-content p:not(.auto-poem) {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    word-break: keep-all !important;
+    white-space: normal !important;
+    line-height: 1.6 !important;
   }
 
   /* ✅ 메뉴 글씨 가독성 보강 */
