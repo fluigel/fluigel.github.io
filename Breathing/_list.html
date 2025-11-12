@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (window.top === window && !document.querySelector('header.banner')) {
+    sessionStorage.redirect = location.pathname.replace(/^\//, '');
+    location.replace('/');
+  }
+})();
+</script>
+
 <h1 id="_1">단전(丹田)호흡</h1>
 <p><a href="Practice/_list.html">정규행공</a></p>
 <p><a href="Extension/_list.html">심화학습</a></p>
