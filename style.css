@@ -273,9 +273,10 @@ html, body {
     padding: 0;
   }
 
+  /* 모바일에서 글씨 문단 깔끔하게 정렬 */
   #main-content p {
-    text-align: left;      /* ✅ 좁은 화면에서는 좌측 정렬로 전환 */
-    text-justify: auto;
+    text-align: left;
+    text-justify: inter-word;
   }
 
   /* ✅ 메뉴 패널 – 독립 레이어 (충돌 없음) */
