@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251112092514" />
+  <link rel="stylesheet" href="/style.css?v=20251112092516" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -209,6 +209,55 @@
     setVhVariable();
     window.addEventListener('resize', setVhVariable);
   </script>
+
+  <!-- 🌙 모바일 레이어 하단 불먹음 보정 (거시적 안정판) -->
+<script>
+(function () {
+  // 🔧 1. 뷰포트 실시간 보정 루프
+  function setVhVariable() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  setVhVariable();
+  window.addEventListener('resize', setVhVariable);
+  window.addEventListener('orientationchange', setVhVariable);
+  setInterval(setVhVariable, 1000); // 💡 iOS/Android 주소창 이동 대비
+
+  // 🔧 2. 메뉴 패널 하단 레이어 완충 (SPA 로딩 타이밍 교정)
+  const observer = new MutationObserver(() => {
+    const panel = document.getElementById('menu-panel');
+    if (!panel) return;
+
+    // height 보정: var(--vh)과 100vh 중 더 큰 값 선택
+    panel.style.height = `max(100vh, calc(var(--vh, 1vh) * 100))`;
+    panel.style.minHeight = '100%';
+
+    // 어둠 레이어 고정 (페인트 순서 꼬임 방지)
+    const before = document.createElement('div');
+    before.className = 'menu-overlay-fixed';
+    Object.assign(before.style, {
+      position: 'fixed',
+      inset: '0',
+      background: 'rgba(0,0,0,0.25)',
+      zIndex: '997',
+      pointerEvents: 'none'
+    });
+    if (!document.querySelector('.menu-overlay-fixed')) {
+      document.body.appendChild(before);
+    }
+  });
+
+  // 메뉴 열릴 때만 감시 시작
+  const panel = document.getElementById('menu-panel');
+  if (panel) {
+    observer.observe(panel, { attributes: true, childList: false, subtree: false });
+  }
+
+  // 🔧 3. SPA 로드 이후에도 즉시 보정 (메뉴 패널이 재렌더될 때 대비)
+  window.addEventListener('DOMContentLoaded', setVhVariable);
+  window.addEventListener('popstate', setVhVariable);
+})();
+</script>
 
   <footer class="site-footer">
     <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
