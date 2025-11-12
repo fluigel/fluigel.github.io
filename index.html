@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <link rel="stylesheet" href="/style.css?v=2051799043956" />
+  <link rel="stylesheet" href="/style.css?v=20251112092211" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-  <!-- ✅ 중복폴더 자동 교정 (유지) -->
+  <!-- ✅ 폴더 중복 자동 수정 -->
   <script>
     (function fixDoubleFolders() {
       const parts = location.pathname.split("/").filter(Boolean);
@@ -30,13 +30,16 @@
     <img src="/_Images/Banner2.png" alt="Banner" />
   </header>
 
-  <!-- 📜 본문 + 메뉴 -->
+  <!-- 📜 콘텐츠 구조 -->
   <section class="content">
     <main id="main-content">
       <div class="loading">Loading...</div>
     </main>
 
+    <!-- ☰ 메뉴 토글 버튼 -->
     <button id="menu-toggle" class="menu-toggle"></button>
+
+    <!-- 📚 메뉴 패널 -->
     <aside id="menu-panel">
       <h1>플뤼겔의 탑 | <em class="glow">Tower of<br>Life Energy</em></h1>
       <hr />
@@ -83,90 +86,89 @@
     </aside>
   </section>
 
-  <!-- ⚙️ SPA 핵심 엔진 (Hash 기반) -->
+  <!-- ⚙️ SPA 라우팅 (해시 기반) -->
   <script>
     let currentRequest = null;
 
-async function loadPage(page) {
-  const main = document.getElementById("main-content");
-  if (!main) return;
-  main.innerHTML = '<div class="loading">Loading...</div>';
+    async function loadPage(page) {
+      const main = document.getElementById("main-content");
+      if (!main) return;
+      main.innerHTML = '<div class="loading">Loading...</div>';
 
-  if (currentRequest) currentRequest.abort?.();
-  const controller = new AbortController();
-  currentRequest = controller;
+      if (currentRequest) currentRequest.abort?.();
+      const controller = new AbortController();
+      currentRequest = controller;
 
-  try {
-    const fragmentURL = new URL("/" + page, location.origin);
-    const url = new URL(fragmentURL);
-    url.searchParams.set("_v", Date.now());
-    const r = await fetch(url.toString(), { signal: controller.signal, cache: "no-store" });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-
-    const t = await r.text();
-    const doc = new DOMParser().parseFromString(t, "text/html");
-    let html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
-
-    // ✅ 상대경로 → 절대경로 변환
-    const baseForFragment = fragmentURL.toString().replace(/[^/]*$/, "");
-    html = html.replace(/(src|href)="(?!https?:|mailto:|tel:|#)([^"]+)"/g, (_, attr, path) => {
       try {
-        const abs = new URL(path, baseForFragment).toString();
-        return `${attr}="${abs}"`;
-      } catch {
-        return `${attr}="${path}"`;
+        const fragmentURL = new URL("/" + page, location.origin);
+        const url = new URL(fragmentURL);
+        url.searchParams.set("_v", Date.now());
+        const r = await fetch(url.toString(), { signal: controller.signal, cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+
+        const t = await r.text();
+        const doc = new DOMParser().parseFromString(t, "text/html");
+        let html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
+
+        // ✅ 상대경로 → 절대경로 변환
+        const baseForFragment = fragmentURL.toString().replace(/[^/]*$/, "");
+        html = html.replace(/(src|href)="(?!https?:|mailto:|tel:|#)([^"]+)"/g, (_, attr, path) => {
+          try {
+            const abs = new URL(path, baseForFragment).toString();
+            return `${attr}="${abs}"`;
+          } catch {
+            return `${attr}="${path}"`;
+          }
+        });
+
+        // ✅ 본문 교체
+        main.innerHTML = html;
+
+        // ✅ 내부 링크 재매핑
+        main.querySelectorAll("a[href]").forEach((a) => {
+          const href = a.getAttribute("href") || "";
+          if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
+          const abs = new URL(href, baseForFragment);
+          if (abs.origin === location.origin) {
+            const pagePath = abs.pathname.replace(/^\/+/, "");
+            a.setAttribute("href", "#/" + pagePath);
+          }
+        });
+
+        // ✅ 스타일 강제 재적용 (핵심 패치)
+        document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+          const clone = link.cloneNode(true);
+          link.parentNode.replaceChild(clone, link);
+        });
+
+        // ✅ 페이드 안정화 (스타일 파싱 완료 후 표시)
+        main.style.opacity = 0;
+        requestAnimationFrame(() => {
+          main.style.transition = "opacity 0.25s ease";
+          main.style.opacity = 1;
+        });
+
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.error("불러오기 실패:", page, err);
+          main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`;
+        }
+      } finally {
+        currentRequest = null;
       }
-    });
-
-    // ✅ 본문 교체
-    main.innerHTML = html;
-
-    // ✅ 내부 링크 재매핑
-    main.querySelectorAll("a[href]").forEach((a) => {
-      const href = a.getAttribute("href") || "";
-      if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
-      const abs = new URL(href, baseForFragment);
-      if (abs.origin === location.origin) {
-        const pagePath = abs.pathname.replace(/^\/+/, "");
-        a.setAttribute("href", "#/" + pagePath);
-      }
-    });
-
-    // ✅ CSS 강제 재적용 (핵심 부분)
-    document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-      const clone = link.cloneNode(true);
-      link.parentNode.replaceChild(clone, link);
-    });
-
-    // ✅ 페이드 안정화 (렌더 타이밍 보정)
-    main.style.opacity = 0;
-    requestAnimationFrame(() => {
-      main.style.transition = "opacity 0.25s ease";
-      main.style.opacity = 1;
-    });
-
-  } catch (err) {
-    if (err.name !== "AbortError") {
-      console.error("불러오기 실패:", page, err);
-      main.innerHTML = `<p style="color:red;">불러오기 실패: ${page}</p>`;
     }
-  } finally {
-    currentRequest = null;
-  }
-}
 
-    // ✅ 초기 로드 및 라우팅 감시
+    // ✅ 초기 로드 및 해시 감시
     function handleHashChange() {
       const hash = location.hash.replace(/^#\/?/, "");
       const page = hash || "main.html";
       loadPage(page);
     }
-
     window.addEventListener("DOMContentLoaded", handleHashChange);
     window.addEventListener("hashchange", handleHashChange);
   </script>
 
-  <!--📱 모바일 토글 -->
+  <!-- 📱 모바일 토글 -->
   <script>
     const toggleBtn = document.getElementById('menu-toggle');
     const menuPanel = document.getElementById('menu-panel');
@@ -196,6 +198,7 @@ async function loadPage(page) {
     window.addEventListener('resize', setVhVariable);
   </script>
 
+  <!-- ⛩️ 푸터 -->
   <footer class="site-footer">
     <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
   </footer>
