@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113060919" />
+  <link rel="stylesheet" href="/style.css?v=20251113071201" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -123,9 +123,6 @@
 
         main.innerHTML = html;
 
-        // 🔥 SPA 본문 주입 완료 신호 (반드시 필요)
-        document.dispatchEvent(new Event('loadPageComplete'));
-
         // ✅ 내부 링크를 다시 SPA용으로 재매핑
         main.querySelectorAll("a[href]").forEach((a) => {
           const href = a.getAttribute("href") || "";
@@ -213,47 +210,6 @@
     setVhVariable();
     window.addEventListener('resize', setVhVariable);
   </script>
-
-  <!-- =========================================================
-      🧩 SPA TEXT ALIGN FIX (본문 들쭉날쭉 정렬 완전 해결)
-      ---------------------------------------------------------
-      • 모바일: text-align: left 강제 적용
-      • PC: 항상 justify 자동 복구
-      • SPA 구조에서도 페이지 전환 후 즉시 반영
-      ========================================================= -->
-  <script>
-    function applyTextFix() {
-      const ps = document.querySelectorAll('#main-content p');
-
-      // 본문이 아직 로드되지 않았으면 종료
-      if (!ps.length) return;
-
-      // 모바일
-      if (window.innerWidth <= 1060) {
-        ps.forEach(p => {
-          p.style.textAlign = 'left';
-          p.style.textJustify = 'auto';
-        });
-      }
-      // PC
-      else {
-        ps.forEach(p => {
-          p.style.textAlign = 'justify';
-          p.style.textJustify = 'inter-word';
-        });
-      }
-    }
-
-    // 창 크기 변할 때 자동 적용
-    window.addEventListener('resize', applyTextFix);
-
-    // 초기 로드 시 적용
-    window.addEventListener('DOMContentLoaded', applyTextFix);
-
-    // SPA 페이지가 본문을 새로 넣은 뒤 적용
-    document.addEventListener('loadPageComplete', applyTextFix);
-  </script>
-
 
   <footer class="site-footer">
     <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>

@@ -277,7 +277,9 @@ html, body {
   #main-content p {
     text-align: left !important;
     text-justify: auto !important;
-    word-break: keep-all;
+    white-space: normal !important;     /* ← pre-line 제거 */
+    word-break: break-word !important;  /* ← 모바일에서는 자연스러운 줄바꿈 */
+    line-height: 1.6;     
   }
 
   /* ✅ 메뉴 패널 – 독립 레이어 (충돌 없음) */
