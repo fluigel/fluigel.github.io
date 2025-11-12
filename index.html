@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113071203" />
+  <link rel="stylesheet" href="/style.css?v=20251113071204" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -208,54 +208,6 @@
     }
     setVhVariable();
     window.addEventListener('resize', setVhVariable);
-  </script>
-
-  <!-- 모바일 문장 정렬 자동 감지 엔진(JS) -->
-  <script>
-    function detectPoems() {
-      const paras = document.querySelectorAll("#main-content p");
-
-      paras.forEach(p => {
-        const text = p.innerText.trim();
-        if (!text) return;
-
-        const lines = text.split('\n').filter(l => l.trim() !== "");
-        const lineCount = lines.length;
-
-        let isPoem = false;
-
-        /* 📌 규칙 1: 3줄 이상이면 기본적으로 ‘시’ */
-        if (lineCount >= 3) {
-          isPoem = true;
-        } else {
-          /* 📌 규칙 2: 보조 판정 (줄수 1~2줄인 경우) */
-          const avgLength = text.length / lineCount;
-
-          // 마침표 개수
-          const periodCount = (text.match(/\./g) || []).length;
-
-          // 줄 길이 차이
-          const lengths = lines.map(l => l.trim().length);
-          const variance = Math.max(...lengths) - Math.min(...lengths);
-
-          if (
-            avgLength < 18 ||      // 평균 줄 길이가 짧음
-            periodCount === 0 ||   // 마침표 거의 없음
-            variance >= 10         // 줄 길이 들쭉날쭉
-          ) {
-            isPoem = true;
-          }
-        }
-
-        if (isPoem) {
-          p.classList.add("auto-poem");
-        }
-      });
-    }
-
-    /* SPA 로딩 대응 */
-    document.addEventListener("DOMContentLoaded", () => setTimeout(detectPoems, 20));
-    document.addEventListener("click", () => setTimeout(detectPoems, 20));
   </script>
 
   <footer class="site-footer">
