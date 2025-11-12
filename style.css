@@ -256,29 +256,28 @@ html, body {
 }
 
 /* =========================================================
-   📱 MOBILE SECTION (버튼 복구 + 레이어 제거 + 필터 대체)
+   📱 MOBILE SECTION (정상 크기 버튼 복구 + 필터 안정판)
    ========================================================= */
 @media screen and (max-width: 1060px) {
 
-  /* ✅ 기존 버튼 그대로 복구 (☰ 메뉴) */
+  /* ✅ 원래 크기의 “☰ 메뉴” 버튼 복원 */
   .menu-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
     position: fixed;
     top: 18px;
     right: 22px;
     background: rgba(59, 92, 122, 0.85);
     color: #fff;
     border: none;
-    padding: 10px 14px;
-    font-size: 1.3rem;
-    border-radius: 8px;
+    padding: 12px 18px;        /* ← 크기 복원 */
+    font-size: 1.4rem;         /* ← 텍스트 크기 복원 */
+    border-radius: 10px;
     z-index: 9999;
     cursor: pointer;
-    transition: background 0.25s ease, transform 0.25s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transition: background 0.25s ease, transform 0.25s ease;
   }
 
   .menu-toggle:hover {
@@ -286,14 +285,15 @@ html, body {
     transform: scale(1.05);
   }
 
-  /* ✅ “☰ 메뉴” 텍스트 추가 (이전 버전 그대로) */
+  /* ✅ “☰ 메뉴” 텍스트 */
   .menu-toggle::before {
     content: "☰ 메뉴";
-    font-size: 1.2rem;
+    font-size: 1.4rem;
+    line-height: 1;
     letter-spacing: 0.5px;
   }
 
-  /* ✅ 메뉴 패널 – 레이어 제거, 필터로 대체 */
+  /* ✅ 메뉴 패널 – 레이어 제거, 필터만 적용 */
   #menu-panel {
     position: fixed;
     top: 0;
@@ -314,7 +314,7 @@ html, body {
     border-left: 1px solid rgba(255, 255, 255, 0.15);
   }
 
-  /* ✅ 레이어 완전 제거 */
+  /* ✅ 불필요한 레이어 완전 제거 */
   #menu-panel::before {
     display: none !important;
     content: none !important;
@@ -324,7 +324,7 @@ html, body {
     right: 0;
   }
 
-  /* ✅ 메뉴 링크 가독성 향상 */
+  /* ✅ 메뉴 글씨 가독성 보강 */
   #menu-panel nav a {
     color: rgba(255, 255, 255, 0.95);
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
@@ -334,7 +334,6 @@ html, body {
     background: rgba(255, 255, 255, 0.18);
   }
 
-  /* ✅ 하위 메뉴 항목도 동일한 필터 위에서 표시 */
   #menu-panel .menu-group ul a {
     font-size: 0.9rem;
     opacity: 0.95;
