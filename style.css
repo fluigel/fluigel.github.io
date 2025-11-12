@@ -164,6 +164,10 @@ html, body {
   text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
 }
 
+#menu-panel hr {
+  margin-bottom: 10px;  /* 구분선과 메뉴 사이 여백 */
+}
+
 /* 타이틀 'Tower of Life Energy' 부분 */
 #menu-panel h1 em.glow {
   color: #e6d28a; /* ✨ 은은한 황금빛 (기본 상태) */
