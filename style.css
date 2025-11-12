@@ -205,21 +205,30 @@ html, body {
    🧭 기본 메뉴 토글 버튼 (PC에서는 숨김)
    ========================================================= */
 .menu-toggle {
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   position: fixed;
-  top: 18px;
-  right: 22px;
-  background: rgba(59, 92, 122, 0.85);
-  color: #fff;
-  border: none;
-  padding: 10px 14px;
-  font-size: 1.2rem;
-  border-radius: 6px;
-  z-index: 999;
+  top: 14px;           /* 위로 살짝 붙이기 */
+  right: 18px;         /* 살짝 안쪽 */
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #e6eaf0;
+  padding: 6px 10px;   /* 버튼 축소 */
+  font-size: 1.1rem;   /* 글자 크기 축소 */
+  border-radius: 10px;
+  z-index: 9999;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  transform: scale(0.95); /* 전체 비율 안정화 */
 }
-.menu-toggle:hover { background: rgba(59, 92, 122, 1); }
+
+.menu-toggle:hover {
+  background: rgba(59, 92, 122, 1);
+}
 
 /* =========================================================
    📱 MOBILE SECTION (플뤼겔의 탑 – 한글 단일형 완전 안정판)
