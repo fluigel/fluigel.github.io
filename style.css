@@ -315,6 +315,9 @@ html, body {
   #menu-panel nav a {
     color: rgba(255, 255, 255, 0.95);
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+    font-size: 1.1rem;     /* 기존보다 약간 크게 */
+    line-height: 1.28;     /* 줄 간격은 조금 줄여서 조밀하게 */
+    padding: 4px 16px;     /* 위아래 살짝 줄여서 더 촘촘하게 */
   }
 
   #menu-panel nav a:hover {
@@ -322,8 +325,9 @@ html, body {
   }
 
   #menu-panel .menu-group ul a {
-    font-size: 0.9rem;
-    opacity: 0.95;
+    font-size: 1.0rem;
+    line-height: 1.25;
+    padding: 3px 16px;
   }
 
   /* ✅ 본문 – 폭 전체 확장 + 여백 조정 */
