@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113060911" />
+  <link rel="stylesheet" href="/style.css?v=20251113060912" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -211,20 +211,38 @@
     window.addEventListener('resize', setVhVariable);
   </script>
 
-  <!-- TEXT ALIGN ADJUSTER (SPA 반응형 보정) -->
+  <!-- =========================================================
+      🧩 SPA TEXT ALIGN FORCE FIX
+      ---------------------------------------------------------
+      • 모바일에서 오른쪽 삐뚤빼뚤 문제 완전 해결
+      • SPA에서 본문 교체 시 잔존 justify 제거
+      ========================================================= -->
   <script>
-    function adjustTextAlign() {
+    function fixMobileTextAlign() {
       const ps = document.querySelectorAll('#main-content p');
-      if (window.innerWidth <= 600) {
-        ps.forEach(p => p.style.textAlign = 'left');
-      } else {
-        ps.forEach(p => p.style.textAlign = 'justify');
+    
+      // 모바일 화면
+      if (window.innerWidth <= 1060) {
+        ps.forEach(p => {
+          p.style.textAlign = 'left';
+          p.style.textJustify = 'auto';
+        });
+        return;
       }
+
+      // PC 화면
+      ps.forEach(p => {
+        p.style.textAlign = 'justify';
+        p.style.textJustify = 'inter-word';
+      });
     }
 
-    window.addEventListener('resize', adjustTextAlign);
-    window.addEventListener('DOMContentLoaded', adjustTextAlign);
-</script>
+    window.addEventListener('resize', fixMobileTextAlign);
+    window.addEventListener('DOMContentLoaded', fixMobileTextAlign);
+
+    // SPA 본문 교체 감지 (fetch로 로드된 후 적용)
+    document.addEventListener('loadPageComplete', fixMobileTextAlign);
+  </script>
 
   <footer class="site-footer">
     <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
