@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251112092516" />
+  <link rel="stylesheet" href="/style.css?v=20251112092517" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -210,6 +210,31 @@
     setVhVariable();
     window.addEventListener('resize', setVhVariable);
   </script>
+
+  <!-- TEXT ALIGN ADJUSTER (SPA 반응형 보정) -->
+  <script>
+  function adjustTextAlign() {
+    const ps = document.querySelectorAll('#main-content p');
+    if (window.innerWidth <= 600) {
+      ps.forEach(p => p.style.textAlign = 'left');
+    } else {
+      ps.forEach(p => p.style.textAlign = 'justify');
+    }
+  }
+
+window.addEventListener('resize', adjustTextAlign);
+window.addEventListener('DOMContentLoaded', adjustTextAlign);
+</script>
+
+
+  // 페이지 처음 로드될 때 적용
+  window.addEventListener('DOMContentLoaded', adjustTextAlign);
+
+  // 창 크기 변경될 때마다 자동 갱신
+  window.addEventListener('resize', adjustTextAlign);
+</script>
+
+
 
   <footer class="site-footer">
     <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>

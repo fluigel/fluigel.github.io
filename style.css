@@ -273,7 +273,7 @@ html, body {
     padding: 0;
   }
 
-  /* 모바일에서 글씨 문단 깔끔하게 정렬 */
+  /* 모바일에서 문단 깔끔하게 정렬 */
   #main-content p {
     text-align: left;
     text-justify: inter-word;
