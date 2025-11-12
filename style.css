@@ -88,7 +88,6 @@ html, body {
 #main-content p {
   white-space: pre-line; /* ↲ 줄바꿈 문자(\n)를 <br>처럼 처리 */
   word-break: keep-all;  /* 한글 단어 단위로 줄바꿈 */
-  line-height: 1.9;
   margin-bottom: 1.4em;  /* 문단 간 여백 */
   color: #444;
 }
