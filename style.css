@@ -293,6 +293,15 @@ html, body {
     content: "☰ 메뉴";
     font-size: 1.2rem;
     line-height: 1;
+    position: fixed; /* ✅ 스크롤 영역 전체 덮음 */
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.25); /* 반투명 어둡게 */
+    z-index: 0;
+    pointer-events: none; /* 클릭 방지 */
+
   }
 
   /* ✅ 메뉴 패널 – 안정판 (끝까지 스크롤 + 배경 이어짐) */
