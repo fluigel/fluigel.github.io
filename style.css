@@ -177,12 +177,13 @@ html, body {
   text-shadow: 0 0 12px #ffeaaa;
 }
 
-/* 메뉴 링크 */
+/* 메뉴 항목 */
 #menu-panel nav a {
   display: block;
   color: #fff;
   text-decoration: none;
-  padding: 6px 20px;
+  padding: 3px 16px;   /* 문단 간격과 관계 O */
+  line-height: 1.3;    /* 문단 간격을 명시해 조절 */
   border-radius: 4px;
   transition: all 0.2s ease;
   font-size: 0.95rem;
@@ -273,7 +274,7 @@ html, body {
     overflow-y: auto;
     transition: right 0.35s ease;
     z-index: 998;
-    padding: 80px 20px 80px;
+    padding: 40px 20px 60px; /* 상 - 좌·우 - 하 */
     box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
     border-left: 1px solid rgba(255, 255, 255, 0.15);
   }
