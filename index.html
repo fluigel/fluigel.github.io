@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251112092516" />
+  <link rel="stylesheet" href="/style.css?v=20251112092517" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -210,6 +210,79 @@
     window.addEventListener('resize', setVhVariable);
   </script>
 
+<!-- 🌙 모바일 메뉴 레이어 하단 불먹음 완전 종결판 -->
+<script>
+(function fixMobileLayer() {
+
+  // 1️⃣ 뷰포트 실시간 보정
+  function updateVh() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  updateVh();
+  window.addEventListener('resize', updateVh);
+  window.addEventListener('orientationchange', updateVh);
+  setInterval(updateVh, 800);
+
+  // 2️⃣ 메뉴 패널 강제 덮기 (하단 안 먹음 방지)
+  function enforcePanelHeight() {
+    const panel = document.getElementById('menu-panel');
+    if (!panel) return;
+    panel.style.position = 'fixed';
+    panel.style.top = '0';
+    panel.style.right = panel.classList.contains('open') ? '0' : '-100%';
+    panel.style.width = '80%';
+    panel.style.maxWidth = '300px';
+    panel.style.minHeight = '100vh';
+    panel.style.height = 'calc(var(--vh, 1vh) * 100)';
+    panel.style.backgroundSize = 'cover';
+    panel.style.backgroundRepeat = 'repeat-y';
+    panel.style.overflowY = 'auto';
+    panel.style.zIndex = '9998';
+  }
+
+  // 3️⃣ 메뉴 상태 변화 감시 (열릴 때마다 자동 보정)
+  const panel = document.getElementById('menu-panel');
+  if (panel) {
+    const observer = new MutationObserver(() => enforcePanelHeight());
+    observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  // 4️⃣ SPA 내비게이션 교정 (뒤로가기, 새 페이지 로드 시 자동 보정)
+  window.addEventListener('popstate', enforcePanelHeight);
+  window.addEventListener('DOMContentLoaded', enforcePanelHeight);
+  document.addEventListener('click', e => {
+    if (e.target.closest('#menu-toggle')) {
+      setTimeout(enforcePanelHeight, 200);
+    }
+  });
+
+  // 5️⃣ 추가 보정: 메뉴 뒤 배경을 강제로 고정시켜 레이어 끊김 방지
+  const overlay = document.createElement('div');
+  overlay.id = 'menu-dark-backdrop';
+  Object.assign(overlay.style, {
+    position: 'fixed',
+    inset: '0',
+    background: 'rgba(0,0,0,0.25)',
+    zIndex: '9997',
+    pointerEvents: 'none',
+    display: 'none',
+  });
+  document.body.appendChild(overlay);
+
+  // 메뉴가 열릴 때만 어둠 레이어 표시
+  document.addEventListener('click', e => {
+    const toggle = e.target.closest('#menu-toggle');
+    if (toggle) {
+      setTimeout(() => {
+        const open = panel.classList.contains('open');
+        overlay.style.display = open ? 'block' : 'none';
+      }, 300);
+    }
+  });
+
+})();
+</script>
 
   <footer class="site-footer">
     <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
