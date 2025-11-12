@@ -259,78 +259,61 @@ html, body {
    ========================================================= */
 @media screen and (max-width: 1060px) {
 
-  /* ✅ 메뉴 버튼 – 반투명 유리 효과 */
+  /* 메뉴 열렸을 때 문서 스크롤 잠금 */
+  body.menu-open {
+    overflow: hidden;
+    overscroll-behavior: contain;
+    touch-action: none;
+  }
+
   .menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    position: fixed;
-    top: 18px;
-    right: 22px;
-    backdrop-filter: blur(8px);
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #e6eaf0;
-    padding: 8px 12px;
-    font-size: 1.3rem;
-    border-radius: 10px;
-    z-index: 9999;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    /* (기존 그대로 두면 됨) */
   }
 
-  .menu-toggle:hover {
-    background: rgba(255, 255, 255, 0.25);
-    color: #fff;
-    transform: scale(1.05);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.35);
-  }
-
-  /* ✅ “☰ 메뉴” 한글 버전 */
-  .menu-toggle::before {
-    content: "☰ 메뉴";
-    font-size: 1.2rem;
-    line-height: 1;
-  }
-
-  /* ✅ 메뉴 패널 – 안정판 (끝까지 스크롤 + 배경 이어짐) */
+  /* ✅ 메뉴 패널 – 메뉴 관점 절대안정판 */
   #menu-panel {
     position: fixed;
     top: 0;
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: calc(var(--vh, 1vh) * 101) !important; /* ✅ 1% 여유 */
-    min-height: 100%;
-    background: url("./_Images/Fluigel.png") repeat-y center top; /* ✅ 자연스러운 배경 반복 */
+
+    /* 높이 계산: 최신 → 안전 → 폴백 순서 */
+    height: 100dvh;                 /* 최신 브라우저에서 주소창 변화 자동 추적 */
+    min-height: 100svh;             /* iOS 사파리 안정 단위 */
+    height: max(100vh, calc(var(--vh, 1vh) * 100)); /* 오래된 브라우저 폴백 */
+
+    background: url("./_Images/Fluigel.png") repeat-y center top;
     background-size: cover;
+
     color: #fff;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* iOS 스크롤 감속 보정 */
+
     transition: right 0.35s ease;
     z-index: 998;
-    padding: 80px 20px 80px; /* ✅ 하단 여유 */
+    padding: 80px 20px 80px;
     box-shadow: -3px 0 10px rgba(0,0,0,0.3);
   }
 
+  /* ✅ 하단에 살짝 버퍼를 더해 끝 끊김 방지 */
   #menu-panel::after {
     content: "";
     display: block;
-    height: 10px; /* ✅ 스크롤 끝 완충 여백 */
+    height: 16px; /* 스크롤 끝 여유 */
   }
 
-  #menu-panel.open {
-    right: 0;
+  /* ✅ 어두운 레이어를 '고정'으로 -> 패널 높이와 무관하게 항상 화면 전부 덮음 */
+  #menu-panel::before {
+    content: "";
+    position: fixed;  /* ← absolute에서 fixed로 변경 */
+    inset: 0;         /* 화면 전체 */
+    background: rgba(0, 0, 0, 0.25);
+    z-index: -1;      /* 패널 내용 뒤, 바닥 위 */
+    pointer-events: none;
   }
 
-  /* ✅ 본문 여백 보정 */
-  #main-content {
-    padding: 25px;
-    max-width: 100%;
-  }
-
-  .banner img {
-    max-height: 200px;
-  }
+  /* 본문 여백 등은 기존 값 유지 */
+  #main-content { padding: 25px; max-width: 100%; }
+  .banner img { max-height: 200px; }
 }
