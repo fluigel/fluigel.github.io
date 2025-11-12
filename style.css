@@ -260,7 +260,41 @@ html, body {
    ========================================================= */
 @media screen and (max-width: 1060px) {
 
-  /* ✅ 원래 크기의 “☰ 메뉴” 버튼 복원 */
+  /* ✅ PC용 레이어 완전 무효화 */
+  #menu-panel::before {
+    all: unset !important;
+    content: none !important;
+    display: none !important;
+  }
+
+  /* ✅ 모바일 메뉴 패널 - 독립 정의 (PC 상속 완전 차단) */
+  #menu-panel {
+    all: unset;  /* ← 상속 초기화: PC 스타일 싹 다 끊음 */
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: calc(var(--vh, 1vh) * 101);
+    min-height: 100%;
+    display: block;
+    background: rgba(20, 20, 20, 0.55)
+      url("./_Images/Fluigel.png") repeat-y center top / cover;
+    backdrop-filter: blur(10px) brightness(1.08) saturate(1.05);
+    color: #fff;
+    overflow-y: auto;
+    transition: right 0.35s ease;
+    z-index: 998;
+    padding: 80px 20px 80px;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  #menu-panel.open {
+    right: 0;
+  }
+
+  /* ✅ 버튼 복원 */
   .menu-toggle {
     display: flex;
     align-items: center;
@@ -271,8 +305,8 @@ html, body {
     background: rgba(59, 92, 122, 0.85);
     color: #fff;
     border: none;
-    padding: 12px 18px;        /* ← 크기 복원 */
-    font-size: 1.4rem;         /* ← 텍스트 크기 복원 */
+    padding: 12px 18px;
+    font-size: 1.4rem;
     border-radius: 10px;
     z-index: 9999;
     cursor: pointer;
@@ -285,46 +319,13 @@ html, body {
     transform: scale(1.05);
   }
 
-  /* ✅ “☰ 메뉴” 텍스트 */
   .menu-toggle::before {
     content: "☰ 메뉴";
     font-size: 1.4rem;
     line-height: 1;
-    letter-spacing: 0.5px;
   }
 
-  /* ✅ 메뉴 패널 – 레이어 제거, 필터만 적용 */
-  #menu-panel {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 80%;
-    max-width: 300px;
-    height: calc(var(--vh, 1vh) * 101);
-    min-height: 100%;
-    background: rgba(20, 20, 20, 0.55)
-      url("./_Images/Fluigel.png") repeat-y center top / cover;
-    backdrop-filter: blur(10px) brightness(1.1) saturate(1.05);
-    color: #fff;
-    overflow-y: auto;
-    transition: right 0.35s ease;
-    z-index: 998;
-    padding: 80px 20px 80px;
-    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
-  }
-
-  /* ✅ 불필요한 레이어 완전 제거 */
-  #menu-panel::before {
-    display: none !important;
-    content: none !important;
-  }
-
-  #menu-panel.open {
-    right: 0;
-  }
-
-  /* ✅ 메뉴 글씨 가독성 보강 */
+  /* ✅ 메뉴 링크 가독성 강화 */
   #menu-panel nav a {
     color: rgba(255, 255, 255, 0.95);
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
@@ -332,17 +333,6 @@ html, body {
 
   #menu-panel nav a:hover {
     background: rgba(255, 255, 255, 0.18);
-  }
-
-  #menu-panel .menu-group ul a {
-    font-size: 0.9rem;
-    opacity: 0.95;
-  }
-
-  /* ✅ 본문 여백 보정 */
-  #main-content {
-    padding: 25px;
-    max-width: 100%;
   }
 
   .banner img {
