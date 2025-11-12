@@ -277,7 +277,6 @@ html, body {
   #main-content p {
     text-align: left !important;
     text-justify: auto !important;
-    white-space: normal !important;     /* ← pre-line 제거 */
     word-break: break-word !important;  /* ← 모바일에서는 자연스러운 줄바꿈 */
     line-height: 1.6;     
   }
