@@ -256,10 +256,44 @@ html, body {
 }
 
 /* =========================================================
-   📱 MOBILE SECTION (레이어 제거 + 필터 대체 완전판)
+   📱 MOBILE SECTION (버튼 복구 + 레이어 제거 + 필터 대체)
    ========================================================= */
 @media screen and (max-width: 1060px) {
 
+  /* ✅ 기존 버튼 그대로 복구 (☰ 메뉴) */
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    position: fixed;
+    top: 18px;
+    right: 22px;
+    background: rgba(59, 92, 122, 0.85);
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    font-size: 1.3rem;
+    border-radius: 8px;
+    z-index: 9999;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  .menu-toggle:hover {
+    background: rgba(59, 92, 122, 1);
+    transform: scale(1.05);
+  }
+
+  /* ✅ “☰ 메뉴” 텍스트 추가 (이전 버전 그대로) */
+  .menu-toggle::before {
+    content: "☰ 메뉴";
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* ✅ 메뉴 패널 – 레이어 제거, 필터로 대체 */
   #menu-panel {
     position: fixed;
     top: 0;
@@ -268,7 +302,6 @@ html, body {
     max-width: 300px;
     height: calc(var(--vh, 1vh) * 101);
     min-height: 100%;
-    /* ✅ 반투명+블러 필터만으로 처리 */
     background: rgba(20, 20, 20, 0.55)
       url("./_Images/Fluigel.png") repeat-y center top / cover;
     backdrop-filter: blur(10px) brightness(1.1) saturate(1.05);
@@ -291,7 +324,7 @@ html, body {
     right: 0;
   }
 
-  /* ✅ 메뉴 글씨 대비 보강 */
+  /* ✅ 메뉴 링크 가독성 향상 */
   #menu-panel nav a {
     color: rgba(255, 255, 255, 0.95);
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
@@ -301,9 +334,19 @@ html, body {
     background: rgba(255, 255, 255, 0.18);
   }
 
-  /* ✅ 하위 항목도 동일한 배경 필터 적용 효과 */
+  /* ✅ 하위 메뉴 항목도 동일한 필터 위에서 표시 */
   #menu-panel .menu-group ul a {
     font-size: 0.9rem;
     opacity: 0.95;
+  }
+
+  /* ✅ 본문 여백 보정 */
+  #main-content {
+    padding: 25px;
+    max-width: 100%;
+  }
+
+  .banner img {
+    max-height: 200px;
   }
 }
