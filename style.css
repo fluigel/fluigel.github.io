@@ -159,7 +159,7 @@ html, body {
 #menu-panel h1 {
   font-size: 1.2rem;
   text-align: center;
-  margin-top: 5px; /* 제목 위 여백 */
+  margin-top: 0px; /* 제목 위 여백 */
   margin-bottom: 15px;
   color: #e6d28a;
   font-weight: 600;
