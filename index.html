@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
-  <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251112075701" />
+  <link rel="stylesheet" href="/style.css?v=20251112" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-  <!-- ✅ 중복폴더 자동 교정 -->
   <script>
     (function fixDoubleFolders() {
       const parts = location.pathname.split("/").filter(Boolean);
@@ -26,19 +24,17 @@
 </head>
 
 <body>
-  <!-- 🌄 상단 배너 -->
   <header class="banner">
     <img src="/_Images/Banner2.png" alt="Banner" />
   </header>
 
-  <!-- 📜 본문 + 메뉴 -->
   <section class="content">
     <main id="main-content">
       <div class="loading">Loading...</div>
     </main>
 
-  <button id="menu-toggle" class="menu-toggle"></button>
-  <aside id="menu-panel">
+    <button id="menu-toggle" class="menu-toggle"></button>
+    <aside id="menu-panel">
       <h1>플뤼겔의 탑 | <em class="glow">Tower of<br>Life Energy</em></h1>
       <hr />
       <nav>
@@ -46,7 +42,6 @@
         <a href="#" data-page="Notice/gongjisahang-peulryugel-ui-tap.html">공지사항</a>
         <a href="#" data-page="Theory/_list.html">기본이론</a>
         <a href="#" data-page="Shindan/_list.html">신단(神丹)</a>
-
         <div class="menu-group">
           <a class="parent" href="#" data-page="Breathing/_list.html">단전호흡</a>
           <ul>
@@ -54,7 +49,6 @@
             <li><a href="#" data-page="Breathing/Extension/_list.html">심화학습</a></li>
           </ul>
         </div>
-
         <div class="menu-group">
           <a class="parent" href="#" data-page="Extra/_list.html">부록(附錄)</a>
           <ul>
@@ -63,7 +57,6 @@
             <li><a href="#" data-page="Extra/Imagination/_list.html">심법행공</a></li>
           </ul>
         </div>
-
         <div class="menu-group">
           <a class="parent" href="#" data-page="PalJeongdo/_list.html">팔정도</a>
           <ul>
@@ -72,7 +65,6 @@
             <li><a href="#" data-page="PalJeongdo/References/_list.html">참고사항</a></li>
           </ul>
         </div>
-
         <a href="#" data-page="Board/_list.html">자유게시판</a>
         <a href="#" data-page="Poem/_list.html">나와의대화</a>
         <a href="#" data-page="Esperanto/_list.html">에스페란토</a>
@@ -84,7 +76,8 @@
     </aside>
   </section>
 
-  <!-- ⚙️ SPA 핵심 엔진 -->
+  <div id="menu-backdrop"></div>
+
   <script>
     let currentRequest = null;
 
@@ -98,19 +91,14 @@
       currentRequest = controller;
 
       try {
-        // ✅ 절대경로로 고정 fetch
         const fragmentURL = new URL("/" + page, location.origin);
         const url = new URL(fragmentURL);
         url.searchParams.set("_v", Date.now());
-
         const r = await fetch(url.toString(), { signal: controller.signal, cache: "no-store" });
         if (!r.ok) throw new Error("HTTP " + r.status);
-
         const t = await r.text();
         const doc = new DOMParser().parseFromString(t, "text/html");
         let html = doc.body ? doc.body.innerHTML : doc.documentElement.innerHTML;
-
-        // ✅ 조각 내부의 모든 상대경로를 절대경로로 승격
         const baseForFragment = fragmentURL.toString().replace(/[^/]*$/, "");
         html = html.replace(/(src|href)="(?!https?:|mailto:|tel:|#)([^"]+)"/g, (_, attr, path) => {
           try {
@@ -120,10 +108,7 @@
             return `${attr}="${path}"`;
           }
         });
-
         main.innerHTML = html;
-
-        // ✅ 내부 링크를 다시 SPA용으로 재매핑
         main.querySelectorAll("a[href]").forEach((a) => {
           const href = a.getAttribute("href") || "";
           if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
@@ -144,7 +129,6 @@
       }
     }
 
-    /* ✅ 초기 로드 (직접 URL 진입 대응) */
     window.addEventListener("DOMContentLoaded", () => {
       const redirect = sessionStorage.redirect;
       if (redirect) {
@@ -152,7 +136,6 @@
         loadPage(redirect.replace(/^\//, ""));
         return;
       }
-
       const path = location.pathname.replace(/^\/+/, "");
       if (path && !path.endsWith("/")) {
         loadPage(path);
@@ -162,7 +145,6 @@
       }
     });
 
-    /* ✅ 메뉴 클릭 시 SPA 이동 */
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a[data-page]");
       if (!a) return;
@@ -172,26 +154,25 @@
       history.pushState({ page }, "", location.origin + "/" + page);
     });
 
-    /* ✅ 브라우저 뒤로/앞으로가기 */
     window.addEventListener("popstate", (e) => {
       if (e.state && e.state.page) loadPage(e.state.page);
       else loadPage("main.html");
     });
   </script>
 
-  <!--📱 모바일 토글 스크립트 -->
+  <!--📱 모바일 토글 -->
   <script>
   const toggleBtn = document.getElementById('menu-toggle');
   const menuPanel = document.getElementById('menu-panel');
+  const backdrop = document.getElementById('menu-backdrop');
 
   toggleBtn.addEventListener('click', () => {
     const open = menuPanel.classList.toggle('open');
     document.body.classList.toggle('menu-open', open);
   });
 
-  // 메뉴 바깥 클릭 시 자동 닫힘
   document.addEventListener('click', (e) => {
-    if (menuPanel.classList.contains('open') &&
+    if (document.body.classList.contains('menu-open') &&
         !e.target.closest('#menu-panel') &&
         !e.target.closest('#menu-toggle')) {
       menuPanel.classList.remove('open');
@@ -202,26 +183,19 @@
 
   <!-- ✅ 모바일 vh 보정 -->
   <script>
-    function setVhVariable() {
-      const vh = window.innerHeight * 0.01;
+  document.addEventListener('DOMContentLoaded', () => {
+    function setVhVariable(){
+      const vh = (window.visualViewport?.height ?? window.innerHeight) * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
     setVhVariable();
-    window.addEventListener('resize', setVhVariable);
+    window.addEventListener('resize', setVhVariable, {passive:true});
+    window.addEventListener('orientationchange', setVhVariable, {passive:true});
+    if(window.visualViewport){
+      window.visualViewport.addEventListener('resize', setVhVariable, {passive:true});
+    }
+  });
   </script>
-
-<script>
-function setVhVariable(){
-  const vh = (window.visualViewport?.height ?? window.innerHeight) * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-setVhVariable();
-window.addEventListener('resize', setVhVariable, {passive:true});
-window.addEventListener('orientationchange', setVhVariable, {passive:true});
-if(window.visualViewport){
-  window.visualViewport.addEventListener('resize', setVhVariable, {passive:true});
-}
-</script>
 
   <footer class="site-footer">
     <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
