@@ -12,325 +12,137 @@ html, body {
   font-family: "Noto Sans KR", sans-serif;
   color: #222;
   background: #fff;
-  overflow-x: hidden;  /* 좌우 스크롤 완전 차단 */
 }
 
 /* =========================================================
    🏔️ BANNER (상단 베너 – 가로 전체 + 높이 조절 가능)
    ========================================================= */
 .banner {
-  width: 100%;          /* 화면 전체 가로 */
+  width: 100vw;
   overflow: hidden;
   text-align: center;
-  background: #fff;
   position: relative;
-  z-index: 10;
-  border: none;
-}
-
-.banner img {
-  display: block;         /* ✅ 인라인 여백 제거 */
-  width: 100%;            /* ✅ 항상 화면 전체를 가로지름 */
-  height: auto;           /* 세로 비율 자동 유지 */
-  max-height: 240px;      /* ✅ 필요 시 이 값만 수정해서 높이 조절 */
-  object-fit: cover;      /* 이미지 비율 유지하며 꽉 채우기 */
-  transition: max-height 0.4s ease; /* 부드럽게 변화 */
 }
 
 /* =========================================================
-   🧩 LAYOUT (메인 레이아웃)
+   🪶 MAIN SECTION (메인 콘텐츠 영역)
    ========================================================= */
-.content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  gap: 20px;
-  padding: 0 20px;
-}
-
-/* =========================================================
-   📜 MAIN CONTENT (본문 영역)
-   ========================================================= */
-
-/* 본문 기본 설정 */
-  #main-content {
-  flex: 1;
-  background: #fff;
-  padding: 45px 60px;
-  line-height: 1.9;
-  min-height: 70vh;
-  color: #222;
-  border: none;
-  box-shadow: none;
+.area-main {
   max-width: 900px;
-  margin-top: 0px; /* 여기서 베너와 간격 조절 */
-}
-
-/* --- 본문 제목 --- */
-#main-content h1 {
-  background: #3b5c7a;
-  color: #fff;
-  font-size: 1.6rem;
-  font-weight: 600;
-  padding: 14px 12px;
-  border-radius: 0;        /* ✅ 라운드 제거 → 직각 */
-  margin: 0 0 28px;        /* ✅ 아래쪽만 여유있게 */
-  line-height: 1.4;
-  text-align: left;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-/* --- 본문 문단 (Typora plain HTML 대응) --- */
-#main-content p {
-  white-space: pre-line; /* ↲ 줄바꿈 문자(\n)를 <br>처럼 처리 */
-  word-break: keep-all;  /* 한글 단어 단위로 줄바꿈 */
-  line-height: 1.9;
-  margin-bottom: 1.4em;  /* 문단 간 여백 */
-  color: #444;
-}
-
-/* ✅ 본문 이미지 크기 자동 맞춤 */
-#main-content img {
-  max-width: 100%;     /* 화면(본문 폭)을 넘지 않게 조정 */
-  height: auto;        /* 비율 유지 */
-  display: block;      /* 인라인 여백 제거 */
-  margin: 1.2em auto;  /* 위아래 여백 + 중앙 정렬 */
-  border-radius: 6px;  /* 부드럽게 */
-}
-
-/* ✅ 본문 내 강조글자(볼드) 위쪽에만 간격 2칸 정도 주기 */
-#main-content strong {
-  display: inline-block;     /* 줄 간격 제어를 위해 인라인블록으로 전환 */
-  margin-top: 1.2em;         /* 대략 두 줄 정도 위 여백 */
-}
-
-/* FOOTER (하단 카피라이트 영역) */
-.site-footer {
-  text-align: center;
-  padding: 20px 10px;
-  width: 100%;
-  max-width: 100%;
-  font-size: 0.9rem;
-  color: #666;
-  background: #f8f8f8;
-  border-top: 1px solid #ddd;
+  margin: 0 auto;
+  padding: 30px 20px;
 }
 
 /* =========================================================
-   📘 MENU PANEL (오른쪽 메뉴 영역)
+   🌙 MENU PANEL (모바일 메뉴)
    ========================================================= */
-
-/* 메뉴 영역 전체 */
 #menu-panel {
-  position: relative;
-  width: 280px;
-  flex-shrink: 0;
-  color: #fff;
-  padding: 25px 20px;
-  background: url("./_Images/Fluigel.png") no-repeat center top;
-  background-size: cover;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 0; /* ✅ 직각 유지 */
-  margin-top: 45px; /* 여기서 베너와 간격 조절 */
+  position: fixed;
+  top: 0;
+  right: -100%;
+  bottom: 0;                    /* ✅ 하단을 경계로 고정 */
+  width: 80%;
+  max-width: 300px;
+  height: auto;                 /* ✅ 수치 강제 제거 */
+  overflow-y: auto;
+  background: url("./_Images/Fluigel.png") center top / cover repeat-y;
+  padding: 80px 20px 80px;
+  transition: right 0.35s ease;
+  z-index: 10000;               /* ✅ 버튼보다 위로 */
+  overscroll-behavior: contain; /* ✅ 스크롤 체이닝 방지 */
 }
 
-/* 어두운 반투명 레이어 */
-#menu-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  z-index: 0;
-  border-radius: 0;
-}
-
-/* 메뉴 내부 내용은 오버레이 위에 표시 */
-#menu-panel * {
-  position: relative;
-  z-index: 1;
-}
-
-/* 타이틀 전체적인 설정 */
-#menu-panel h1 {
-  font-size: 1.2rem;
-  text-align: center;
-  margin-bottom: 15px;
-  color: #e6d28a;
-  font-weight: 600;
-  text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
-}
-
-/* 타이틀 'Tower of Life Energy' 부분 */
-#menu-panel h1 em.glow {
-  color: #e6d28a; /* ✨ 은은한 황금빛 (기본 상태) */
-  font-style: italic;
-  transition: color 0.4s ease, text-shadow 0.4s ease;
-}
-
-/* hover 시 찬란하게 빛남 */
-#menu-panel h1:hover em.glow {
-  color: #ffeb91; /* 🌟 찬란하지만 부드러운 황금빛 (호버) */
-  text-shadow: 0 0 12px #ffeaaa;
-}
-
-/* 메뉴 링크 */
-#menu-panel nav a {
-  display: block;
-  color: #fff;
-  text-decoration: none;
-  padding: 6px 20px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
-  letter-spacing: 0.2px;
-}
-
-#menu-panel nav a:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-}
-
-/* 메뉴 그룹 */
-#menu-panel .menu-group {
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding-top: 0px;
-}
-
-#menu-panel .menu-group ul {
-  list-style: none;
-  margin-left: 10px;
-}
-
-#menu-panel .menu-group ul a {
-  font-size: 0.9rem;
-  opacity: 0.9;
+#menu-panel.open {
+  right: 0;
 }
 
 /* =========================================================
-   💫 MISC (기타 요소)
-   ========================================================= */
-.loading {
-  text-align: center;
-  padding: 40px;
-  color: #777;
-  font-style: italic;
-}
-
-/* 스크롤바 */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 4px;
-}
-
-/* =========================================================
-   🧭 기본 메뉴 토글 버튼 (PC에서는 숨김)
+   ☰ MENU BUTTON (토글 버튼)
    ========================================================= */
 .menu-toggle {
-  display: none; /* ✅ PC에서는 감춤 */
   position: fixed;
-  top: 18px;
-  right: 22px;
-  background: rgba(59, 92, 122, 0.85);
-  color: #fff;
+  top: 15px;
+  right: 20px;
+  z-index: 9999;
+  font-size: 26px;
+  background: rgba(255, 255, 255, 0.3);
   border: none;
-  padding: 10px 14px;
-  font-size: 1.2rem;
-  border-radius: 6px;
-  z-index: 999;
+  border-radius: 8px;
+  padding: 8px 12px;
+  backdrop-filter: blur(6px);
   cursor: pointer;
-  transition: background 0.2s ease;
-}
-.menu-toggle:hover {
-  background: rgba(59, 92, 122, 1);
 }
 
 /* =========================================================
-   📱 MOBILE SECTION (플뤼겔의 탑 - 한글 단일형 완전 안정판)
+   🌫️ BACKDROP (메뉴 오버레이 추가)
+   ========================================================= */
+#menu-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 9999;
+}
+
+body.menu-open #menu-backdrop {
+  display: block;
+}
+
+/* =========================================================
+   🧭 BODY SCROLL LOCK (메뉴 열릴 때 스크롤 방지)
+   ========================================================= */
+body.menu-open {
+  position: fixed;        /* ✅ 스크롤 잠금 */
+  width: 100%;
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* =========================================================
+   🪶 MENU TEXT STYLE
+   ========================================================= */
+#menu-panel h1 {
+  font-size: 1.4rem;
+  color: #fff;
+  text-shadow: 0 0 6px rgba(255,255,255,0.4);
+  margin-bottom: 20px;
+}
+
+#menu-panel ul {
+  list-style: none;
+}
+
+#menu-panel li {
+  margin-bottom: 15px;
+}
+
+#menu-panel a {
+  text-decoration: none;
+  color: #eaf6ff;
+  font-size: 1.05rem;
+}
+
+/* =========================================================
+   🪄 RESPONSIVE (모바일 반응형)
    ========================================================= */
 @media screen and (max-width: 1060px) {
 
-  /* ✅ 메뉴 버튼 – 반투명 유리 효과 */
-  .menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    position: fixed;
-    top: 18px;
-    right: 22px;
-    backdrop-filter: blur(8px);
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #e6eaf0;
-    padding: 8px 12px;
-    font-size: 1.3rem;
-    border-radius: 10px;
-    z-index: 9999;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  }
-
-  .menu-toggle:hover {
-    background: rgba(255, 255, 255, 0.25);
-    color: #fff;
-    transform: scale(1.05);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.35);
-  }
-
-  /* ✅ “☰ 메뉴” 한글 버전 */
-  .menu-toggle::before {
-    content: "☰ 메뉴";
-    font-size: 1.2rem;
-    line-height: 1;
-  }
-
-  /* ✅ 메뉴 패널 – 안정판 (끝까지 스크롤 + 배경 이어짐) */
+  /* ✅ 메뉴를 화면 끝까지 덮기 */
   #menu-panel {
-    position: fixed;
-    top: 0;
     right: -100%;
-    width: 80%;
-    max-width: 300px;
-    height: calc(var(--vh, 1vh) * 101) !important; /* ✅ 1% 여유 */
-    min-height: 100%;
-    background: url("./_Images/Fluigel.png") repeat-y center top; /* ✅ 자연스러운 배경 반복 */
-    background-size: cover;
-    color: #fff;
-    overflow-y: auto;
-    transition: right 0.35s ease;
-    z-index: 998;
-    padding: 80px 20px 80px; /* ✅ 하단 여유 */
-    box-shadow: -3px 0 10px rgba(0,0,0,0.3);
-  }
-
-  #menu-panel::after {
-    content: "";
-    display: block;
-    height: 10px; /* ✅ 스크롤 끝 완충 여백 */
+    top: 0;
+    bottom: 0;
+    height: auto;
   }
 
   #menu-panel.open {
     right: 0;
   }
 
-  /* ✅ 본문 여백 보정 */
-  #main-content {
-    padding: 25px;
-    max-width: 100%;
-  }
-
-  .banner img {
-    max-height: 200px;
+  /* ✅ 내부 스크롤 영역이 필요하면 사용 */
+  .menu-scrollbox {
+    height: 100dvh; /* 1순위 */
+    height: calc(var(--vh, 1vh) * 100); /* 2순위 폴백 */
+    overflow-y: auto;
   }
 }
