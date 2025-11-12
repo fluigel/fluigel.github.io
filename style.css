@@ -86,9 +86,12 @@ html, body {
 
 /* --- 본문 문단 (Typora plain HTML 대응) --- */
 #main-content p {
-  white-space: pre-line; /* ↲ 줄바꿈 문자(\n)를 <br>처럼 처리 */
-  word-break: keep-all;  /* 한글 단어 단위로 줄바꿈 */
-  margin-bottom: 1.4em;  /* 문단 간 여백 */
+  white-space: pre-line;              /* ↲ 줄바꿈 문자(\n)를 <br>처럼 처리 */
+  word-break: keep-all;               /* 한글 단어 단위로 줄바꿈 */
+  text-align: justify;                /* ✅ 양쪽 정렬 */
+  text-justify: inter-word;           /* ✅ 단어 간격 균형 */
+  hyphens: auto;                      /* ✅ 영어 단어 하이픈 자동 */
+  margin-bottom: 1.4em;               /* 문단 간 여백 */
   color: #444;
 }
 
