@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251112092517" />
+  <link rel="stylesheet" href="/style.css?v=20251112092519" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -208,6 +208,10 @@
     }
     setVhVariable();
     window.addEventListener('resize', setVhVariable);
+
+      // 🔥 새로 추가할 이벤트 두 개만 넣기
+    window.addEventListener('orientationchange', setVhVariable);
+    window.addEventListener('pageshow', setVhVariable);
   </script>
 
 <!-- 🌙 모바일 메뉴 레이어 하단 불먹음 완전 종결판 -->
