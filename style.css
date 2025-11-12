@@ -256,45 +256,78 @@ html, body {
 }
 
 /* =========================================================
-   📱 MOBILE SECTION (정상 크기 버튼 복구 + 필터 안정판)
+   📱 MOBILE SECTION (레이어 복구 + 필터 유지 + 독립 선언)
    ========================================================= */
 @media screen and (max-width: 1060px) {
 
-  /* ✅ PC용 레이어 완전 무효화 */
-  #menu-panel::before {
-    all: unset !important;
-    content: none !important;
-    display: none !important;
-  }
-
-  /* ✅ 모바일 메뉴 패널 - 독립 정의 (PC 상속 완전 차단) */
+  /* ✅ 모바일용 메뉴 독립 정의 (PC 상속 차단) */
   #menu-panel {
-    all: unset;  /* ← 상속 초기화: PC 스타일 싹 다 끊음 */
+    all: unset; /* ← PC 스타일 완전 초기화 */
     position: fixed;
     top: 0;
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: calc(var(--vh, 1vh) * 101);
-    min-height: 100%;
-    display: block;
-    background: rgba(20, 20, 20, 0.55)
-      url("./_Images/Fluigel.png") repeat-y center top / cover;
-    backdrop-filter: blur(10px) brightness(1.08) saturate(1.05);
+    min-height: 100vh;     /* 스크롤 완전 노출 */
+    height: auto;
     color: #fff;
     overflow-y: auto;
     transition: right 0.35s ease;
     z-index: 998;
     padding: 80px 20px 80px;
+    background: url("./_Images/Fluigel.png") no-repeat center top;
+    background-size: cover;
     box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
     border-left: 1px solid rgba(255, 255, 255, 0.15);
   }
 
+  /* ✅ 반투명 레이어 복구 (PC버전과 유사) */
+  #menu-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);  /* ← 덮개 투명도 (PC 0.25보다 살짝 진하게) */
+    backdrop-filter: blur(8px) brightness(1.05);
+    z-index: 0;
+  }
+
+  /* ✅ 내부 콘텐츠는 레이어 위로 */
+  #menu-panel * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ✅ 메뉴 열림 상태 */
   #menu-panel.open {
     right: 0;
   }
 
-  /* ✅ 버튼 복원 */
+  /* ✅ 스크롤 여유 */
+  #menu-panel::after {
+    content: "";
+    display: block;
+    height: 20px;
+  }
+
+  /* ✅ 메뉴 항목 */
+  #menu-panel nav a {
+    display: block;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+    text-decoration: none;
+    padding: 6px 20px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+  }
+
+  #menu-panel nav a:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  /* =========================================================
+     🧭 MENU TOGGLE BUTTON (기존 유리톤 복원)
+     ========================================================= */
   .menu-toggle {
     display: flex;
     align-items: center;
@@ -302,37 +335,35 @@ html, body {
     position: fixed;
     top: 18px;
     right: 22px;
-    background: rgba(59, 92, 122, 0.85);
-    color: #fff;
-    border: none;
-    padding: 12px 18px;
-    font-size: 1.4rem;
+    padding: 10px 16px;
+    font-size: 1.3rem;
+    color: #f9f9f9;
+    background: linear-gradient(145deg, rgba(59,92,122,0.9), rgba(40,60,90,0.9));
+    border: 1px solid rgba(255,255,255,0.25);
     border-radius: 10px;
-    z-index: 9999;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-    transition: background 0.25s ease, transform 0.25s ease;
+    z-index: 9999;
+    transition: all 0.25s ease;
   }
 
   .menu-toggle:hover {
-    background: rgba(59, 92, 122, 1);
     transform: scale(1.05);
+    background: linear-gradient(145deg, rgba(70,110,150,1), rgba(50,70,110,1));
   }
 
   .menu-toggle::before {
     content: "☰ 메뉴";
-    font-size: 1.4rem;
-    line-height: 1;
+    letter-spacing: 0.5px;
   }
 
-  /* ✅ 메뉴 링크 가독성 강화 */
-  #menu-panel nav a {
-    color: rgba(255, 255, 255, 0.95);
-    text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
-  }
-
-  #menu-panel nav a:hover {
-    background: rgba(255, 255, 255, 0.18);
+  /* =========================================================
+     📜 CONTENT AREA (본문 여백 보정)
+     ========================================================= */
+  #main-content {
+    padding: 25px;
+    max-width: 100%;
   }
 
   .banner img {
