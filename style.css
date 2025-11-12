@@ -234,101 +234,81 @@ html, body {
 }
 
 /* =========================================================
-   📱 MOBILE SECTION (플뤼겔의 탑 – 한글 단일형 완전 안정판)
+   📘 MENU PANEL (오른쪽 메뉴 영역 – 완전 덮임 안정판)
    ========================================================= */
-@media screen and (max-width: 1060px) {
-
-  /* ✅ 메뉴 버튼 – 반투명 유리 효과 */
-  .menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    position: fixed;
-    top: 18px;
-    right: 22px;
-    backdrop-filter: blur(8px);
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #e6eaf0;
-    padding: 8px 12px;
-    font-size: 1.3rem;
-    border-radius: 10px;
-    z-index: 9999;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  }
-
-  .menu-toggle:hover {
-    background: rgba(255, 255, 255, 0.25);
-    color: #fff;
-    transform: scale(1.05);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.35);
-  }
-
-  .menu-toggle::before {
-    content: "☰ 메뉴";
-    font-size: 1.2rem;
-    line-height: 1;
-  }
-
-  /* ✅ 메뉴 패널 – 안정판 (하단 완전 고정 + 스크롤 개선) */
-  #menu-panel {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    bottom: 0;                 /* ✅ 높이 대신 경계로 고정 */
-    width: 80%;
-    max-width: 300px;
-    height: auto;
-    min-height: 0;
-    background: url("./_Images/Fluigel.png") repeat-y center top / cover;
-    color: #fff;
-    overflow-y: auto;
-    transition: right 0.35s ease;
-    z-index: 10000;
-    padding: 80px 20px 80px;
-    box-shadow: -3px 0 10px rgba(0,0,0,0.3);
-    overscroll-behavior: contain;          /* ✅ 스크롤 체이닝 방지 */
-    -webkit-overflow-scrolling: touch;     /* ✅ iOS 스크롤 안정화 */
-    scroll-behavior: smooth;
-    padding: 40px 20px 55px; /* 위 / 좌우 / 아래 */
-  }
-
-  #menu-panel.open {
-    right: 0;
-  }
-
-  /* ✅ 본문 여백 보정 */
-  #main-content {
-    padding: 25px;
-    max-width: 100%;
-  }
-
-  .banner img {
-    max-height: 200px;
-  }
-}
-
-/* =========================================================
-   🪶 SCROLL LOCK & BACKDROP (메뉴 열릴 때 배경 차단)
-   ========================================================= */
-body.menu-open {
-  position: fixed;
-  width: 100%;
+#menu-panel {
+  position: relative;
+  width: 280px;
+  flex-shrink: 0;
+  color: #fff;
+  padding: 25px 20px;
+  /* ✅ 배경 이미지가 메뉴 전체를 덮도록 수정 */
+  background-image: url("./_Images/Fluigel.png");
+  background-repeat: repeat-y;          /* 세로로 반복하여 아래까지 덮음 */
+  background-position: center top;      /* 중앙 정렬 */
+  background-size: 100% auto;           /* 요소 폭에 맞춰 세로로 자연 반복 */
+  background-color: rgba(0, 0, 0, 0.55);/* 이미지가 짧더라도 어둡게 채움 */
   overflow: hidden;
-  touch-action: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 0;
+  margin-top: 45px;
 }
 
-#menu-backdrop {
-  display: none;
-  position: fixed;
+#menu-panel::before {
+  content: "";
+  position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  z-index: 9999;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 0;
 }
 
-body.menu-open #menu-backdrop {
+#menu-panel * {
+  position: relative;
+  z-index: 1;
+}
+
+#menu-panel h1 {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #e6d28a;
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+}
+
+#menu-panel h1 em.glow {
+  color: #e6d28a;
+  font-style: italic;
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+#menu-panel h1:hover em.glow {
+  color: #ffeb91;
+  text-shadow: 0 0 12px #ffeaaa;
+}
+
+#menu-panel nav a {
   display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 6px 20px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
+}
+
+#menu-panel nav a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+#menu-panel .menu-group ul {
+  list-style: none;
+  margin-left: 10px;
+}
+
+#menu-panel .menu-group ul a {
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
