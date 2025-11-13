@@ -61,7 +61,7 @@ html, body {
   flex: 1;
   background: #fff;
   padding: 45px 60px;
-  line-height: 1.5; /*본문 줄간격 조절 */
+  line-height: 1.8; /*본문 줄간격 조절 */
   min-height: 70vh;
   color: #222;
   border: none;
@@ -190,7 +190,7 @@ html, body {
   color: #fff;
   text-decoration: none;
   padding: 6px 20px;   /* 문단 간격과 관계 O */
-  line-height: 1.5;    /* 문단 간격을 명시해 조절 */
+  line-height: 1.35;    /* 문단 간격을 명시해 조절 */
   border-radius: 4px;
   transition: all 0.2s ease;
   font-size: 1rem;
@@ -319,7 +319,7 @@ html, body {
     color: rgba(255, 255, 255, 0.95);
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
     font-size: 1.1rem;     /* 기존보다 약간 크게 */
-    line-height: 1.28;     /* 줄 간격은 조금 줄여서 조밀하게 */
+    line-height: 1.20;     /* 줄 간격은 조금 줄여서 조밀하게 */
     padding: 4px 16px;     /* 위아래 살짝 줄여서 더 촘촘하게 */
   }
 
@@ -329,7 +329,7 @@ html, body {
 
   #menu-panel .menu-group ul a {
     font-size: 1.0rem;
-    line-height: 1.25;
+    line-height: 1.18;
     padding: 3px 16px;
   }
 
