@@ -296,12 +296,15 @@ html, body {
     overflow-y: auto;
     box-shadow: 0 8px 25px rgba(0,0,0,0.25);
     transition: 0.25s ease;
+    overflow: hidden;
   }
 
   /* 모바일 전용 (PC 느낌 그대로 유지하되 덮지 않게 조절) */
   #menu-panel::before {
     content: "";
+    height: 100%;
     position: absolute;
+    overflow: hidden;
     inset: 0;
     /* PC보다 훨씬 더 투명하게 (배경 보이게) */
     background: rgba(20, 20, 20, 0.22);
@@ -392,5 +395,3 @@ html, body {
     line-height: 1;
   }
 }
-
-/*height: calc(var(--vh, 1vh) * 101); /* 모바일 화면높이 --vh에 전달 */
