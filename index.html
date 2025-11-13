@@ -2,12 +2,24 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113093805" />
+  <link rel="stylesheet" href="/style.css?v=20251113231301" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <!-- 🔥 어떤 경로든 첫 로딩이면 무조건 index로 복귀 -->
+  <script>
+    const p = location.pathname;
+    const first = !sessionStorage.getItem("spa-first");
+
+    if (first && p !== "/" && p !== "/index.html") {
+      sessionStorage.setItem("spa-first", "yes");
+      location.replace("/");
+    }
+  </script>
 
 </head>
 
@@ -181,31 +193,6 @@ function fixLinks(basePath) {
     a.setAttribute("href", "/" + basePath + href);
   });
 }
-</script>
-
-<script>
-  // 새로고침 포함 모든 로딩에서 경로 검사
-  if (!location.pathname.match(/^\/?$/)) {
-    // 루트가 아니라면 무조건 index로 돌려보내기
-    if (!sessionStorage.getItem("spa-loaded")) {
-      sessionStorage.setItem("spa-loaded", "yes");
-      location.replace("/");
-    }
-  }
-</script>
-
-<script>
-  // 현재 URL이 루트("/")인지 체크
-  const atRoot = location.pathname === "/" || location.pathname === "";
-
-  // 페이지 첫 로딩인지 구분
-  const firstLoad = !sessionStorage.getItem("spa-first-load");
-
-  if (!atRoot && firstLoad) {
-    // 첫 로딩은 무조건 index로 귀환
-    sessionStorage.setItem("spa-first-load", "yes");
-    location.replace("/");
-  }
 </script>
 
 <footer class="site-footer">
