@@ -6,8 +6,100 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113102002" />
+  <link rel="stylesheet" href="/style.css?v=20251113102003" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+</head>
+
+<body>
+  <!-- 🌄 상단 배너 -->
+  <header class="banner">
+    <img src="/_Images/Banner2.png" alt="Banner" />
+  </header>
+
+  <!-- 📜 본문 + 메뉴 -->
+  <section class="content">
+    <main id="main-content">
+      <div class="loading">Loading...</div>
+    </main>
+
+  <button id="menu-toggle" class="menu-toggle"></button>
+  <aside id="menu-panel">
+      <h1>플뤼겔의 탑 | <em class="glow">Tower of<br>Life Energy</em></h1>
+      <hr />
+      <nav>
+        <a href="#" data-page="main.html">Home</a>
+        <a href="#" data-page="Notice/gongjisahang-peulryugel-ui-tap.html">공지사항</a>
+        <a href="#" data-page="Theory/_list.html">기본이론</a>
+        <a href="#" data-page="Shindan/_list.html">신단(神丹)</a>
+
+        <div class="menu-group">
+          <a class="parent" href="#" data-page="Breathing/_list.html">단전호흡</a>
+          <ul>
+            <li><a href="#" data-page="Breathing/Practice/_list.html">정규행공</a></li>
+            <li><a href="#" data-page="Breathing/Extension/_list.html">심화학습</a></li>
+          </ul>
+        </div>
+
+        <div class="menu-group">
+          <a class="parent" href="#" data-page="Extra/_list.html">부록(附錄)</a>
+          <ul>
+            <li><a href="#" data-page="Extra/Meridians/_list.html">경락유통</a></li>
+            <li><a href="#" data-page="Extra/Circulation/_list.html">기주행공</a></li>
+            <li><a href="#" data-page="Extra/Imagination/_list.html">심법행공</a></li>
+          </ul>
+        </div>
+
+        <div class="menu-group">
+          <a class="parent" href="#" data-page="PalJeongdo/_list.html">팔정도</a>
+          <ul>
+            <li><a href="#" data-page="PalJeongdo/Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html">고교신차</a></li>
+            <li><a href="#" data-page="PalJeongdo/Link/jeongbeop-saiteu.html">외부링크</a></li>
+            <li><a href="#" data-page="PalJeongdo/References/_list.html">참고사항</a></li>
+          </ul>
+        </div>
+
+        <a href="#" data-page="Board/_list.html">자유게시판</a>
+        <a href="#" data-page="Poem/_list.html">나와의대화</a>
+        <a href="#" data-page="Esperanto/_list.html">에스페란토</a>
+        <a href="#" data-page="Note/_list.html">연구노트</a>
+        <a href="#" data-page="Videos/mal-gwa-munja-ui-mohoham-dol-kim-yong-ok-je15gang-mua-ran-mueos-inga.html">영상자료</a>
+        <a href="#" data-page="Health/mom-e-joeun-yachae-seupeu-mandeulgi.html">건강자료</a>
+        <a href="#" data-page="References/chamgo-munheon.html">참고문헌</a>
+      </nav>
+    </aside>
+  </section>
+
+  <!--📱 모바일 토글 스크립트 -->
+  <script>
+  const toggleBtn = document.getElementById('menu-toggle');
+  const menuPanel = document.getElementById('menu-panel');
+
+  toggleBtn.addEventListener('click', () => {
+    const open = menuPanel.classList.toggle('open');
+    document.body.classList.toggle('menu-open', open);
+  });
+
+  // 메뉴 바깥 클릭 시 자동 닫힘
+  document.addEventListener('click', (e) => {
+    if (menuPanel.classList.contains('open') &&
+        !e.target.closest('#menu-panel') &&
+        !e.target.closest('#menu-toggle')) {
+      menuPanel.classList.remove('open');
+      document.body.classList.remove('menu-open');
+    }
+  });
+  </script>
+  
+  <!-- 실제 모바일 화면높이를 계산해 --vh로 전달 -->
+  <script>
+    function setVhVariable() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    setVhVariable();
+    window.addEventListener('resize', setVhVariable);
+  </script>
 
   <script>
     /* ================================
@@ -114,97 +206,6 @@
       const clean = href.replace(/^\//, "");
       loadPage(clean);
     });
-  </script>
-</head>
-
-<body>
-  <!-- 🌄 상단 배너 -->
-  <header class="banner">
-    <img src="/_Images/Banner2.png" alt="Banner" />
-  </header>
-
-  <!-- 📜 본문 + 메뉴 -->
-  <section class="content">
-    <main id="main-content">
-      <div class="loading">Loading...</div>
-    </main>
-
-  <button id="menu-toggle" class="menu-toggle"></button>
-  <aside id="menu-panel">
-      <h1>플뤼겔의 탑 | <em class="glow">Tower of<br>Life Energy</em></h1>
-      <hr />
-      <nav>
-        <a href="#" data-page="main.html">Home</a>
-        <a href="#" data-page="Notice/gongjisahang-peulryugel-ui-tap.html">공지사항</a>
-        <a href="#" data-page="Theory/_list.html">기본이론</a>
-        <a href="#" data-page="Shindan/_list.html">신단(神丹)</a>
-
-        <div class="menu-group">
-          <a class="parent" href="#" data-page="Breathing/_list.html">단전호흡</a>
-          <ul>
-            <li><a href="#" data-page="Breathing/Practice/_list.html">정규행공</a></li>
-            <li><a href="#" data-page="Breathing/Extension/_list.html">심화학습</a></li>
-          </ul>
-        </div>
-
-        <div class="menu-group">
-          <a class="parent" href="#" data-page="Extra/_list.html">부록(附錄)</a>
-          <ul>
-            <li><a href="#" data-page="Extra/Meridians/_list.html">경락유통</a></li>
-            <li><a href="#" data-page="Extra/Circulation/_list.html">기주행공</a></li>
-            <li><a href="#" data-page="Extra/Imagination/_list.html">심법행공</a></li>
-          </ul>
-        </div>
-
-        <div class="menu-group">
-          <a class="parent" href="#" data-page="PalJeongdo/_list.html">팔정도</a>
-          <ul>
-            <li><a href="#" data-page="PalJeongdo/Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html">고교신차</a></li>
-            <li><a href="#" data-page="PalJeongdo/Link/jeongbeop-saiteu.html">외부링크</a></li>
-            <li><a href="#" data-page="PalJeongdo/References/_list.html">참고사항</a></li>
-          </ul>
-        </div>
-
-        <a href="#" data-page="Board/_list.html">자유게시판</a>
-        <a href="#" data-page="Poem/_list.html">나와의대화</a>
-        <a href="#" data-page="Esperanto/_list.html">에스페란토</a>
-        <a href="#" data-page="Note/_list.html">연구노트</a>
-        <a href="#" data-page="Videos/mal-gwa-munja-ui-mohoham-dol-kim-yong-ok-je15gang-mua-ran-mueos-inga.html">영상자료</a>
-        <a href="#" data-page="Health/mom-e-joeun-yachae-seupeu-mandeulgi.html">건강자료</a>
-        <a href="#" data-page="References/chamgo-munheon.html">참고문헌</a>
-      </nav>
-    </aside>
-  </section>
-
-  <!--📱 모바일 토글 스크립트 -->
-  <script>
-  const toggleBtn = document.getElementById('menu-toggle');
-  const menuPanel = document.getElementById('menu-panel');
-
-  toggleBtn.addEventListener('click', () => {
-    const open = menuPanel.classList.toggle('open');
-    document.body.classList.toggle('menu-open', open);
-  });
-
-  // 메뉴 바깥 클릭 시 자동 닫힘
-  document.addEventListener('click', (e) => {
-    if (menuPanel.classList.contains('open') &&
-        !e.target.closest('#menu-panel') &&
-        !e.target.closest('#menu-toggle')) {
-      menuPanel.classList.remove('open');
-      document.body.classList.remove('menu-open');
-    }
-  });
-  </script>
-  
-  <!-- 실제 모바일 화면높이를 계산해 --vh로 전달 -->
-  <script>
-    function setVhVariable() {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-    setVhVariable();
-    window.addEventListener('resize', setVhVariable);
   </script>
 
   <footer class="site-footer">
