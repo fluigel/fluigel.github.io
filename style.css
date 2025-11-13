@@ -190,7 +190,7 @@ html, body {
   color: #fff;
   text-decoration: none;
   padding: 6px 20px;   /* 문단 간격과 관계 O */
-  line-height: 1.32;    /* 문단 간격을 명시해 조절 */
+  line-height: 1.5;    /* 문단 간격을 명시해 조절 */
   border-radius: 4px;
   transition: all 0.2s ease;
   font-size: 1rem;
@@ -282,49 +282,41 @@ html, body {
   #menu-panel {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: calc(var(--vh, 1vh) * 101); /* 모바일 화면높이 --vh에 전달 */
+    min-height: 100%;
     background: rgba(20, 20, 20, 0.55)
       url("./_Images/Fluigel.png") repeat-y center top / cover;
-    backdrop-filter: blur(12px) brightness(1.05) saturate(1.05);
-    -webkit-backdrop-filter: blur(12px) brightness(1.05) saturate(1.05);
-    height: auto;
-    max-height: 92vh;
-    border-radius: 0 0 20px 20px;
-    padding: 20px;
-    padding-bottom: 36px;
+    backdrop-filter: blur(10px) brightness(1.1) saturate(1.05);
+    color: #fff;
     overflow-y: auto;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    transition: 0.25s ease;
-    overflow: hidden;
+    transition: right 0.35s ease;
+    z-index: 998;
+    padding: 40px 20px 60px; /* 상 - 좌·우 - 하 */
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
   }
 
-  /* 모바일 전용 (PC 느낌 그대로 유지하되 덮지 않게 조절) */
+  /* ✅ 불필요한 어두운 레이어 제거 */
   #menu-panel::before {
-    content: "";
-    height: 100%;
-    position: absolute;
-    overflow: hidden;
-    inset: 0;
-    /* PC보다 훨씬 더 투명하게 (배경 보이게) */
-    background: rgba(20, 20, 20, 0.22);
-    /* PC blur보다 조금 낮춰서 흐릿함 줄이기 */
-    backdrop-filter: blur(8px) brightness(1.05);
-    -webkit-backdrop-filter: blur(8px) brightness(1.05);
-    z-index: -1;
+    display: none !important;
+    content: none !important;
   }
 
   /* ✅ 메뉴 오픈 시 패널 등장 */
   #menu-panel.open {
     right: 0;
   }
+
   
   /* 모바일에서 문단 깔끔하게 정렬 */
   #main-content p {
-    text-align: left;       /* 자연스럽게 */
-    white-space: normal;    /* 공백 정리 */
-    word-break: keep-all;
-    line-height: 1.58;      /* 모바일 최적화된 줄간격 */
+    text-align: justify !important;      /* 양쪽 정렬 */
+    text-justify: inter-word !important; /* 단어 간격 자연스럽게 */
+    word-break: keep-all !important;     /* 한글 단어 잘림 방지 */
+    line-height: 1.58;                   /* 모바일 최적화된 줄간격 */
   } 
 
   /* ✅ 메뉴 글씨 가독성 보강 */
@@ -332,8 +324,8 @@ html, body {
     color: rgba(255, 255, 255, 0.95);
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
     font-size: 1.1rem;     /* 기존보다 약간 크게 */
-    line-height: 1.12;     /* ← 이 값이 제일 조밀하고 예쁨 */
-    padding: 4px 14px;     /* 기존보다 2px 줄여 균형 맞춤 */
+    line-height: 1.28;     /* 줄 간격은 조금 줄여서 조밀하게 */
+    padding: 4px 16px;     /* 위아래 살짝 줄여서 더 촘촘하게 */
   }
 
   #menu-panel nav a:hover {
@@ -342,7 +334,7 @@ html, body {
 
   #menu-panel .menu-group ul a {
     font-size: 1.0rem;
-    line-height: 1.10;    /* ← 하위메뉴도 동일 톤으로 */
+    line-height: 1.25;
     padding: 3px 16px;
   }
 
