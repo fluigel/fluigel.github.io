@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113135436" />
+  <link rel="stylesheet" href="/style.css?v=20251113135477" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -90,17 +90,6 @@ document.addEventListener('click', (e) => {
   }
 });
 </script>
-  
-<!-- 실제 모바일 화면높이를 계산해 --vh로 전달 -->
-<script>
-  function setVhVariable() {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  }
-  setVhVariable();
-  window.addEventListener('resize', setVhVariable);
-</script>
-
 <script>
 /* ============================================================
    🌐 FLUEGEL SPA ENGINE — GitHub Pages 최적화 + Auto Link Fix
