@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113071214" />
+  <link rel="stylesheet" href="/style.css?v=20251113071215" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- ✅ 중복폴더 자동 교정 -->
@@ -123,7 +123,8 @@
         // ⭐ 렌더 타이밍 안정화: CSSOM 형성될 시간을 확보
         await nextFrame();
 
-        const baseForFragment = fragmentURL.toString().replace(/[^/]*$/, "");
+        const fragmentURLObj = new URL(page, location.origin);
+        const baseForFragment = fragmentURLObj.href.slice(0, fragmentURLObj.href.lastIndexOf('/') + 1);
 
         // 조각 내부의 상대경로 → 절대경로
         html = html.replace(
