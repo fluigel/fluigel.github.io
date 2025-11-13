@@ -7,19 +7,8 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113231703" />
+  <link rel="stylesheet" href="/style.css?v=20251113231706" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-
-  <!-- 🔥 어떤 경로든 첫 로딩이면 무조건 index로 복귀 -->
-  <script>
-    const p = location.pathname;
-    const first = !sessionStorage.getItem("spa-first");
-
-    if (first && p !== "/" && p !== "/index.html") {
-      sessionStorage.setItem("spa-first", "yes");
-      location.replace("/");
-    }
-  </script>
 
 </head>
 
@@ -82,8 +71,11 @@
     </aside>
   </section>
 
-<!--📱 모바일 토글 스크립트 -->
 <script>
+/* ============================================================
+   📱 모바일 토글 스크립트
+   ============================================================ */
+
 const toggleBtn = document.getElementById('menu-toggle');
 const menuPanel = document.getElementById('menu-panel');
 
@@ -102,9 +94,11 @@ document.addEventListener('click', (e) => {
   }
 });
 </script>
-  
-<!-- 실제 모바일 화면높이를 계산해 --vh로 전달 -->
+
 <script>
+/* ============================================================
+   📱 실제 모바일 화면높이를 계산해 --vh로 전달
+   ============================================================ */
   function setVhVariable() {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
