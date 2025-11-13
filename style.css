@@ -202,6 +202,11 @@ html, body {
   color: #fff;
 }
 
+/* 메뉴 하단 여백 */
+#menu-panel nav a:last-child {
+  margin-bottom: 20px;
+}
+
 /* 메뉴 그룹 */
 #menu-panel .menu-group {
   margin-top: 0px;
@@ -217,11 +222,6 @@ html, body {
 #menu-panel .menu-group ul a {
   font-size: 0.9rem;
   opacity: 0.9;
-}
-
-/* 메뉴 하단 여백 */
-#menu-panel nav a:last-child {
-  margin-bottom: 20px;
 }
 
 /* =========================================================
