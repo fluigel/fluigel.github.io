@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113093802" />
+  <link rel="stylesheet" href="/style.css?v=20251113093803" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -191,6 +191,20 @@ function fixLinks(basePath) {
       sessionStorage.setItem("spa-loaded", "yes");
       location.replace("/");
     }
+  }
+</script>
+
+<script>
+  // 현재 URL이 루트("/")인지 체크
+  const atRoot = location.pathname === "/" || location.pathname === "";
+
+  // 페이지 첫 로딩인지 구분
+  const firstLoad = !sessionStorage.getItem("spa-first-load");
+
+  if (!atRoot && firstLoad) {
+    // 첫 로딩은 무조건 index로 귀환
+    sessionStorage.setItem("spa-first-load", "yes");
+    location.replace("/");
   }
 </script>
 
