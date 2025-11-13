@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113160999" />
+  <link rel="stylesheet" href="/style.css?v=20251113093801" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -69,6 +69,17 @@
       </nav>
     </aside>
   </section>
+
+<script>
+  // 새로고침 포함 모든 로딩에서 경로 검사
+  if (!location.pathname.match(/^\/?$/)) {
+    // 루트가 아니라면 무조건 index로 돌려보내기
+    if (!sessionStorage.getItem("spa-loaded")) {
+      sessionStorage.setItem("spa-loaded", "yes");
+      location.replace("/");
+    }
+  }
+</script>
 
 <!--📱 모바일 토글 스크립트 -->
 <script>
