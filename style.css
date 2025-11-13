@@ -313,10 +313,10 @@ html, body {
   
   /* 모바일에서 문단 깔끔하게 정렬 */
   #main-content p {
-    text-align: justify !important;      /* 양쪽 정렬 */
-    text-justify: inter-word !important; /* 단어 간격 자연스럽게 */
-    word-break: keep-all !important;     /* 한글 단어 잘림 방지 */
-    line-height: 1.58;                   /* 모바일 최적화된 줄간격 */
+    text-align: left;       /* 자연스럽게 */
+    white-space: normal;    /* 공백 정리 */
+    word-break: keep-all;
+    line-height: 1.58;      /* 모바일 최적화된 줄간격 */
   } 
 
   /* ✅ 메뉴 글씨 가독성 보강 */
