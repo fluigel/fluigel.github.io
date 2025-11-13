@@ -157,7 +157,7 @@
 
     /* 3) 중복 폴더 제거 (a/a/test.html 방지) */
     function normalizePath(path) {
-      path = path.replace(/^\//, ""); // 앞의 / 제거
+      return path.replace(/^\//, "");
       const parts = path.split("/").filter(Boolean);
       const cleaned = [];
       for (const part of parts) {
