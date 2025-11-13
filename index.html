@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113102013" />
+  <link rel="stylesheet" href="/style.css?v=20251113102014" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -102,111 +102,86 @@
   </script>
 
   <script>
-    /* ================================
-       SPA 엔진 — 플뤼겔 완성형 버전
-       ================================ */
+    /* ############################################################
+      🌐 FLUEGEL SPA ENGINE — GitHub Pages 최적화 버전
+      ############################################################ */
 
-    const main = document.getElementById("main-content");
 
-    /* 1) HTML fragment 로드 */
-    async function loadPage(path, push = true) {
+    /* ============================================================
+      1) 페이지 로딩 함수
+      ============================================================ */
+    async function loadPage(path) {
       try {
-        // 경로 정규화 (중복 폴더 제거)
-        path = normalizePath(path);
-
         const res = await fetch(path);
-        if (!res.ok) throw new Error("Not found");
+        if (!res.ok) throw new Error("404");
+        const html = await res.text();
 
-        const text = await res.text();
+        // 메인 컨테이너에 삽입
+        document.getElementById("main-content").innerHTML = html;
 
-        // HTML 문자열을 DOM으로 파싱
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, "text/html");
+        // pushState — 절대경로만 기록
+        history.pushState({ path }, "", "/" + path);
 
-        // fragment 본문만 추출 (전체 문서가 와도 문제 없음)
-        let content = doc.body ? doc.body.innerHTML : text;
-
-        // 내부 링크 절대경로로 변환
-        content = fixLinks(content);
-
-        // DOM 주입
-        main.innerHTML = content;
-
-        // 스타일 안정화: reflow 1~2프레임
-        await new Promise(r => requestAnimationFrame(r));
-        await new Promise(r => requestAnimationFrame(r));
-
-        // history API 갱신
-        if (push) history.pushState({ path }, "", "/" + path);
       } catch (err) {
-        // 실패 시 index로 복귀
-        console.warn("Load fail, redirect root:", err);
-        history.replaceState({}, "", "/");
-        main.innerHTML = "<p>해당 문서를 찾을 수 없습니다.</p>";
+        // 404 fallback → 홈으로 돌림
+        document.getElementById("main-content").innerHTML =
+          "<h2>⚠ 페이지를 찾을 수 없습니다.</h2>";
       }
     }
 
-    /* 2) 내부 링크 절대경로로 변환 */
-    function fixLinks(html) {
-      return html.replace(/href="(?!https?:|#|mailto:|tel)([^"]+)"/g, function(_, url){
-        // 이미 절대경로면 그대로
-        if (url.startsWith("/")) return `href="${url}"`;
-        return `href="/${url}"`;
-      });
+    /* ============================================================
+      2) 절대경로 강제 변환기
+      ============================================================ */
+    function toAbsolute(href) {
+      // 외부 링크는 그대로
+      if (/^(https?:|mailto:|tel)/.test(href)) return null;
+
+      // #hash 링크도 SPA가 건드리지 않음
+      if (href.startsWith("#")) return null;
+
+      // 이미 절대경로라면 그대로
+      if (href.startsWith("/")) return href;
+
+      // 상대경로라면 절대경로로 변환
+      return "/" + href;
     }
 
-    /* 3) 중복 폴더 제거 (a/a/test.html 방지) */
-    function normalizePath(path) {
-      return path.replace(/^\//, "");
-      const parts = path.split("/").filter(Boolean);
-      const cleaned = [];
-      for (const part of parts) {
-        if (cleaned[cleaned.length - 1] === part) continue;
-        cleaned.push(part);
-      }
-      return cleaned.join("/");
-    }
-
-    /* 4) 초기 로딩 처리 */
-    window.addEventListener("DOMContentLoaded", () => {
-      // 404.html에서 redirect된 경우
-      const redirect = sessionStorage.redirect;
-      if (redirect) {
-        sessionStorage.removeItem("redirect");
-        loadPage(redirect);
-        return;
-      }
-
-      // 기본 메인 페이지
-      loadPage("main.html");
-    });
-
-    /* 5) 뒤로가기/앞으로가기 지원 */
-    window.addEventListener("popstate", (e) => {
-      if (e.state?.path) loadPage(e.state.path, false);
-    });
-
-    /* 6) SPA 네비게이션 전역 처리 */
+    /* ============================================================
+      3) a 태그 클릭 인터셉트 (SPA 핵심)
+      ============================================================ */
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a");
       if (!a) return;
 
-      const href = a.getAttribute("href");
-      if (!href) return;
+      const raw = a.getAttribute("href");
+      if (!raw) return;
 
-      // 외부 링크는 기본 동작
-      if (/^(https?:|mailto:|tel)/.test(href)) return;
-
-      // hash는 그대로
-      if (href.startsWith("#")) return;
+      const abs = toAbsolute(raw);
+      if (!abs) return; // 외부 또는 hash
 
       e.preventDefault();
 
-      // 내부 링크는 SPA로 처리
-      const clean = href.replace(/^\//, "");
+      // "/폴더/파일.html" → "폴더/파일.html"
+      const clean = abs.replace(/^\//, "");
+
       loadPage(clean);
     });
 
+    /* ============================================================
+      4) 뒤로가기 / 앞으로가기 지원
+      ============================================================ */
+    window.addEventListener("popstate", (e) => {
+      if (e.state && e.state.path) {
+        loadPage(e.state.path);
+      }
+    });
+
+    /* ============================================================
+      5) 첫 로딩 시 메인 페이지 불러오기
+      ============================================================ */
+    document.addEventListener("DOMContentLoaded", () => {
+      loadPage("main.html");
+    });
   </script>
 
   <footer class="site-footer">
