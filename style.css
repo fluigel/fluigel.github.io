@@ -387,3 +387,19 @@ html, body {
     line-height: 1;
   }
 }
+
+/* 📱 모바일 메뉴 패널 — PC처럼 유리 패널 스타일 */
+@media screen and (max-width: 1060px) {
+  #menu-panel {
+    background: rgba(0, 0, 0, 0.45);   /* 살짝 어둡고 반투명 */
+    backdrop-filter: blur(18px);       /* 유리처럼 흐릿하게 */
+    -webkit-backdrop-filter: blur(18px); /* iOS 대응 */
+
+    border-radius: 0 0 14px 14px;      /* 위는 딱 붙고 아래쪽만 부드럽게 */
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25); /* 깊이감 */
+    transition: 0.25s ease;            /* 자연스러운 열림 */
+
+    /* 혹시 겹치는 PC 스타일이 있다면 완전히 덮도록 */
+    background-blend-mode: overlay;
+  }
+}
