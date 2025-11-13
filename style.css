@@ -282,34 +282,39 @@ html, body {
   #menu-panel {
     position: fixed;
     top: 0;
-    right: -100%;
-    width: 80%;
-    max-width: 300px;
-    height: calc(var(--vh, 1vh) * 101); /* 모바일 화면높이 --vh에 전달 */
-    min-height: 100%;
+    left: 0;
+    width: 100%;
     background: rgba(20, 20, 20, 0.55)
       url("./_Images/Fluigel.png") repeat-y center top / cover;
-    backdrop-filter: blur(10px) brightness(1.1) saturate(1.05);
-    color: #fff;
+    backdrop-filter: blur(12px) brightness(1.05) saturate(1.05);
+    -webkit-backdrop-filter: blur(12px) brightness(1.05) saturate(1.05);
+    height: auto;
+    max-height: 92vh;
+    border-radius: 0 0 20px 20px;
+    padding: 20px;
+    padding-bottom: 36px;
     overflow-y: auto;
-    transition: right 0.35s ease;
-    z-index: 998;
-    padding: 40px 20px 60px; /* 상 - 좌·우 - 하 */
-    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    transition: 0.25s ease;
   }
 
-  /* ✅ 불필요한 어두운 레이어 제거 */
+  /* 모바일 전용 (PC 느낌 그대로 유지하되 덮지 않게 조절) */
   #menu-panel::before {
-    display: none !important;
-    content: none !important;
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* PC보다 훨씬 더 투명하게 (배경 보이게) */
+    background: rgba(20, 20, 20, 0.22);
+    /* PC blur보다 조금 낮춰서 흐릿함 줄이기 */
+    backdrop-filter: blur(8px) brightness(1.05);
+    -webkit-backdrop-filter: blur(8px) brightness(1.05);
+    z-index: -1;
   }
 
   /* ✅ 메뉴 오픈 시 패널 등장 */
   #menu-panel.open {
     right: 0;
   }
-
   
   /* 모바일에서 문단 깔끔하게 정렬 */
   #main-content p {
@@ -388,18 +393,4 @@ html, body {
   }
 }
 
-/* 📱 모바일 메뉴 패널 — PC처럼 유리 패널 스타일 */
-@media screen and (max-width: 1060px) {
-  #menu-panel {
-    background: rgba(0, 0, 0, 0.45);   /* 살짝 어둡고 반투명 */
-    backdrop-filter: blur(18px);       /* 유리처럼 흐릿하게 */
-    -webkit-backdrop-filter: blur(18px); /* iOS 대응 */
-
-    border-radius: 0 0 14px 14px;      /* 위는 딱 붙고 아래쪽만 부드럽게 */
-    box-shadow: 0 4px 24px rgba(0,0,0,0.25); /* 깊이감 */
-    transition: 0.25s ease;            /* 자연스러운 열림 */
-
-    /* 혹시 겹치는 PC 스타일이 있다면 완전히 덮도록 */
-    background-blend-mode: overlay;
-  }
-}
+/*height: calc(var(--vh, 1vh) * 101); /* 모바일 화면높이 --vh에 전달 */
