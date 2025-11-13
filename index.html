@@ -6,7 +6,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style.css?v=20251113102015" />
+  <link rel="stylesheet" href="/style.css?v=20251113102021" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -70,122 +70,121 @@
     </aside>
   </section>
 
-  <!--📱 모바일 토글 스크립트 -->
-  <script>
-  const toggleBtn = document.getElementById('menu-toggle');
-  const menuPanel = document.getElementById('menu-panel');
+<!--📱 모바일 토글 스크립트 -->
+<script>
+const toggleBtn = document.getElementById('menu-toggle');
+const menuPanel = document.getElementById('menu-panel');
 
-  toggleBtn.addEventListener('click', () => {
-    const open = menuPanel.classList.toggle('open');
-    document.body.classList.toggle('menu-open', open);
-  });
+toggleBtn.addEventListener('click', () => {
+  const open = menuPanel.classList.toggle('open');
+  document.body.classList.toggle('menu-open', open);
+});
 
-  // 메뉴 바깥 클릭 시 자동 닫힘
-  document.addEventListener('click', (e) => {
-    if (menuPanel.classList.contains('open') &&
-        !e.target.closest('#menu-panel') &&
-        !e.target.closest('#menu-toggle')) {
-      menuPanel.classList.remove('open');
-      document.body.classList.remove('menu-open');
-    }
-  });
-  </script>
+// 메뉴 바깥 클릭 시 자동 닫힘
+document.addEventListener('click', (e) => {
+  if (menuPanel.classList.contains('open') &&
+      !e.target.closest('#menu-panel') &&
+      !e.target.closest('#menu-toggle')) {
+    menuPanel.classList.remove('open');
+    document.body.classList.remove('menu-open');
+  }
+});
+</script>
   
-  <!-- 실제 모바일 화면높이를 계산해 --vh로 전달 -->
-  <script>
-    function setVhVariable() {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-    setVhVariable();
-    window.addEventListener('resize', setVhVariable);
-  </script>
+<!-- 실제 모바일 화면높이를 계산해 --vh로 전달 -->
+<script>
+  function setVhVariable() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  setVhVariable();
+  window.addEventListener('resize', setVhVariable);
+</script>
 
-  <script>
-    /* ############################################################
-      🌐 FLUEGEL SPA ENGINE — GitHub Pages 최적화 버전
-      ############################################################ */
+<script>
+/* ============================================================
+   🌐 FLUEGEL SPA ENGINE — GitHub Pages 최적화 + Auto Link Fix
+   ============================================================ */
 
+/* 1) 페이지 로딩 ------------------------------------------------ */
+async function loadPage(path) {
+  try {
+    // 절대경로로 fetch
+    const res = await fetch(window.location.origin + "/" + path);
+    if (!res.ok) throw new Error("404");
 
-    /* ============================================================
-      1) 페이지 로딩 함수
-      ============================================================ */
-    async function loadPage(path) {
-      try {
-        const res = await fetch(window.location.origin + "/" + path);
-        if (!res.ok) throw new Error("404");
-        const html = await res.text();
+    const html = await res.text();
 
-        // 메인 컨테이너에 삽입
-        document.getElementById("main-content").innerHTML = html;
+    // 본문 삽입
+    const main = document.getElementById("main-content");
+    main.innerHTML = html;
 
-        // pushState — 절대경로만 기록
-        history.pushState({ path }, "", "/" + path);
+    // 현재 폴더 경로 계산 (예: Breathing/Extension/)
+    const folder = path.substring(0, path.lastIndexOf("/") + 1);
+    fixLinks(folder);
 
-      } catch (err) {
-        // 404 fallback → 홈으로 돌림
-        document.getElementById("main-content").innerHTML =
-          "<h2>⚠ 페이지를 찾을 수 없습니다.</h2>";
-      }
-    }
+    // pushState — 단 한 번만
+    history.pushState({ path }, "", "/" + path);
 
-    /* ============================================================
-      2) 절대경로 강제 변환기
-      ============================================================ */
-    function toAbsolute(href) {
-      // 외부 링크는 그대로
-      if (/^(https?:|mailto:|tel)/.test(href)) return null;
+  } catch (err) {
+    document.getElementById("main-content").innerHTML =
+      "<h2>⚠ 페이지를 찾을 수 없습니다.</h2>";
+  }
+}
 
-      // #hash 링크도 SPA가 건드리지 않음
-      if (href.startsWith("#")) return null;
+/* 2) 절대경로 강제 변환 --------------------------------------- */
+function toAbsolute(href) {
+  if (/^(https?:|mailto:|tel)/.test(href)) return null;
+  if (href.startsWith("#")) return null;
+  if (href.startsWith("/")) return href;
+  return "/" + href;
+}
 
-      // 이미 절대경로라면 그대로
-      if (href.startsWith("/")) return href;
+/* 3) 링크 인터셉트 -------------------------------------------- */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a");
+  if (!a) return;
 
-      // 상대경로라면 절대경로로 변환
-      return "/" + href;
-    }
+  const raw = a.getAttribute("href");
+  if (!raw) return;
 
-    /* ============================================================
-      3) a 태그 클릭 인터셉트 (SPA 핵심)
-      ============================================================ */
-    document.addEventListener("click", (e) => {
-      const a = e.target.closest("a");
-      if (!a) return;
+  const abs = toAbsolute(raw);
+  if (!abs) return; // 외부, 해시
 
-      const raw = a.getAttribute("href");
-      if (!raw) return;
+  e.preventDefault();
 
-      const abs = toAbsolute(raw);
-      if (!abs) return; // 외부 또는 hash
+  const clean = abs.replace(/^\//, "");
+  loadPage(clean);
+});
 
-      e.preventDefault();
+/* 4) 히스토리 이동 -------------------------------------------- */
+window.addEventListener("popstate", (e) => {
+  if (e.state && e.state.path) {
+    loadPage(e.state.path);
+  }
+});
 
-      // "/폴더/파일.html" → "폴더/파일.html"
-      const clean = abs.replace(/^\//, "");
+/* 5) 첫 로드 -------------------------------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+  loadPage("main.html");
+});
 
-      loadPage(clean);
-    });
+/* 6) fragment 자동 절대경로 변환 ------------------------------ */
+function fixLinks(basePath) {
+  const links = document.querySelectorAll("#main-content a[href]");
+  links.forEach(a => {
+    let href = a.getAttribute("href");
+    if (!href) return;
+    if (href.startsWith("/") || href.startsWith("http")) return;
+    if (href.startsWith("#")) return;
 
-    /* ============================================================
-      4) 뒤로가기 / 앞으로가기 지원
-      ============================================================ */
-    window.addEventListener("popstate", (e) => {
-      if (e.state && e.state.path) {
-        loadPage(e.state.path);
-      }
-    });
+    a.setAttribute("href", "/" + basePath + href);
+  });
+}
+</script>
 
-    /* ============================================================
-      5) 첫 로딩 시 메인 페이지 불러오기
-      ============================================================ */
-    document.addEventListener("DOMContentLoaded", () => {
-      loadPage("main.html");
-    });
-  </script>
-
-  <footer class="site-footer">
-    <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
-  </footer>
+<footer class="site-footer">
+  <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
+</footer>
 </body>
 </html>
