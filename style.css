@@ -276,12 +276,13 @@ html, body {
 
   /* ✅ 메뉴 패널 – 독립 레이어 (충돌 없음) */
   #menu-panel {
+    min-height: 100vh;
+    height: auto;        /* ← 이거 추가 */
     position: fixed;
     top: 0;
     right: -100%;       /* 열리기 전에는 화면 밖으로 */
     width: 80%;         /* PC와 달리 모바일은 80% 유지 */
     max-width: 300px;   /* 너무 넓어지는 것 방지 */
-    height: calc(var(--vh, 1vh) * 101); /* 모바일 화면높이 --vh에 전달 */
     min-height: 100%;
     background: url("./_Images/Fluigel.png") no-repeat center top / cover;
     color: #fff;
