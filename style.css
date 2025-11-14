@@ -276,7 +276,7 @@ html, body {
 
   /* ✅ 메뉴 패널 – 독립 레이어 (충돌 없음) */
   #menu-panel {
-    min-height: 100vh;
+    min-height: 100%;
     height: auto;        /* ← 이거 추가 */
     position: fixed;
     top: 0;
