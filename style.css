@@ -276,22 +276,21 @@ html, body {
 
   /* ✅ 메뉴 패널 – 독립 레이어 (충돌 없음) */
   #menu-panel {
-    min-height: 100%;
-    height: auto;        /* ← 이거 추가 */
     position: fixed;
     top: 0;
-    right: -100%;       /* 열리기 전에는 화면 밖으로 */
-    width: 80%;         /* PC와 달리 모바일은 80% 유지 */
-    max-width: 300px;   /* 너무 넓어지는 것 방지 */
-    min-height: 100%;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: auto;            /* ✨ 내용 길이에 맞게 확장 */
+    min-height: 100vh;       /* ✨ 최소는 1 화면 정도 */
     background: url("./_Images/Fluigel.png") no-repeat center top / cover;
     color: #fff;
-    overflow-y: auto;
+    overflow-y: auto;        /* ✨ 전체 내용 스크롤 */
     transition: right 0.35s ease;
     z-index: 998;
-    padding: 35px 20px 70px;  /* 마지막 여백만 70px로 살짝 증가 */
+    padding: 35px 20px 70px;
     box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: 1px solid rgba(255,255,255,0.15);
   }
 
   #menu-panel::before {
