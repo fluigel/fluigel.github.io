@@ -1,7 +1,0 @@
-# 부록(附錄)
-
-[경락유통](Meridians/_list.html)
-
-[기주행공](Circulation/_list.html)
-
-[심법행공](Imagination/_list.html)

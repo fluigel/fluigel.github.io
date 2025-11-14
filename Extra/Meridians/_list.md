@@ -1,9 +1,0 @@
-# 경락유통
-
-[경락유통(十二經絡流通)](gyeongnak-yutong.html)
-
-[기경팔맥(奇經八脈)](gigyeong-palmaek.html)
-
-[경락유통 요약](gyeongnak-yutong-yoyag.html)
-
-[기경팔맥 요약](gigyeong-palmaek-yoyag.html)
