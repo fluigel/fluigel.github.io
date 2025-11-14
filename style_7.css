@@ -294,16 +294,12 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
-    /* 핵심 포인트 두 줄 */
     width: 100%;
-    height: 200%;   /* ← 여기! 패널 높이의 2배로 넉넉하게 */
-    /* 필요하면 300%도 가능함 */
-
+    height: 120%;   /* ← 여기! 패널 높이를 넉넉하게 */
     background: 
       rgba(0,0,0,0.45)
       url("./_Images/Fluigel.png")
       no-repeat center top / cover;
-  
     z-index: 0;
     pointer-events: none; /* 클릭 막지 않기 위해 */
   }
