@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_26.css?v=20251114194826" />
+  <link rel="stylesheet" href="/style_27.css?v=20251114194827" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -180,5 +180,35 @@ function fixLinks(basePath) {
 <footer class="site-footer">
   <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
 </footer>
+
+<!-- ⬆️ 위로 가기 버튼 (PC 전용) -->
+<div id="back-to-top">▲</div>
+
+<script>
+/* ============================================================
+   ⬆️ FLUEGEL BACK-TO-TOP ENGINE — PC 전용 스크롤 복귀 버튼
+   ============================================================ */
+
+const backToTop = document.getElementById("back-to-top");
+
+// 📌 PC 전용 (모바일에서는 감지 및 동작 완전 비활성화)
+const isPC = window.matchMedia("(min-width: 769px)").matches;
+
+if (isPC) {
+  // 스크롤 감지 → 버튼 표시/숨김
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      backToTop.classList.add("show");
+    } else {
+      backToTop.classList.remove("show");
+    }
+  });
+
+  // 클릭 시 최상단 부드럽게 이동
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+</script>
 </body>
 </html>
