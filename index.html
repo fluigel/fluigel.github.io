@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_30.css?v=20251114194830" />
+  <link rel="stylesheet" href="/style_31.css?v=20251114194831" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -186,25 +186,44 @@ function fixLinks(basePath) {
 
 <script>
 /* ============================================================
-   ⬆️ FLUEGEL BACK-TO-TOP ENGINE — SPA 본문 스크롤 버전
+   ⬆️ FLUEGEL SMART BACK-TO-TOP — SPA 자동 스크롤 감지 엔진
    ============================================================ */
 
 const backToTop = document.getElementById("back-to-top");
-const mainContent = document.getElementById("main-content");
 
-// 스크롤 감지 (본문 내부 스크롤)
-mainContent.addEventListener("scroll", () => {
-  if (mainContent.scrollTop > 50) {
-    backToTop.classList.add("show");
-  } else {
-    backToTop.classList.remove("show");
-  }
-});
+// "진짜 스크롤 영역"을 동적으로 탐색하는 함수
+function getScrollTarget() {
+  // 1) main-content 자체가 스크롤 가능한지 확인
+  const main = document.getElementById("main-content");
+  if (main.scrollHeight > main.clientHeight) return main;
 
-// 클릭 시 본문 내부 스크롤 최상단 이동
-backToTop.addEventListener("click", () => {
-  mainContent.scrollTo({ top: 0, behavior: "smooth" });
-});
+  // 2) main-content 내부의 스크롤 가능한 요소 찾기
+  const child = main.querySelector("*");
+  if (child && child.scrollHeight > child.clientHeight) return child;
+
+  // 3) 최후: documentElement (fallback)
+  return document.documentElement;
+}
+
+// 스크롤 감지 및 show/hide 처리
+function attachScrollListener() {
+  const target = getScrollTarget();
+
+  target.addEventListener("scroll", () => {
+    if (target.scrollTop > 50) {
+      backToTop.classList.add("show");
+    } else {
+      backToTop.classList.remove("show");
+    }
+  });
+
+  // 위로가기 버튼 클릭
+  backToTop.addEventListener("click", () => {
+    target.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", attachScrollListener);
 </script>
 </body>
 </html>
