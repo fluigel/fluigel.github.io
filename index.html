@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_29.css?v=20251114194829" />
+  <link rel="stylesheet" href="/style_30.css?v=20251114194830" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -186,29 +186,25 @@ function fixLinks(basePath) {
 
 <script>
 /* ============================================================
-   ⬆️ FLUEGEL BACK-TO-TOP ENGINE — PC 전용 스크롤 복귀 버튼
+   ⬆️ FLUEGEL BACK-TO-TOP ENGINE — SPA 본문 스크롤 버전
    ============================================================ */
 
 const backToTop = document.getElementById("back-to-top");
+const mainContent = document.getElementById("main-content");
 
-// 📌 PC 전용 (모바일에서는 감지 및 동작 완전 비활성화)
-const isPC = window.matchMedia("(min-width: 769px)").matches;
+// 스크롤 감지 (본문 내부 스크롤)
+mainContent.addEventListener("scroll", () => {
+  if (mainContent.scrollTop > 50) {
+    backToTop.classList.add("show");
+  } else {
+    backToTop.classList.remove("show");
+  }
+});
 
-if (isPC) {
-  // 스크롤 감지 → 버튼 표시/숨김
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
-      backToTop.classList.add("show");
-    } else {
-      backToTop.classList.remove("show");
-    }
-  });
-
-  // 클릭 시 최상단 부드럽게 이동
-  backToTop.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-}
+// 클릭 시 본문 내부 스크롤 최상단 이동
+backToTop.addEventListener("click", () => {
+  mainContent.scrollTo({ top: 0, behavior: "smooth" });
+});
 </script>
 </body>
 </html>
