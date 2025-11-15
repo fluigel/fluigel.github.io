@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_31.css?v=20251114194831" />
+  <link rel="stylesheet" href="/style_27.css?v=20251114194827" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -70,6 +70,37 @@
       </nav>
     </aside>
   </section>
+
+<button id="scroll-top-btn" class="scroll-top-btn">↑</button>
+
+<script>
+/* ============================================================
+   🔼 스크롤 내리면 나타나는 위로가기 버튼
+   ============================================================ */
+const topBtn = document.getElementById("scroll-top-btn");
+const banner = document.querySelector(".banner");  // 최상단 요소 감시
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      topBtn.classList.add("show");
+    } else {
+      topBtn.classList.remove("show");
+    }
+  });
+}, { threshold: 0.05 });
+
+observer.observe(banner);
+
+topBtn.addEventListener("click", () => {
+  // 1) 제일 안전한 방법: window 기준으로 스크롤
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // 2) 혹시 몰라서 문서 루트/바디도 같이 0으로 맞춰 줌 (fallback)
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+});
+</script>
 
 <script>
 /* ============================================================
@@ -181,49 +212,5 @@ function fixLinks(basePath) {
   <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
 </footer>
 
-<!-- ⬆️ 위로 가기 버튼 (PC 전용) -->
-<div id="back-to-top">▲</div>
-
-<script>
-/* ============================================================
-   ⬆️ FLUEGEL SMART BACK-TO-TOP — SPA 자동 스크롤 감지 엔진
-   ============================================================ */
-
-const backToTop = document.getElementById("back-to-top");
-
-// "진짜 스크롤 영역"을 동적으로 탐색하는 함수
-function getScrollTarget() {
-  // 1) main-content 자체가 스크롤 가능한지 확인
-  const main = document.getElementById("main-content");
-  if (main.scrollHeight > main.clientHeight) return main;
-
-  // 2) main-content 내부의 스크롤 가능한 요소 찾기
-  const child = main.querySelector("*");
-  if (child && child.scrollHeight > child.clientHeight) return child;
-
-  // 3) 최후: documentElement (fallback)
-  return document.documentElement;
-}
-
-// 스크롤 감지 및 show/hide 처리
-function attachScrollListener() {
-  const target = getScrollTarget();
-
-  target.addEventListener("scroll", () => {
-    if (target.scrollTop > 50) {
-      backToTop.classList.add("show");
-    } else {
-      backToTop.classList.remove("show");
-    }
-  });
-
-  // 위로가기 버튼 클릭
-  backToTop.addEventListener("click", () => {
-    target.scrollTo({ top: 0, behavior: "smooth" });
-  });
-}
-
-document.addEventListener("DOMContentLoaded", attachScrollListener);
-</script>
 </body>
 </html>
