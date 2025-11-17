@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_8.css?v=20251117231908" />
+  <link rel="stylesheet" href="/style_9.css?v=20251117231909" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -192,6 +192,15 @@ async function loadPage(path) {
 
     // pushState — 단 한 번만
     history.pushState({ path }, "", "/" + path);
+
+
+    // 본문 삽입
+    main.innerHTML = html;
+
+    // ★ 리스트가 들어온 후 small-item 재적용
+    if (main.querySelector(".page-list-body")) {
+    setTimeout(boostListItems, 10);
+  }
 
   } catch (err) {
     document.getElementById("main-content").innerHTML =
