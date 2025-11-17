@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_15.css?v=20251114194815" />
+  <link rel="stylesheet" href="/style_16.css?v=20251114194816" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -210,43 +210,35 @@ function fixLinks(basePath) {
 
 <script>
 /* =========================================================
-   📄 FLUEGEL LIST ENGINE — Auto Size Booster (Stable Version)
-   ============================================================ */
+   📄 FLUEGEL LIST ENGINE — MutationObserver 버전 (SPA 불변)
+   ========================================================= */
 
 function getVisualLineCount(p) {
   const style = getComputedStyle(p);
   const lineHeight = parseFloat(style.lineHeight);
-  if (!lineHeight || isNaN(lineHeight)) return 1;
-
   const height = p.getBoundingClientRect().height;
   return Math.round(height / lineHeight);
 }
 
 function boostListItems() {
   const items = document.querySelectorAll("#main-content .page-list-body p");
-  if (!items.length) return;
-
   items.forEach(p => {
     const lines = getVisualLineCount(p);
-    if (lines <= 2) {
-      p.classList.add("small-item");
-    }
+    if (lines <= 2) p.classList.add("small-item");
   });
 }
 
-/* 1) SPA 페이지 로딩 직후 */
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(boostListItems, 20);
+/* 🔥 main 내용이 바뀌면 자동으로 small-item 다시 계산 */
+const main = document.querySelector("#main-content");
+
+const observer = new MutationObserver(() => {
+  // 페이지가 바뀐 직후 DOM 정리 완료되도록 약간 딜레이
+  setTimeout(boostListItems, 30);
 });
 
-/* 2) 이미지/폰트 로딩 끝난 뒤 */
-window.addEventListener("load", () => {
-  setTimeout(boostListItems, 20);
-});
-
-/* 3) SPA 내부 이동 후 페이지 교체 */
-document.addEventListener("click", () => {
-  setTimeout(boostListItems, 50);
+observer.observe(main, {
+  childList: true,
+  subtree: true
 });
 </script>
 
