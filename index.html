@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_52.css?v=20251114194852" />
+  <link rel="stylesheet" href="/style_53.css?v=20251114194853" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -107,25 +107,19 @@ topBtn.addEventListener("click", () => {
    🔷 리스트 항목 글자 길이에 따른 스타일 자동 적용
   ============================================================ */
 
-function applyShortItemStyle() {
-  const items = document.querySelectorAll(".page-list-body p");
+document.addEventListener("DOMContentLoaded", () => {
+  const paragraphs = document.querySelectorAll("#main-content .page-list p");
 
-  items.forEach(p => {
-    const a = p.querySelector("a");      // 🔥 링크 안에 글자가 있으므로 a를 읽어야 함
-    if (!a) return;
+  paragraphs.forEach(p => {
+    const lineHeight = parseFloat(getComputedStyle(p).lineHeight);
+    const height = p.offsetHeight;
+    const lines = Math.round(height / lineHeight);
 
-    const txt = a.textContent.trim();    // 🔥 실제 표시 글자 = a의 textContent
-
-    if (txt.length >= 2 && txt.length <= 3) {
-      p.classList.add("short-item");
-    } else {
-      p.classList.remove("short-item");
+    if (lines <= 3) {
+      p.classList.add("short-paragraph");
     }
   });
-}
-
-document.addEventListener("DOMContentLoaded", applyShortItemStyle);
-window.addEventListener("spa-loaded", applyShortItemStyle);
+});
 </script>
 
 <script>
