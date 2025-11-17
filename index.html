@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_57.css?v=20251114194857" />
+  <link rel="stylesheet" href="/style_49.css?v=20251114194849" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -100,43 +100,6 @@ topBtn.addEventListener("click", () => {
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
 });
-</script>
-
-<script>
-/* ============================================================
-   🔷 리스트 항목 글자 길이에 따른 스타일 자동 적용
-  ============================================================ */
-
-function applyListLayoutMode() {
-  const body = document.querySelector("#main-content .page-list-body");
-  if (!body) return;
-
-  const items = body.querySelectorAll("p");
-  const count = items.length;
-
-  if (count <= 3) {
-    body.classList.add("center-mode");
-  } else {
-    body.classList.remove("center-mode");
-  }
-}
-
-/* SPA 페이지 로더 */
-async function loadPage(path) {
-  try {
-    const res = await fetch(path);
-    const html = await res.text();
-
-    // 본문 교체
-    document.querySelector("#main-content").innerHTML = html;
-
-    // 🔥 리스트 레이아웃 모드 적용
-    applyListLayoutMode();
-
-  } catch (err) {
-    console.error("페이지 로드 오류:", err);
-  }
-}
 </script>
 
 <script>
