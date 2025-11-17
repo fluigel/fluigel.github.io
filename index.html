@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>플뤼겔의 탑</title>
+
+  <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
+  <link rel="stylesheet" href="/style_54.css?v=20251114194854" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+</head>
+
+<body>
+  <!-- 🌄 상단 배너 -->
+  <header class="banner">
+    <img src="/_Images/Banner2.png" alt="Banner" />
+  </header>
+
+  <!-- 📜 본문 + 메뉴 -->
+  <section class="content">
+    <main id="main-content">
+      <div class="loading">Loading...</div>
+    </main>
+
+  <button id="menu-toggle" class="menu-toggle"></button>
+  <aside id="menu-panel">
+      <h1>플뤼겔의 탑 | <em class="glow">Tower of<br>Life Energy</em></h1>
+      <hr />
+      <nav>
+        <a href="/main.html">Home</a>
+        <a href="/Notice/gongjisahang-peulryugel-ui-tap.html">공지사항</a>
+        <a href="/Theory/_list.html">기본이론</a>
+        <a href="/Shindan/_list.html">신단(神丹)</a>
+
+        <div class="menu-group">
+          <a class="parent" href="/Breathing/_list.html">단전호흡</a>
+          <ul>
+            <li><a href="/Breathing/Practice/_list.html">정규행공</a></li>
+            <li><a href="/Breathing/Extension/_list.html">심화학습</a></li>
+          </ul>
+        </div>
+
+        <div class="menu-group">
+          <a class="parent" href="/Extra/_list.html">부록(附錄)</a>
+          <ul>
+            <li><a href="/Extra/Meridians/_list.html">경락유통</a></li>
+            <li><a href="/Extra/Circulation/_list.html">기주행공</a></li>
+            <li><a href="/Extra/Imagination/_list.html">심법행공</a></li>
+          </ul>
+        </div>
+
+        <div class="menu-group">
+          <a class="parent" href="/PalJeongdo/_list.html">팔정도</a>
+          <ul>
+            <li><a href="/PalJeongdo/Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html">고교신차</a></li>
+            <li><a href="/PalJeongdo/Link/jeongbeop-saiteu.html">외부링크</a></li>
+            <li><a href="/PalJeongdo/References/_list.html">참고사항</a></li>
+          </ul>
+        </div>
+
+        <a href="/Board/_list.html">자유게시판</a>
+        <a href="/Poem/_list.html">나와의대화</a>
+        <a href="/Esperanto/_list.html">에스페란토</a>
+        <a href="/Note/_list.html">연구노트</a>
+        <a href="/Videos/mal-gwa-munja-ui-mohoham-dol-kim-yong-ok-je15gang-mua-ran-mueos-inga.html">영상자료</a>
+        <a href="/Health/mom-e-joeun-yachae-seupeu-mandeulgi.html">건강자료</a>
+        <a href="/References/chamgo-munheon.html">참고문헌</a>
+      </nav>
+    </aside>
+  </section>
+
+<button id="scroll-top-btn" class="scroll-top-btn">↑</button>
+
+<script>
+/* ============================================================
+   🔼 스크롤 내리면 나타나는 위로가기 버튼
+   ============================================================ */
+const topBtn = document.getElementById("scroll-top-btn");
+const banner = document.querySelector("h1");  // 최상단 요소 감시
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      topBtn.classList.add("show");
+    } else {
+      topBtn.classList.remove("show");
+    }
+  });
+}, { threshold: 0 }); // 약 0 ~ 0.05 등장 타이밍 미세 조절 
+
+observer.observe(banner);
+
+topBtn.addEventListener("click", () => {
+  // 1) 제일 안전한 방법: window 기준으로 스크롤
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // 2) 혹시 몰라서 문서 루트/바디도 같이 0으로 맞춰 줌 (fallback)
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+});
+</script>
+
+<script>
+/* ============================================================
+   🔷 리스트 항목 글자 길이에 따른 스타일 자동 적용
+  ============================================================ */
+
+function applyListLayoutMode() {
+  const body = document.querySelector("#main-content .page-list-body");
+  if (!body) return;
+
+  const items = body.querySelectorAll("p");
+  const count = items.length;
+
+  if (count <= 3) {
+    body.classList.add("center-mode");
+  } else {
+    body.classList.remove("center-mode");
+  }
+}
+
+(function () {
+  const original = loadPage;
+
+  loadPage = async function (path) {
+    await original(path);
+    requestAnimationFrame(() => applyListLayoutMode());
+  };
+})();
+</script>
+
+<script>
+/* ============================================================
+   📱 모바일 토글 스크립트
+   ============================================================ */
+
+const toggleBtn = document.getElementById('menu-toggle');
+const menuPanel = document.getElementById('menu-panel');
+
+toggleBtn.addEventListener('click', () => {
+  const open = menuPanel.classList.toggle('open');
+  document.body.classList.toggle('menu-open', open);
+});
+
+// 메뉴 바깥 클릭 시 자동 닫힘
+document.addEventListener('click', (e) => {
+  if (menuPanel.classList.contains('open') &&
+      !e.target.closest('#menu-panel') &&
+      !e.target.closest('#menu-toggle')) {
+    menuPanel.classList.remove('open');
+    document.body.classList.remove('menu-open');
+  }
+});
+</script>
+
+<script>
+/* ============================================================
+   🌐 FLUEGEL SPA ENGINE — GitHub Pages 최적화 + Auto Link Fix
+   ============================================================ */
+
+/* 1) 페이지 로딩 ------------------------------------------------ */
+async function loadPage(path) {
+  try {
+    // 절대경로로 fetch
+    const res = await fetch(window.location.origin + "/" + path);
+    if (!res.ok) throw new Error("404");
+
+    const html = await res.text();
+
+    // 본문 삽입
+    const main = document.getElementById("main-content");
+    main.innerHTML = html;
+
+    // 현재 폴더 경로 계산 (예: Breathing/Extension/)
+    const folder = path.substring(0, path.lastIndexOf("/") + 1);
+    fixLinks(folder);
+
+    // pushState — 단 한 번만
+    history.pushState({ path }, "", "/" + path);
+
+  } catch (err) {
+    document.getElementById("main-content").innerHTML =
+      "<h2>⚠ 페이지를 찾을 수 없습니다.</h2>";
+  }
+}
+
+/* 2) 절대경로 강제 변환 --------------------------------------- */
+function toAbsolute(href) {
+  if (/^(https?:|mailto:|tel)/.test(href)) return null;
+  if (href.startsWith("#")) return null;
+  if (href.startsWith("/")) return href;
+  return "/" + href;
+}
+
+/* 3) 링크 인터셉트 -------------------------------------------- */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a");
+  if (!a) return;
+
+  const raw = a.getAttribute("href");
+  if (!raw) return;
+
+  const abs = toAbsolute(raw);
+  if (!abs) return; // 외부, 해시
+
+  e.preventDefault();
+
+  const clean = abs.replace(/^\//, "");
+  loadPage(clean);
+});
+
+/* 4) 히스토리 이동 -------------------------------------------- */
+window.addEventListener("popstate", (e) => {
+  if (e.state && e.state.path) {
+    loadPage(e.state.path);
+  }
+});
+
+/* 5) 첫 로드 -------------------------------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+  loadPage("main.html");
+});
+
+/* 6) fragment 자동 절대경로 변환 ------------------------------ */
+function fixLinks(basePath) {
+  const links = document.querySelectorAll("#main-content a[href]");
+  links.forEach(a => {
+    let href = a.getAttribute("href");
+    if (!href) return;
+    if (href.startsWith("/") || href.startsWith("http")) return;
+    if (href.startsWith("#")) return;
+
+    a.setAttribute("href", "/" + basePath + href);
+  });
+}
+</script>
+
+<footer class="site-footer">
+  <p>© 2025 플뤼겔의 탑 | Tower of Life Energy. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
