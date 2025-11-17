@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_7.css?v=20251117231907" />
+  <link rel="stylesheet" href="/style_8.css?v=20251117231908" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -127,6 +127,48 @@ document.addEventListener('click', (e) => {
 </script>
 
 <script>
+/* =========================================================
+   📄 FLUEGEL LIST ENGINE — Auto Size Booster (Stable Version)
+   ============================================================ */
+
+function getVisualLineCount(p) {
+  const style = getComputedStyle(p);
+  const lineHeight = parseFloat(style.lineHeight);
+  if (!lineHeight || isNaN(lineHeight)) return 1;
+
+  const height = p.getBoundingClientRect().height;
+  return Math.round(height / lineHeight);
+}
+
+function boostListItems() {
+  const items = document.querySelectorAll("#main-content .page-list-body p");
+  if (!items.length) return;
+
+  items.forEach(p => {
+    const lines = getVisualLineCount(p);
+    if (lines <= 2) {
+      p.classList.add("small-item");
+    }
+  });
+}
+
+/* 1) SPA 페이지 로딩 직후 */
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(boostListItems, 20);
+});
+
+/* 2) 이미지/폰트 로딩 끝난 뒤 */
+window.addEventListener("load", () => {
+  setTimeout(boostListItems, 20);
+});
+
+/* 3) SPA 내부 이동 후 페이지 교체 */
+document.addEventListener("click", () => {
+  setTimeout(boostListItems, 50);
+});
+</script>
+
+<script>
 /* ============================================================
    🌐 FLUEGEL SPA ENGINE — GitHub Pages 최적화 + Auto Link Fix
    ============================================================ */
@@ -206,40 +248,6 @@ function fixLinks(basePath) {
     a.setAttribute("href", "/" + basePath + href);
   });
 }
-</script>
-
-<script>
-/* ============================================================
-   📄 FLUEGEL LIST ENGINE — Auto Size Booster for _list.html
-   ============================================================ */  
-function getVisualLineCount(p) {
-  const style = getComputedStyle(p);
-  const lineHeight = parseFloat(style.lineHeight);
-  if (!lineHeight || isNaN(lineHeight)) return 1;
-
-  const height = p.getBoundingClientRect().height;
-  return Math.round(height / lineHeight);
-}
-
-function boostListItems() {
-  const items = document.querySelectorAll("#main-content .page-list-body p");
-  if (!items.length) return;
-
-  items.forEach(p => {
-    const text = p.innerText.trim();
-    const lines = getVisualLineCount(p); // ← 실제 화면 줄 수
-
-    // 예: 화면에서 1~3줄짜리 항목만 small-item
-    if (lines <= 3) {
-      p.classList.add("small-item");
-    }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", boostListItems);
-document.addEventListener("click", () => {
-  setTimeout(boostListItems, 50);
-});
 </script>
 
 <footer class="site-footer">
