@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_16.css?v=20251114194816" />
+  <link rel="stylesheet" href="/style_17.css?v=20251114194817" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -206,40 +206,6 @@ function fixLinks(basePath) {
     a.setAttribute("href", "/" + basePath + href);
   });
 }
-</script>
-
-<script>
-/* =========================================================
-   📄 FLUEGEL LIST ENGINE — MutationObserver 버전 (SPA 불변)
-   ========================================================= */
-
-function getVisualLineCount(p) {
-  const style = getComputedStyle(p);
-  const lineHeight = parseFloat(style.lineHeight);
-  const height = p.getBoundingClientRect().height;
-  return Math.round(height / lineHeight);
-}
-
-function boostListItems() {
-  const items = document.querySelectorAll("#main-content .page-list-body p");
-  items.forEach(p => {
-    const lines = getVisualLineCount(p);
-    if (lines <= 2) p.classList.add("small-item");
-  });
-}
-
-/* 🔥 main 내용이 바뀌면 자동으로 small-item 다시 계산 */
-const main = document.querySelector("#main-content");
-
-const observer = new MutationObserver(() => {
-  // 페이지가 바뀐 직후 DOM 정리 완료되도록 약간 딜레이
-  setTimeout(boostListItems, 30);
-});
-
-observer.observe(main, {
-  childList: true,
-  subtree: true
-});
 </script>
 
 <footer class="site-footer">
