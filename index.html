@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_56.css?v=20251114194856" />
+  <link rel="stylesheet" href="/style_57.css?v=20251114194857" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -121,14 +121,22 @@ function applyListLayoutMode() {
   }
 }
 
-(function () {
-  const original = loadPage;
+/* SPA 페이지 로더 */
+async function loadPage(path) {
+  try {
+    const res = await fetch(path);
+    const html = await res.text();
 
-  loadPage = async function (path) {
-    await original(path);
-    requestAnimationFrame(() => applyListLayoutMode());
-  };
-})();
+    // 본문 교체
+    document.querySelector("#main-content").innerHTML = html;
+
+    // 🔥 리스트 레이아웃 모드 적용
+    applyListLayoutMode();
+
+  } catch (err) {
+    console.error("페이지 로드 오류:", err);
+  }
+}
 </script>
 
 <script>
