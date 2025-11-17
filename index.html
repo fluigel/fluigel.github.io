@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_51.css?v=20251114194851" />
+  <link rel="stylesheet" href="/style_52.css?v=20251114194852" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -111,7 +111,10 @@ function applyShortItemStyle() {
   const items = document.querySelectorAll(".page-list-body p");
 
   items.forEach(p => {
-    const txt = p.textContent.trim();
+    const a = p.querySelector("a");      // 🔥 링크 안에 글자가 있으므로 a를 읽어야 함
+    if (!a) return;
+
+    const txt = a.textContent.trim();    // 🔥 실제 표시 글자 = a의 textContent
 
     if (txt.length >= 2 && txt.length <= 3) {
       p.classList.add("short-item");
