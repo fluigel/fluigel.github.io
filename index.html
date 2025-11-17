@@ -212,24 +212,32 @@ function fixLinks(basePath) {
 /* ============================================================
    📄 FLUEGEL LIST ENGINE — Auto Size Booster for _list.html
    ============================================================ */  
+function getVisualLineCount(p) {
+  const style = getComputedStyle(p);
+  const lineHeight = parseFloat(style.lineHeight);
+  if (!lineHeight || isNaN(lineHeight)) return 1;
+
+  const height = p.getBoundingClientRect().height;
+  return Math.round(height / lineHeight);
+}
+
 function boostListItems() {
   const items = document.querySelectorAll("#main-content .page-list-body p");
   if (!items.length) return;
 
   items.forEach(p => {
-    const lines = p.innerText.trim().split(/\n+/).length;
-    const length = p.innerText.trim().length;
+    const text = p.innerText.trim();
+    const length = text.length;          // ← 네가 말한 “나중 보정용”으로 그냥 놔둠
+    const lines = getVisualLineCount(p); // ← 실제 화면 줄 수
 
-    // 최적 기준: 1줄 + 글자수도 짧은 경우만 강조
-    if (lines <= 3 && length <= 20) {
+    // 예: 화면에서 1~3줄짜리 항목만 small-item
+    if (lines <= 3) {
       p.classList.add("small-item");
     }
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => boostListItems());
-
-/* SPA로 다른 페이지가 로드될 때도 다시 실행 */
+document.addEventListener("DOMContentLoaded", boostListItems);
 document.addEventListener("click", () => {
   setTimeout(boostListItems, 50);
 });
