@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_53.css?v=20251114194853" />
+  <link rel="stylesheet" href="/style_54.css?v=20251114194854" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -107,19 +107,35 @@ topBtn.addEventListener("click", () => {
    🔷 리스트 항목 글자 길이에 따른 스타일 자동 적용
   ============================================================ */
 
-document.addEventListener("DOMContentLoaded", () => {
-  const paragraphs = document.querySelectorAll("#main-content .page-list p");
+function applyShortListItemStyle() {
+  const items = document.querySelectorAll("#main-content .page-list-body p");
 
-  paragraphs.forEach(p => {
-    const lineHeight = parseFloat(getComputedStyle(p).lineHeight);
+  items.forEach(p => {
+    const style = getComputedStyle(p);
+    const lineH = parseFloat(style.lineHeight);
     const height = p.offsetHeight;
-    const lines = Math.round(height / lineHeight);
+
+    if (!lineH) return;
+    const lines = Math.round(height / lineH);
 
     if (lines <= 3) {
-      p.classList.add("short-paragraph");
+      p.classList.add("short-list-item");
     }
   });
-});
+}
+
+/* 🔥 loadPage() 완료 후 실행되도록 갈아끼우기 */
+(function () {
+  const originalLoadPage = loadPage;
+
+  loadPage = async function (path) {
+    await originalLoadPage(path);
+
+    requestAnimationFrame(() => {
+      applyShortListItemStyle();
+    });
+  };
+})();
 </script>
 
 <script>
