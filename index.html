@@ -107,33 +107,26 @@ topBtn.addEventListener("click", () => {
    🔷 리스트 항목 글자 길이에 따른 스타일 자동 적용
   ============================================================ */
 
-function applyShortListItemStyle() {
-  const items = document.querySelectorAll("#main-content .page-list-body p");
+function applyListLayoutMode() {
+  const body = document.querySelector("#main-content .page-list-body");
+  if (!body) return;
 
-  items.forEach(p => {
-    const style = getComputedStyle(p);
-    const lineH = parseFloat(style.lineHeight);
-    const height = p.offsetHeight;
+  const items = body.querySelectorAll("p");
+  const count = items.length;
 
-    if (!lineH) return;
-    const lines = Math.round(height / lineH);
-
-    if (lines <= 3) {
-      p.classList.add("short-list-item");
-    }
-  });
+  if (count <= 3) {
+    body.classList.add("center-mode");
+  } else {
+    body.classList.remove("center-mode");
+  }
 }
 
-/* 🔥 loadPage() 완료 후 실행되도록 갈아끼우기 */
 (function () {
-  const originalLoadPage = loadPage;
+  const original = loadPage;
 
   loadPage = async function (path) {
-    await originalLoadPage(path);
-
-    requestAnimationFrame(() => {
-      applyShortListItemStyle();
-    });
+    await original(path);
+    requestAnimationFrame(() => applyListLayoutMode());
   };
 })();
 </script>
