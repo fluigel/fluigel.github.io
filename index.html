@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_3.css?v=20251117231903" />
+  <link rel="stylesheet" href="/style_4.css?v=20251117231904" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -212,10 +212,6 @@ function fixLinks(basePath) {
 /* ============================================================
    📄 FLUEGEL LIST ENGINE — Auto Size Booster for _list.html
    ============================================================ */  
-document.addEventListener("DOMContentLoaded", () => {
-  boostListItems();
-});
-
 function boostListItems() {
   const items = document.querySelectorAll("#main-content .page-list-body p");
   if (!items.length) return;
@@ -224,7 +220,6 @@ function boostListItems() {
     const lines = p.innerText.trim().split(/\n+/).length;
     const length = p.innerText.trim().length;
 
-    // 기준 설정:
     // - 1~3줄
     // - 글자 수 28자 미만
     if (lines <= 3 && length < 28) {
@@ -232,6 +227,8 @@ function boostListItems() {
     }
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => boostListItems());
 
 /* SPA로 다른 페이지가 로드될 때도 다시 실행 */
 document.addEventListener("click", () => {
