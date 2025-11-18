@@ -62,12 +62,13 @@ html, body {
   background: #fff;
   padding: 45px 60px;
   line-height: 1.8; /*본문 줄간격 조절 */
-  min-height: 70vh;
+  min-height: 75vh;
   color: #222;
   border: none;
   box-shadow: none;
   max-width: 900px;
   margin-top: 0px; /* 여기서 베너와 간격 조절 */
+  padding-bottom: 60px;   /* 긴 문서도 과하게 길어 보이지 않는 적당한 여백 */
 }
 
 /* --- 본문 제목 --- */
