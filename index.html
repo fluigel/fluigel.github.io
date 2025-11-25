@@ -68,6 +68,7 @@
         <a href="/Videos/mal-gwa-munja-ui-mohoham-dol-kim-yong-ok-je15gang-mua-ran-mueos-inga.html">영상자료</a>
         <a href="/Health/mom-e-joeun-yachae-seupeu-mandeulgi.html">건강자료</a>
         <a href="/References/chamgo-munheon.html">참고문헌</a>
+        <div id="visitor-counter">Loading...</div>
       </nav>
     </aside>
   </section>
@@ -125,6 +126,51 @@ document.addEventListener('click', (e) => {
     document.body.classList.remove('menu-open');
   }
 });
+</script>
+
+<script>
+/* ============================================================
+   👣 VISITOR COUNTER (SPA + localStorage)
+   메뉴 패널과 연동
+   ============================================================ */
+
+(async () => {
+  const KEY = "fluegel-visitor-counted";
+  const box = document.getElementById("visitor-counter");
+
+  if (!box) return;
+
+  // 중복 방문 방지
+  const firstVisit = !localStorage.getItem(KEY);
+
+  try {
+    const res = await fetch("/counter.json");
+    let data = { count: 0 };
+
+    if (res.ok) data = await res.json();
+
+    // 최초 방문자면 +1
+    if (firstVisit) {
+      data.count++;
+      localStorage.setItem(KEY, "yes");
+
+      // 방문자 업데이트용 다운로드 파일 생성
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "counter.json";
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    box.textContent = data.count.toLocaleString() + " 명";
+
+  } catch (e) {
+    box.textContent = "–";
+  }
+})();
 </script>
 
 <script>
