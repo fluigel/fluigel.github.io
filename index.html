@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_01.css?v=20251125071401" />
+  <link rel="stylesheet" href="/style_03.css?v=20251125071403" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -68,7 +68,6 @@
         <a href="/Videos/mal-gwa-munja-ui-mohoham-dol-kim-yong-ok-je15gang-mua-ran-mueos-inga.html">영상자료</a>
         <a href="/Health/mom-e-joeun-yachae-seupeu-mandeulgi.html">건강자료</a>
         <a href="/References/chamgo-munheon.html">참고문헌</a>
-        <div id="visitor-counter">Loading...</div>
       </nav>
     </aside>
   </section>
@@ -126,36 +125,6 @@ document.addEventListener('click', (e) => {
     document.body.classList.remove('menu-open');
   }
 });
-</script>
-
-<script>
-/* ============================================================
-   👣 FLUEGEL VISITOR COUNTER (LOCALSTORAGE VERSION)
-   - GitHub Pages에서 100% 동작
-   - counter.json 필요 없음
-   - SPA + 새로고침 모두 정상 작동
-   - 기기당 최초 방문만 1회 카운트
-   ============================================================ */
-
-(() => {
-  const KEY = "fluegel-visitor";            // 방문 체크
-  const COUNT_KEY = "fluegel-visitor-count"; // 누적 방문자 수
-  const box = document.getElementById("visitor-counter");
-  if (!box) return;
-
-  // 지금 저장된 방문자 숫자
-  let count = Number(localStorage.getItem(COUNT_KEY) || "0");
-
-  // 첫 방문이면 증가
-  if (!localStorage.getItem(KEY)) {
-    count++;
-    localStorage.setItem(KEY, "yes");
-    localStorage.setItem(COUNT_KEY, String(count));
-  }
-
-  // 화면 표시
-  box.textContent = count.toLocaleString() + " 명";
-})();
 </script>
 
 <script>
