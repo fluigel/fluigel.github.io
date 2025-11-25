@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_14.css?v=20251119040114" />
+  <link rel="stylesheet" href="/style_15.css?v=20251119040115" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -129,132 +129,94 @@ document.addEventListener('click', (e) => {
 
 <script>
 /* ============================================================
-   📌 플뤼겔의 탑 — 메뉴 자동 카운트 시스템
-   단전호흡, 부록, 팔정도 → 각각 하위 카테고리 개수 합산
-   하위 카테고리는 개별 숫자 표시
+   📌 플뤼겔의 탑 — 메뉴 자동 카운트 엔진 (완전체)
+   - 하위 카테고리는 글 개수 자동 표시
+   - 단일 HTML 파일은 자동으로 (1)
+   - 대표 카테고리는 하위 합계 자동 계산
    ============================================================ */
 
+/* ----------------------------
+   1) 카테고리 전체 구조 정의
+   ---------------------------- */
 const CATEGORY_GROUPS = [
   {
-    // 단전호흡
-    parent: {
-      selector: 'a[href="/Breathing/_list.html"]',
-      label: '단전호흡'
-    },
+    parent: { selector: 'a[href="/Breathing/_list.html"]', label: '단전호흡' },
     children: [
-      {
-        selector: 'a[href="/Breathing/Core/_list.html"]',
-        label: '기본행공',
-        list: 'Breathing/Core/_list.html'
-      },
-      {
-        selector: 'a[href="/Breathing/Practice/_list.html"]',
-        label: '정규행공',
-        list: 'Breathing/Practice/_list.html'
-      },
-      {
-        selector: 'a[href="/Breathing/Extension/_list.html"]',
-        label: '심화학습',
-        list: 'Breathing/Extension/_list.html'
-      }
+      { selector: 'a[href="/Breathing/Core/_list.html"]', label: '기본행공', list: 'Breathing/Core/_list.html' },
+      { selector: 'a[href="/Breathing/Practice/_list.html"]', label: '정규행공', list: 'Breathing/Practice/_list.html' },
+      { selector: 'a[href="/Breathing/Extension/_list.html"]', label: '심화학습', list: 'Breathing/Extension/_list.html' }
     ]
   },
-
   {
-    // 부록(附錄)
-    parent: {
-      selector: 'a[href="/Extra/_list.html"]',
-      label: '부록(附錄)'
-    },
+    parent: { selector: 'a[href="/Extra/_list.html"]', label: '부록(附錄)' },
     children: [
-      {
-        selector: 'a[href="/Extra/Meridians/_list.html"]',
-        label: '경락유통',
-        list: 'Extra/Meridians/_list.html'
-      },
-      {
-        selector: 'a[href="/Extra/Circulation/_list.html"]',
-        label: '기주행공',
-        list: 'Extra/Circulation/_list.html'
-      },
-      {
-        selector: 'a[href="/Extra/Imagination/_list.html"]',
-        label: '심법행공',
-        list: 'Extra/Imagination/_list.html'
-      }
+      { selector: 'a[href="/Extra/Meridians/_list.html"]', label: '경락유통', list: 'Extra/Meridians/_list.html' },
+      { selector: 'a[href="/Extra/Circulation/_list.html"]', label: '기주행공', list: 'Extra/Circulation/_list.html' },
+      { selector: 'a[href="/Extra/Imagination/_list.html"]', label: '심법행공', list: 'Extra/Imagination/_list.html' }
     ]
   },
-
   {
-    // 팔정도
-    parent: {
-      selector: 'a[href="/PalJeongdo/_list.html"]',
-      label: '팔정도'
-    },
+    parent: { selector: 'a[href="/PalJeongdo/_list.html"]', label: '팔정도' },
     children: [
-      {
-        selector: 'a[href="/PalJeongdo/Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html"]',
-        label: '고교신차',
-        list: 'PalJeongdo/Takahashi-shinji/'
-      },
-      {
-        selector: 'a[href="/PalJeongdo/Link/jeongbeop-saiteu.html"]',
-        label: '외부링크',
-        list: 'PalJeongdo/Link/'
-      },
-      {
-        selector: 'a[href="/PalJeongdo/References/_list.html"]',
-        label: '참고사항',
-        list: 'PalJeongdo/References/_list.html'
-      }
+      { selector: 'a[href="/PalJeongdo/Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html"]', label: '고교신차', list: 'PalJeongdo/Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html' },
+      { selector: 'a[href="/PalJeongdo/Link/jeongbeop-saiteu.html"]', label: '외부링크', list: 'PalJeongdo/Link/jeongbeop-saiteu.html' },
+      { selector: 'a[href="/PalJeongdo/References/_list.html"]', label: '참고사항', list: 'PalJeongdo/References/_list.html' }
     ]
   }
 ];
 
-// 🧮 list.html 또는 해당 폴더의 링크 개수 세기
+/* ----------------------------
+   2) 글 개수 계산 함수
+   ---------------------------- */
 async function fetchCount(path) {
   try {
-    const full = path.endsWith('.html')
-      ? path
-      : path + "_list.html";  // 팔정도 일부는 폴더이므로 자동 보정
+    // 2-1) 단일 html 파일일 경우 → 무조건 1개 처리
+    if (path.endsWith(".html") && !path.includes("_list")) {
+      return 1;
+    }
 
+    // 2-2) 폴더인 경우 (_list.html 붙여야 함)
+    const full = path.endsWith('.html') ? path : path + "_list.html";
     const res = await fetch(window.location.origin + '/' + full);
     if (!res.ok) return 0;
 
     const html = await res.text();
     const doc = new DOMParser().parseFromString(html, 'text/html');
 
+    // 리스트 안에 있는 글 개수 검사
     let count = doc.querySelectorAll('.page-list-body a').length;
     if (!count) count = doc.querySelectorAll('.page-list a').length;
 
     return count;
-  } catch (e) {
-    console.error("카운트 오류:", path, e);
+  } catch (err) {
+    console.error("카운트 오류:", path, err);
     return 0;
   }
 }
 
-// 📌 대표 카테고리 + 하위 카테고리 텍스트 업데이트
-async function updateAllCategories() {
+/* ----------------------------
+   3) 전체 메뉴 숫자 업데이트
+   ---------------------------- */
+async function updateMenuNumbers() {
   for (const group of CATEGORY_GROUPS) {
     let total = 0;
 
-    // 1) 하위 카테고리 개별 표시
+    // 3-1) 하위 카테고리 개별 숫자 계산
     for (const child of group.children) {
       const count = await fetchCount(child.list);
       total += count;
 
-      const el = document.querySelector(child.selector);
-      if (el) el.textContent = `${child.label} (${count})`;
+      const childEl = document.querySelector(child.selector);
+      if (childEl) childEl.textContent = `${child.label} (${count})`;
     }
 
-    // 2) 대표 카테고리 = 총합 표시
+    // 3-2) 대표 카테고리 = 합계 표시
     const parentEl = document.querySelector(group.parent.selector);
     if (parentEl) parentEl.textContent = `${group.parent.label} (${total})`;
   }
 }
 
-document.addEventListener("DOMContentLoaded", updateAllCategories);
+document.addEventListener("DOMContentLoaded", updateMenuNumbers);
 </script>
 
 <script>
