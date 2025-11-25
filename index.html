@@ -37,6 +37,7 @@
         <div class="menu-group">
           <a class="parent" href="/Breathing/_list.html">단전호흡</a>
           <ul>
+            <li><a href="/Breathing/Core/_list.html">기본행공</a></li>
             <li><a href="/Breathing/Practice/_list.html">정규행공</a></li>
             <li><a href="/Breathing/Extension/_list.html">심화학습</a></li>
           </ul>
@@ -124,6 +125,136 @@ document.addEventListener('click', (e) => {
     document.body.classList.remove('menu-open');
   }
 });
+</script>
+
+<script>
+/* ============================================================
+   📌 플뤼겔의 탑 — 메뉴 자동 카운트 시스템
+   단전호흡, 부록, 팔정도 → 각각 하위 카테고리 개수 합산
+   하위 카테고리는 개별 숫자 표시
+   ============================================================ */
+
+const CATEGORY_GROUPS = [
+  {
+    // 단전호흡
+    parent: {
+      selector: 'a[href="/Breathing/_list.html"]',
+      label: '단전호흡'
+    },
+    children: [
+      {
+        selector: 'a[href="/Breathing/Core/_list.html"]',
+        label: '기본행공',
+        list: 'Breathing/Core/_list.html'
+      },
+      {
+        selector: 'a[href="/Breathing/Practice/_list.html"]',
+        label: '정규행공',
+        list: 'Breathing/Practice/_list.html'
+      },
+      {
+        selector: 'a[href="/Breathing/Extension/_list.html"]',
+        label: '심화학습',
+        list: 'Breathing/Extension/_list.html'
+      }
+    ]
+  },
+
+  {
+    // 부록(附錄)
+    parent: {
+      selector: 'a[href="/Extra/_list.html"]',
+      label: '부록(附錄)'
+    },
+    children: [
+      {
+        selector: 'a[href="/Extra/Meridians/_list.html"]',
+        label: '경락유통',
+        list: 'Extra/Meridians/_list.html'
+      },
+      {
+        selector: 'a[href="/Extra/Circulation/_list.html"]',
+        label: '기주행공',
+        list: 'Extra/Circulation/_list.html'
+      },
+      {
+        selector: 'a[href="/Extra/Imagination/_list.html"]',
+        label: '심법행공',
+        list: 'Extra/Imagination/_list.html'
+      }
+    ]
+  },
+
+  {
+    // 팔정도
+    parent: {
+      selector: 'a[href="/PalJeongdo/_list.html"]',
+      label: '팔정도'
+    },
+    children: [
+      {
+        selector: 'a[href="/PalJeongdo/Takahashi-shinji/dakahashi-shinji-nim-e-daehae-yeo.html"]',
+        label: '고교신차',
+        list: 'PalJeongdo/Takahashi-shinji/'
+      },
+      {
+        selector: 'a[href="/PalJeongdo/Link/jeongbeop-saiteu.html"]',
+        label: '외부링크',
+        list: 'PalJeongdo/Link/'
+      },
+      {
+        selector: 'a[href="/PalJeongdo/References/_list.html"]',
+        label: '참고사항',
+        list: 'PalJeongdo/References/_list.html'
+      }
+    ]
+  }
+];
+
+// 🧮 list.html 또는 해당 폴더의 링크 개수 세기
+async function fetchCount(path) {
+  try {
+    const full = path.endsWith('.html')
+      ? path
+      : path + "_list.html";  // 팔정도 일부는 폴더이므로 자동 보정
+
+    const res = await fetch(window.location.origin + '/' + full);
+    if (!res.ok) return 0;
+
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+
+    let count = doc.querySelectorAll('.page-list-body a').length;
+    if (!count) count = doc.querySelectorAll('.page-list a').length;
+
+    return count;
+  } catch (e) {
+    console.error("카운트 오류:", path, e);
+    return 0;
+  }
+}
+
+// 📌 대표 카테고리 + 하위 카테고리 텍스트 업데이트
+async function updateAllCategories() {
+  for (const group of CATEGORY_GROUPS) {
+    let total = 0;
+
+    // 1) 하위 카테고리 개별 표시
+    for (const child of group.children) {
+      const count = await fetchCount(child.list);
+      total += count;
+
+      const el = document.querySelector(child.selector);
+      if (el) el.textContent = `${child.label} (${count})`;
+    }
+
+    // 2) 대표 카테고리 = 총합 표시
+    const parentEl = document.querySelector(group.parent.selector);
+    if (parentEl) parentEl.textContent = `${group.parent.label} (${total})`;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", updateAllCategories);
 </script>
 
 <script>
