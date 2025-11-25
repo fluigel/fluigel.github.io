@@ -140,7 +140,7 @@ html, body {
 .page-list-small-body {
   display: inline-block;
   text-align: left;
-  margin-left: 32%;
+  margin-left: 24%;
   margin-right: auto;
 }
 
@@ -155,7 +155,7 @@ html, body {
 }
 
 .page-list-middle-body p {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   line-height: 1.0;
   align-items: center;
 }
@@ -165,7 +165,7 @@ html, body {
 }
 
 .page-list-small-body p {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   line-height: 1.2;
   align-items: center;
 }
