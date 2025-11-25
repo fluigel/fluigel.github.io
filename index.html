@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_22.css?v=20251119040122" />
+  <link rel="stylesheet" href="/style_01.css?v=20251125071401" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -130,46 +130,31 @@ document.addEventListener('click', (e) => {
 
 <script>
 /* ============================================================
-   👣 VISITOR COUNTER (SPA + localStorage)
-   메뉴 패널과 연동
+   👣 FLUEGEL VISITOR COUNTER (LOCALSTORAGE VERSION)
+   - GitHub Pages에서 100% 동작
+   - counter.json 필요 없음
+   - SPA + 새로고침 모두 정상 작동
+   - 기기당 최초 방문만 1회 카운트
    ============================================================ */
 
-(async () => {
-  const KEY = "fluegel-visitor-counted";
+(() => {
+  const KEY = "fluegel-visitor";            // 방문 체크
+  const COUNT_KEY = "fluegel-visitor-count"; // 누적 방문자 수
   const box = document.getElementById("visitor-counter");
-
   if (!box) return;
 
-  // 중복 방문 방지
-  const firstVisit = !localStorage.getItem(KEY);
+  // 지금 저장된 방문자 숫자
+  let count = Number(localStorage.getItem(COUNT_KEY) || "0");
 
-  try {
-    const res = await fetch("/counter.json");
-    let data = { count: 0 };
-
-    if (res.ok) data = await res.json();
-
-    // 최초 방문자면 +1
-    if (firstVisit) {
-      data.count++;
-      localStorage.setItem(KEY, "yes");
-
-      // 방문자 업데이트용 다운로드 파일 생성
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "counter.json";
-      link.style.display = "none";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    box.textContent = data.count.toLocaleString() + " 명";
-
-  } catch (e) {
-    box.textContent = "–";
+  // 첫 방문이면 증가
+  if (!localStorage.getItem(KEY)) {
+    count++;
+    localStorage.setItem(KEY, "yes");
+    localStorage.setItem(COUNT_KEY, String(count));
   }
+
+  // 화면 표시
+  box.textContent = count.toLocaleString() + " 명";
 })();
 </script>
 
