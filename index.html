@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_09.css?v=20251125071409" />
+  <link rel="stylesheet" href="/style_10.css?v=20251125071410" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -220,27 +220,28 @@ document.addEventListener("DOMContentLoaded", autoCountMenu);
 
 <script>
 /* ============================================================
-   🌐 FLUEGEL SPA ENGINE — GitHub Pages 최적화 + Auto Link Fix
+   🌐 FLUEGEL SPA ENGINE v2
+   - target="_blank" 완전 존중
+   - 파일 링크 자동 예외
+   - 외부 링크 예외
+   - 해시(#) 예외
+   - html 페이지만 SPA 로딩
    ============================================================ */
 
-/* 1) 페이지 로딩 ------------------------------------------------ */
+/* 1) HTML 페이지 로딩 ----------------------------------------- */
 async function loadPage(path) {
   try {
-    // 절대경로로 fetch
     const res = await fetch(window.location.origin + "/" + path);
     if (!res.ok) throw new Error("404");
 
     const html = await res.text();
-
-    // 본문 삽입
     const main = document.getElementById("main-content");
     main.innerHTML = html;
 
-    // 현재 폴더 경로 계산 (예: Breathing/Extension/)
+    // 현재 폴더 경로 계산
     const folder = path.substring(0, path.lastIndexOf("/") + 1);
     fixLinks(folder);
 
-    // pushState — 단 한 번만
     history.pushState({ path }, "", "/" + path);
 
   } catch (err) {
@@ -249,7 +250,7 @@ async function loadPage(path) {
   }
 }
 
-/* 2) 절대경로 강제 변환 --------------------------------------- */
+/* 2) 절대경로 판정 ------------------------------------------------ */
 function toAbsolute(href) {
   if (/^(https?:|mailto:|tel)/.test(href)) return null;
   if (href.startsWith("#")) return null;
@@ -257,45 +258,67 @@ function toAbsolute(href) {
   return "/" + href;
 }
 
-/* 3) 링크 인터셉트 -------------------------------------------- */
+/* 3) SPA 라우팅 인터셉트 ---------------------------------------- */
 document.addEventListener("click", (e) => {
   const a = e.target.closest("a");
   if (!a) return;
 
-  const raw = a.getAttribute("href");
-  if (!raw) return;
+  const href = a.getAttribute("href");
+  if (!href) return;
 
-  const abs = toAbsolute(raw);
-  if (!abs) return; // 외부, 해시
+  /* 🔥 1) 새창 링크는 무조건 브라우저 기본동작 */
+  if (a.target === "_blank") return;
 
+  /* 🔥 2) 파일 링크는 SPA 제외 */
+  if (/\.(txt|pdf|zip|png|jpg|jpeg|gif|svg)$/i.test(href)) return;
+
+  /* 🔥 3) 외부 링크는 제외 */
+  if (/^(https?:)?\/\//.test(href)) return;
+
+  /* 🔥 4) 해시 링크 제외 */
+  if (href.startsWith("#")) return;
+
+  const abs = toAbsolute(href);
+  if (!abs) return;
+
+  /* 🔥 5) .html 페이지만 SPA 처리 */
+  if (!abs.endsWith(".html")) return;
+
+  /* 👉 여기까지 통과하면 **순수 내부 html 페이지** */
   e.preventDefault();
-
   const clean = abs.replace(/^\//, "");
   loadPage(clean);
 });
 
-/* 4) 히스토리 이동 -------------------------------------------- */
+/* 4) 뒤로가기/앞으로가기 --------------------------------------- */
 window.addEventListener("popstate", (e) => {
   if (e.state && e.state.path) {
     loadPage(e.state.path);
   }
 });
 
-/* 5) 첫 로드 -------------------------------------------------- */
+/* 5) 첫 로딩 --------------------------------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
   loadPage("main.html");
 });
 
-/* 6) fragment 자동 절대경로 변환 ------------------------------ */
+/* 6) fragment 링크 자동 고침 ----------------------------------- */
 function fixLinks(basePath) {
   const links = document.querySelectorAll("#main-content a[href]");
   links.forEach(a => {
     let href = a.getAttribute("href");
     if (!href) return;
-    if (href.startsWith("/") || href.startsWith("http")) return;
+
+    // 파일, 외부, #, 새탭 건드리지 말기
+    if (a.target === "_blank") return;
+    if (/\.(txt|pdf|zip|png|jpg|jpeg|gif|svg)$/i.test(href)) return;
+    if (/^(https?:)?\/\//.test(href)) return;
     if (href.startsWith("#")) return;
 
-    a.setAttribute("href", "/" + basePath + href);
+    // 상대경로를 절대경로로 바꾸기
+    if (!href.startsWith("/")) {
+      a.setAttribute("href", "/" + basePath + href);
+    }
   });
 }
 </script>
