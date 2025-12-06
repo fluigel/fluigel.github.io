@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_04.css?v=20251207055904" />
+  <link rel="stylesheet" href="/style_05.css?v=20251207055905" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -82,15 +82,19 @@
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
-const banner = document.querySelector("h1");
 
-// 버튼 등장 딜레이(px). 값만 바꾸면 원하는 만큼 늦출 수 있음.
-const delay = 0;   // 👉 100 ~ 2000 추천. 원하는 만큼 조절 가능.
+// 감시 대상: 본문 h1
+const banner = document.querySelector("#main-content h1");
+
+// 등장 딜레이(px 단위)
+const delay = 300;
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
 
-    // h1이 화면에서 사라지고 + 스크롤이 delay 이상일 때 나타남
+    // 🔥 두 조건 모두 만족해야 나타남
+    // 1) h1이 화면에서 사라짐
+    // 2) 스크롤이 delay 이상 내려감
     if (!entry.isIntersecting && window.scrollY > delay) {
       topBtn.classList.add("show");
     } else {
@@ -102,9 +106,12 @@ const observer = new IntersectionObserver((entries) => {
 
 observer.observe(banner);
 
-// 위로가기 버튼 동작
+// 클릭 시 위로 이동
 topBtn.addEventListener("click", () => {
+  // 1) 제일 안전한 방법: window 기준으로 스크롤
   window.scrollTo({ top: 0, behavior: "smooth" });
+  
+  // 2) 혹시 몰라서 문서 루트/바디도 같이 0으로 맞춰 줌 (fallback)
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
 });
