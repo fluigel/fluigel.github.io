@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_08.css?v=20251207055908" />
+  <link rel="stylesheet" href="/style_09.css?v=20251207055909" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,21 +78,17 @@
 
 <script>
 /* ============================================================
-   🔼 플뤼겔의 탑 — 위로가기 버튼 최종 완성본
-   - 스크롤 루트가 window가 아니라 본문 영역일 때 최적화됨
-   - 기존 안정화 구조 유지
-   - 등장 시점 미세 딜레이 가능(rootMargin)
+   🔼 플뤼겔의 탑 — 위로가기 버튼 (정적 h1 기반, 최종 안정판)
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 📌 네 사이트의 실제 스크롤 기준점은 본문 내부의 h1이다.
-//     (SPA + main-content 구조에서는 window가 스크롤 주체가 아님)
-const target = document.querySelector("#main-content h1");
+// 🔥 정적 h1 감시 (메뉴 패널의 h1) — SPA 로딩 영향 없음
+const target = document.querySelector("h1");
 
-// 📌 등장 시점 딜레이
-//   - 숫자를 늘리면 등장이 더 늦게 나타남
-//   - 예: -80 → 약간 늦게, -150 → 많이 늦게, 0 → 빠르게
+// 👉 등장 시점 딜레이 (조절 포인트)
+//    더 늦게 = 숫자를 더 크게(예: -180)
+//    조금 늦게 = -60 ~ -100
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -105,14 +101,13 @@ const observer = new IntersectionObserver(
   },
   {
     threshold: 0,
-    rootMargin: "-120px 0px 0px 0px" // 🔥 등장 위치 미세 조정(플뤼겔 조절 포인트)
+    rootMargin: "-120px 0px 0px 0px" // 🔥 딜레이 여기서 조절
   }
 );
 
-// 본문 h1 감시 시작
 observer.observe(target);
 
-// 📌 부드럽게 맨 위로 이동
+// 부드럽게 스크롤 위로
 topBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
