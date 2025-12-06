@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_06.css?v=20251207055906" />
+  <link rel="stylesheet" href="/style_07.css?v=20251207055907" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,27 +78,38 @@
 
 <script>
 /* ============================================================
-   플뤼겔 전용 — 스크롤 담당 요소 자동 감지 + 위로가기 버튼 완전체
+   🔼 위로가기 버튼 — 픽셀 기준 + 딱 잘 먹는 최종본
    ============================================================ */
 
-// 위로가기 버튼
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 어떤 요소가 실제 스크롤을 담당하는지 자동 감지
-function getScrollRoot() {
-  if (document.scrollingElement) return document.scrollingElement;
-  return document.documentElement; // fallback
-}
-
-const SCROLL_TARGET = getScrollRoot();
-
-// 등장 지연 px
+// 🔥 몇 픽셀 내려가면 나올지 여기서 조절
 const SHOW_AFTER = 260;
 
-// 스크롤 감시
-SCROLL_TARGET.addEventListener("scroll", () => {
+/* 현재 스크롤 위치 안전하게 얻기 */
+function getScrollY() {
+  if (document.scrollingElement) {
+    return document.scrollingElement.scrollTop;
+  }
+  return (
+    window.pageYOffset ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop ||
+    0
+  );
+}
 
-  const y = SCROLL_TARGET.scrollTop;
+/* 스크롤 이벤트는 무조건 window에서 듣는 게 제일 안전함 */
+window.addEventListener("scroll", () => {
+
+  // 모바일(1060px 이하)에서는 CSS에서 버튼 자체를 숨기고 있으니
+  // 굳이 show 안 주는 게 깔끔
+  if (window.innerWidth < 1060) {
+    topBtn.classList.remove("show");
+    return;
+  }
+
+  const y = getScrollY();
 
   if (y > SHOW_AFTER) {
     topBtn.classList.add("show");
@@ -107,9 +118,13 @@ SCROLL_TARGET.addEventListener("scroll", () => {
   }
 });
 
-// 최상단 이동
+/* 클릭하면 맨 위로 부드럽게 */
 topBtn.addEventListener("click", () => {
-  SCROLL_TARGET.scrollTo({ top: 0, behavior: "smooth" });
+  if (document.scrollingElement && document.scrollingElement.scrollTo) {
+    document.scrollingElement.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 });
 </script>
 
