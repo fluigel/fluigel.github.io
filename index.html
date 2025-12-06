@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_09.css?v=20251207055909" />
+  <link rel="stylesheet" href="/style_10.css?v=20251207055910" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,36 +78,32 @@
 
 <script>
 /* ============================================================
-   🔼 플뤼겔의 탑 — 위로가기 버튼 (정적 h1 기반, 최종 안정판)
+   🔼 위로가기 버튼 (PC 전용)
+    - 메뉴의 h1이 화면 밖으로 나가면 버튼 표시
+    - rootMargin 첫 값으로 등장 타이밍 조절
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 🔥 정적 h1 감시 (메뉴 패널의 h1) — SPA 로딩 영향 없음
+// 화면 상단 고정 h1 (SPA 영향 안 받는 안정 기준)
 const target = document.querySelector("h1");
 
-// 👉 등장 시점 딜레이 (조절 포인트)
-//    더 늦게 = 숫자를 더 크게(예: -180)
-//    조금 늦게 = -60 ~ -100
+// h1이 화면에서 사라지면 show
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        topBtn.classList.add("show");
-      } else {
-        topBtn.classList.remove("show");
-      }
+      topBtn.classList.toggle("show", !entry.isIntersecting);
     });
   },
   {
     threshold: 0,
-    rootMargin: "-120px 0px 0px 0px" // 🔥 딜레이 여기서 조절
+    rootMargin: "-180px 0 0 0" // ← 등장 지연값 (크게 = 더 늦게)
   }
 );
 
 observer.observe(target);
 
-// 부드럽게 스크롤 위로
+// 부드러운 맨 위 이동
 topBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
