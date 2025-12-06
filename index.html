@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_07.css?v=20251207055907" />
+  <link rel="stylesheet" href="/style_08.css?v=20251207055908" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,53 +78,43 @@
 
 <script>
 /* ============================================================
-   🔼 위로가기 버튼 — 픽셀 기준 + 딱 잘 먹는 최종본
+   🔼 플뤼겔의 탑 — 위로가기 버튼 최종 완성본
+   - 스크롤 루트가 window가 아니라 본문 영역일 때 최적화됨
+   - 기존 안정화 구조 유지
+   - 등장 시점 미세 딜레이 가능(rootMargin)
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 🔥 몇 픽셀 내려가면 나올지 여기서 조절
-const SHOW_AFTER = 260;
+// 📌 네 사이트의 실제 스크롤 기준점은 본문 내부의 h1이다.
+//     (SPA + main-content 구조에서는 window가 스크롤 주체가 아님)
+const target = document.querySelector("#main-content h1");
 
-/* 현재 스크롤 위치 안전하게 얻기 */
-function getScrollY() {
-  if (document.scrollingElement) {
-    return document.scrollingElement.scrollTop;
+// 📌 등장 시점 딜레이
+//   - 숫자를 늘리면 등장이 더 늦게 나타남
+//   - 예: -80 → 약간 늦게, -150 → 많이 늦게, 0 → 빠르게
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        topBtn.classList.add("show");
+      } else {
+        topBtn.classList.remove("show");
+      }
+    });
+  },
+  {
+    threshold: 0,
+    rootMargin: "-120px 0px 0px 0px" // 🔥 등장 위치 미세 조정(플뤼겔 조절 포인트)
   }
-  return (
-    window.pageYOffset ||
-    document.documentElement.scrollTop ||
-    document.body.scrollTop ||
-    0
-  );
-}
+);
 
-/* 스크롤 이벤트는 무조건 window에서 듣는 게 제일 안전함 */
-window.addEventListener("scroll", () => {
+// 본문 h1 감시 시작
+observer.observe(target);
 
-  // 모바일(1060px 이하)에서는 CSS에서 버튼 자체를 숨기고 있으니
-  // 굳이 show 안 주는 게 깔끔
-  if (window.innerWidth < 1060) {
-    topBtn.classList.remove("show");
-    return;
-  }
-
-  const y = getScrollY();
-
-  if (y > SHOW_AFTER) {
-    topBtn.classList.add("show");
-  } else {
-    topBtn.classList.remove("show");
-  }
-});
-
-/* 클릭하면 맨 위로 부드럽게 */
+// 📌 부드럽게 맨 위로 이동
 topBtn.addEventListener("click", () => {
-  if (document.scrollingElement && document.scrollingElement.scrollTo) {
-    document.scrollingElement.scrollTo({ top: 0, behavior: "smooth" });
-  } else {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 
