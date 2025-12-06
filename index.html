@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_05.css?v=20251207055905" />
+  <link rel="stylesheet" href="/style_06.css?v=20251207055906" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,42 +78,38 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼
+   플뤼겔 전용 — 스크롤 담당 요소 자동 감지 + 위로가기 버튼 완전체
    ============================================================ */
 
+// 위로가기 버튼
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 감시 대상: 본문 h1
-const banner = document.querySelector("#main-content h1");
+// 어떤 요소가 실제 스크롤을 담당하는지 자동 감지
+function getScrollRoot() {
+  if (document.scrollingElement) return document.scrollingElement;
+  return document.documentElement; // fallback
+}
 
-// 등장 딜레이(px 단위)
-const delay = 300;
+const SCROLL_TARGET = getScrollRoot();
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+// 등장 지연 px
+const SHOW_AFTER = 260;
 
-    // 🔥 두 조건 모두 만족해야 나타남
-    // 1) h1이 화면에서 사라짐
-    // 2) 스크롤이 delay 이상 내려감
-    if (!entry.isIntersecting && window.scrollY > delay) {
-      topBtn.classList.add("show");
-    } else {
-      topBtn.classList.remove("show");
-    }
+// 스크롤 감시
+SCROLL_TARGET.addEventListener("scroll", () => {
 
-  });
-}, { threshold: 0 });
+  const y = SCROLL_TARGET.scrollTop;
 
-observer.observe(banner);
+  if (y > SHOW_AFTER) {
+    topBtn.classList.add("show");
+  } else {
+    topBtn.classList.remove("show");
+  }
+});
 
-// 클릭 시 위로 이동
+// 최상단 이동
 topBtn.addEventListener("click", () => {
-  // 1) 제일 안전한 방법: window 기준으로 스크롤
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  
-  // 2) 혹시 몰라서 문서 루트/바디도 같이 0으로 맞춰 줌 (fallback)
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
+  SCROLL_TARGET.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 
