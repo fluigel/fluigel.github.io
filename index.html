@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_11.css?v=20251125071411" />
+  <link rel="stylesheet" href="/style_12.css?v=20251125071412" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -68,7 +68,8 @@
         <a href="/Videos/mal-gwa-munja-ui-mohoham-dol-kim-yong-ok-je15gang-mua-ran-mueos-inga.html">영상자료</a>
         <a href="/Health/mom-e-joeun-yachae-seupeu-mandeulgi.html">건강자료</a>
         <a href="/References/chamgo-munheon.html">참고문헌</a>
-        <a href="/Fluigel.zip">홈페이지 다운로드</a>
+        <a href="https://github.com/fluigel/REPO/releases/download/v1.0/Fluigel.zip" download>홈페이지 다운로드</a>
+
       </nav>
     </aside>
   </section>
@@ -187,6 +188,9 @@ async function autoCountMenu() {
   for (const link of allLinks) {
     const href = link.getAttribute("href");
     if (!href || href === "/main.html") continue;
+    
+    // 🔥 파일 다운로드 링크는 카운트 제외
+    if (/\.(zip|txt|pdf|png|jpg|jpeg|gif|svg)$/i.test(href)) continue;
 
     const cleanPath = href.startsWith("/") ? href.substring(1) : href;
     const count = await getCountFromPath(cleanPath);
