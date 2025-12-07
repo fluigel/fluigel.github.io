@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_22.css?v=20251207012722" />
+  <link rel="stylesheet" href="/style_23.css?v=20251207012723" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,7 +78,7 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼 (최종 안정판)
+   🔼 스크롤 내리면 나타나는 위로가기 버튼 — body scroll 전용 버전
    ============================================================ */
 const topBtn = document.getElementById("scroll-top-btn");
 const banner = document.querySelector(".banner"); // 최상단 요소 감시
@@ -86,12 +86,10 @@ const banner = document.querySelector(".banner"); // 최상단 요소 감시
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
 
-    const scrollY =
-      window.scrollY ||
-      document.body.scrollTop ||
-      document.documentElement.scrollTop ||
-      0;
+    // 🚩 네 사이트는 body가 스크롤 주체 → 이 값만 사용해야 정확함
+    const scrollY = document.body.scrollTop;
 
+    // 배너 사라짐 + 스크롤 240px 이상 조건 둘 다 충족해야 버튼 표시
     if (!entry.isIntersecting && scrollY > 240) {
       topBtn.classList.add("show");
     } else {
@@ -103,13 +101,16 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(banner);
 
 topBtn.addEventListener("click", () => {
-  // 1) 실제 스크롤을 담당하는 주체 (현재 body)
+  // 🚩 실제 스크롤 담당: body
   document.body.scrollTop = 0;
 
-  // 2) 혹시 모를 브라우저 대비 (Safari, 오래된 Chrome 등)
+  // 하위 호환
   document.documentElement.scrollTop = 0;
+
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+</script>
+
 </script>
 
 <script>
