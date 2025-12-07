@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_08.css?v=20251207055908" />
+  <link rel="stylesheet" href="/style_09.css?v=20251207055909" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,15 +78,15 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼
+   🔼 스크롤 내리면 나타나는 위로가기 버튼 (정상 작동 버전)
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
-const banner = document.querySelector("h1");  // 최상단 요소 감시
+const banner = document.querySelector(".banner img");  // ← 관찰 대상을 h1 → 배너 이미지로 변경
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    // 🔥 intersectionRatio가 0 = 화면에서 완전히 사라진 상태
+    // 배너가 화면에서 완전히 사라진 뒤 + margin 만큼 더 내려갔을 때 버튼 등장
     if (entry.intersectionRatio === 0) {
       topBtn.classList.add("show");
     } else {
@@ -95,18 +95,13 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { 
   threshold: 0,
-  rootMargin: "220px 0px 0px 0px"   // 🔥 양수로 "더 늦게 등장"이 제대로 적용됨
+  rootMargin: "200px 0px 0px 0px"   // ← 스크롤 더 내려가야 "사라졌다"로 인식됨
 });
 
 observer.observe(banner);
 
 topBtn.addEventListener("click", () => {
-  // 1) 실제 스크롤
-  document.body.scrollTop = 0;
-
-  // 2) 하위 버전 대비
   window.scrollTo({ top: 0, behavior: "smooth" });
-  document.documentElement.scrollTop = 0;
 });
 </script>
 
