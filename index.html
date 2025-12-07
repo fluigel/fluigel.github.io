@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_08.css?v=20251207055908" />
+  <link rel="stylesheet" href="/style_06.css?v=20251207055906" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -80,26 +80,32 @@
 /* ============================================================
    🔼 스크롤 내리면 나타나는 위로가기 버튼
    ============================================================ */
-
 const topBtn = document.getElementById("scroll-top-btn");
-const main = document.getElementById("main-content");  // ★ 핵심
+const banner = document.querySelector("h1");  // 최상단 요소 감시
 
-main.addEventListener("scroll", () => {
-  if (main.scrollTop > 300) {  // main-content의 스크롤값 체크
-    topBtn.classList.add("show");
-  } else {
-    topBtn.classList.remove("show");
-  }
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      topBtn.classList.add("show");
+    } else {
+      topBtn.classList.remove("show");
+    }
+  });
+}, { 
+  threshold: 0,
+  rootMargin: "-120px 0px 0px 0px"   // 🔥 등장 타이밍 딜레이 (조절 가능)
 });
 
-/* ===============================
-   버튼 클릭 → 맨 위로 이동 (3중 방어 유지)
-=============================== */
+observer.observe(banner);
+
 topBtn.addEventListener("click", () => {
-  main.scrollTop = 0;                 // ★ 실제 스크롤 주체
-  document.body.scrollTop = 0;        // 보조
-  document.documentElement.scrollTop = 0; // 보조
-  window.scrollTo({ top: 0, behavior: "smooth" }); // smooth 환경 보조
+  // 1) 실제 스크롤
+  document.body.scrollTop = 0;
+
+  // 2) 하위 버전
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  document.documentElement.scrollTop = 0;
+
 });
 </script>
 
