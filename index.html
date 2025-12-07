@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_12.css?v=20251207104612" />
+  <link rel="stylesheet" href="/style_02.css?v=20251207012702" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,40 +78,39 @@
 
 <script>
 /* ============================================================
-   🔼 위로가기 버튼 (PC 전용)
-    - 메뉴의 h1이 화면 밖으로 나가면 버튼 표시
-    - rootMargin 첫 값으로 등장 타이밍 조절
+   🔼 스크롤 내리면 나타나는 위로가기 버튼 (딜레이 버전)
+   - 조건 1: 메뉴의 h1이 화면에서 사라짐
+   - 조건 2: 추가로 250px 더 내려가야 등장
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
+const menuTitle = document.querySelector("#menu-panel h1");
 
-// 화면 상단 고정 h1 (SPA 영향 안 받는 안정 기준)
-const target = document.querySelector("h1");
+let h1Gone = false;
 
-// h1이 화면에서 사라지면 show
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        topBtn.classList.add("show");
-      } else {
-        topBtn.classList.remove("show");
-      }
-    });
-  },
-  {
-    threshold: 0,
-    rootMargin: "320px 0px 0px 0px" // ← 등장 지연값 (크게 = 더 늦게)
-  }
-);
-
-observer.observe(target);
-
-// 부드럽게 스크롤 위로
-topBtn.addEventListener("click", () => {
-  document.querySelector("#content-wrapper").scrollTo({
-    top: 0, behavior: "smooth"
+/* 1) h1이 화면에서 사라졌는지 관찰 */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    h1Gone = !entry.isIntersecting;  // h1이 안 보이면 true
   });
+}, { threshold: 0 }); // 한 픽셀만 사라져도 감지
+
+observer.observe(menuTitle);
+
+/* 2) 스크롤 위치와 h1 상태를 함께 체크 */
+window.addEventListener("scroll", () => {
+  const extraOffset = 250;  // ← 버튼을 더 늦게 등장시키는 핵심값 (원하면 조절)
+
+  if (h1Gone && window.scrollY > extraOffset) {
+    topBtn.classList.add("show");
+  } else {
+    topBtn.classList.remove("show");
+  }
+});
+
+/* 3) 부드러운 스크롤 탑 이동 */
+topBtn.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 
