@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_05.css?v=20251207082505" />
+  <link rel="stylesheet" href="/style_06.css?v=20251207082506" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -77,43 +77,37 @@
 <button id="scroll-top-btn" class="scroll-top-btn">↑</button>
 
 <script>
-/* ============================================================
-   🔼 위로가기 버튼 (PC 전용)
-    - 메뉴의 h1이 화면 밖으로 나가면 버튼 표시
-    - rootMargin 첫 값으로 등장 타이밍 조절
-   ============================================================ */
+/* ------------------------------------------------------------
+   🔼 위로가기 버튼 — 플뤼겔의 탑 전용 안정판
+   - header h1은 고정이라 감시장치로 사용 불가
+   - 실제 스크롤되는 main을 감시해야 스크롤 여부 판단 가능
+-------------------------------------------------------------*/
 
 const topBtn = document.getElementById("scroll-top-btn");
+const target = document.querySelector("#main-content"); // ← 정답!
 
-// 화면 상단 고정 h1 (SPA 영향 안 받는 안정 기준)
-const target = document.querySelector("h1");
-
-// h1이 화면에서 사라지면 show
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) {
-        topBtn.classList.add("show");
+        topBtn.classList.add("show");  // main이 위로 사라짐 → 버튼 표시
       } else {
-        topBtn.classList.remove("show");
+        topBtn.classList.remove("show"); // main이 화면에 보임 → 버튼 숨김
       }
     });
   },
   {
     threshold: 0,
-    rootMargin: "220px 0px 0px 0px" // ← 등장 지연값 (크게 = 더 늦게)
+    rootMargin: "0px 0px -90% 0px" // 화면 아래쪽 10% 남았을 때 show
   }
 );
 
 observer.observe(target);
 
-// 부드럽게 스크롤 위로
+// 부드럽게 최상단으로
 topBtn.addEventListener("click", () => {
-  document.querySelector("#main-content").scrollTo({
-    top: 0, behavior: "smooth"
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
-
 </script>
 
 <script>
