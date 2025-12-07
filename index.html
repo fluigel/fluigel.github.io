@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_02.css?v=20251208012602" />
+  <link rel="stylesheet" href="/style_04.css?v=20251208012604" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,33 +78,63 @@
 
 <script>
 /* ============================================================
-   🔼 위로가기 버튼 (PC 전용, 스크롤 기준 등장)
+   🔼 FLUEGEL — Scroll Top Button (SPA 완전 대응 완성본)
    ============================================================ */
 
+/* 1) 공통 변수 */
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 1) 스크롤 위치에 따라 버튼 표시/숨김
-window.addEventListener("scroll", () => {
+/* ------------------------------------------
+   2) 위로가기 버튼 클릭 이벤트 (항상 활성)
+      — SPA와 상관없이 버튼 DOM은 유지되므로 1회 등록 OK
+------------------------------------------- */
+if (topBtn) {
+  topBtn.addEventListener("click", () => {
+    // 실제 스크롤 주체 (너 사이트는 body가 실제 scrollTop을 가짐)
+    document.body.scrollTop = 0;
+
+    // 보조 호환용
+    document.documentElement.scrollTop = 0;
+
+    // 스무스 스크롤 (현대 브라우저)
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+/* ------------------------------------------
+   3) 스크롤에 따라 버튼 보이기 / 숨기기
+      — IntersectionObserver 버리고 scrollY 기반으로 통일
+      — SPA에서도 절대 안 깨짐
+------------------------------------------- */
+function updateScrollTopButton() {
   if (!topBtn) return;
 
-  if (window.scrollY > 700) {        // ← 지연 위치 조절
+  if (window.scrollY > 700) {   // ← 등장 지연 조절
     topBtn.classList.add("show");
   } else {
     topBtn.classList.remove("show");
   }
-});
+}
 
-// 2) 버튼 클릭 시 실제 스크롤 + 보조 + 스무스 이동
-topBtn.addEventListener("click", () => {
-  // (1) 실제 스크롤 — 네 사이트 구조에서 핵심
-  document.body.scrollTop = 0;
+/* 스크롤 이벤트는 처음 로딩 + SPA 이동 상관없이 항상 유효 */
+window.addEventListener("scroll", updateScrollTopButton);
 
-  // (2) 브라우저 호환 보조
-  document.documentElement.scrollTop = 0;
 
-  // (3) 스무스 스크롤 (현대 브라우저)
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
+/* ------------------------------------------
+   4) SPA 페이지 로딩 후에도 항상 버튼 상태 정상화
+      — loadPage()가 main-content를 갈아끼운 후에도
+        scrollY 값에 맞춰 즉시 갱신되도록 처리
+------------------------------------------- */
+function onSPAPageLoaded() {
+  updateScrollTopButton();
+}
+
+/* SPA 엔진의 fetch 후 실행되는 loadPage()를 패치 */
+const _origLoadPage = loadPage;
+loadPage = async function(path) {
+  await _origLoadPage(path);
+  onSPAPageLoaded();   // ← 페이지 이동 후 즉시 버튼 상태 갱신
+};
 </script>
 
 <script>
