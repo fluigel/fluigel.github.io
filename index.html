@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_09.css?v=20251207055909" />
+  <link rel="stylesheet" href="/style_11.css?v=20251207055911" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -94,8 +94,8 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { 
-  threshold: 0,
-  rootMargin: "200px 0px 0px 0px"   // ← 스크롤 더 내려가야 "사라졌다"로 인식됨
+    rootMargin: "400px 0px 0px 0px",   // ← 스크롤 더 내려가야 "사라졌다"로 인식됨,
+    threshold: 0
 });
 
 observer.observe(banner);
