@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_21.css?v=20251207012721" />
+  <link rel="stylesheet" href="/style_22.css?v=20251207012722" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,15 +78,21 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼
+   🔼 스크롤 내리면 나타나는 위로가기 버튼 (최종 안정판)
    ============================================================ */
 const topBtn = document.getElementById("scroll-top-btn");
 const banner = document.querySelector(".banner"); // 최상단 요소 감시
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    // body 기준 스크롤이 실제 스크롤임
-    if (!entry.isIntersecting && document.body.scrollTop > 200) {
+
+    const scrollY =
+      window.scrollY ||
+      document.body.scrollTop ||
+      document.documentElement.scrollTop ||
+      0;
+
+    if (!entry.isIntersecting && scrollY > 240) {
       topBtn.classList.add("show");
     } else {
       topBtn.classList.remove("show");
@@ -100,8 +106,9 @@ topBtn.addEventListener("click", () => {
   // 1) 실제 스크롤을 담당하는 주체 (현재 body)
   document.body.scrollTop = 0;
 
-  // 2) 혹시 모를 브라우저 대비
+  // 2) 혹시 모를 브라우저 대비 (Safari, 오래된 Chrome 등)
   document.documentElement.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 
