@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_23.css?v=20251207012723" />
+  <link rel="stylesheet" href="/style_24.css?v=20251207012724" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,39 +78,51 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼 — body scroll 전용 버전
+   🔼 위로가기 버튼 — 절대 씹히지 않는 하이브리드 방식
+   - IntersectionObserver: '기준요소가 사라짐' 감지
+   - scroll 이벤트: 실제 스크롤 값을 정확하게 보정
    ============================================================ */
+
 const topBtn = document.getElementById("scroll-top-btn");
-const banner = document.querySelector(".banner"); // 최상단 요소 감시
+const banner = document.querySelector(".banner");
 
+let bannerHidden = false; // Observer가 관리하는 상태값
+
+/* -----------------------------
+   1) Observer로 "배너 사라짐" 감지
+----------------------------- */
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-
-    // 🚩 네 사이트는 body가 스크롤 주체 → 이 값만 사용해야 정확함
-    const scrollY = document.body.scrollTop;
-
-    // 배너 사라짐 + 스크롤 240px 이상 조건 둘 다 충족해야 버튼 표시
-    if (!entry.isIntersecting && scrollY > 240) {
-      topBtn.classList.add("show");
-    } else {
-      topBtn.classList.remove("show");
-    }
-  });
+  const entry = entries[0];
+  bannerHidden = !entry.isIntersecting;  
 }, { threshold: 0 });
 
 observer.observe(banner);
 
-topBtn.addEventListener("click", () => {
-  // 🚩 실제 스크롤 담당: body
-  document.body.scrollTop = 0;
+/* -----------------------------
+   2) 스크롤 이벤트로 정확한 픽셀 감지
+----------------------------- */
+window.addEventListener("scroll", () => {
+  const scrollY = document.body.scrollTop; // 사이트의 실제 스크롤
 
+  // 배너도 사라지고 scrollY도 기준을 넘었을 때만 show
+  if (bannerHidden && scrollY > 240) {
+    topBtn.classList.add("show");
+  } else {
+    topBtn.classList.remove("show");
+  }
+});
+
+/* -----------------------------
+   3) 버튼 클릭 시 최상단 이동
+----------------------------- */
+topBtn.addEventListener("click", () => {
+  // 실제 스크롤 담당: body
+  document.body.scrollTop = 0;
+  
   // 하위 호환
   document.documentElement.scrollTop = 0;
-
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
-</script>
-
 </script>
 
 <script>
