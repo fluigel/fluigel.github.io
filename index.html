@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_04.css?v=20251207012704" />
+  <link rel="stylesheet" href="/style_05.css?v=20251207012705" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -99,7 +99,7 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(banner);
 
 // ⭐ 핵심: h1이 사라진 뒤 “추가 거리” 조건 넣기
-const extraOffset = 200; // ← 얼마든지 조절 가능 (100~300 추천)
+const extraOffset = 0; // ← 얼마든지 조절 가능 (100~300 추천)
 
 window.addEventListener("scroll", () => {
   if (readyToShow && window.scrollY > extraOffset) {
