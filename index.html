@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_01.css?v=20251208012601" />
+  <link rel="stylesheet" href="/style_02.css?v=20251208012602" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -79,14 +79,14 @@
 <script>
 /* ============================================================
    🔼 위로가기 버튼 (PC 전용)
-    - 메뉴의 h1이 화면 밖으로 나가면 버튼 표시
+    - 본문 h1이 화면 밖으로 나가면 버튼 표시
     - rootMargin 첫 값으로 등장 타이밍 조절
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 화면 상단 고정 h1 (SPA 영향 안 받는 안정 기준)
-const target = document.querySelector("h1");
+// 화면 본문 h1 기준
+const target = document.querySelector("#main-content h1");
 
 // h1이 화면에서 사라지면 show
 const observer = new IntersectionObserver(
@@ -105,7 +105,7 @@ const observer = new IntersectionObserver(
   }
 );
 
-observer.observe(target);
+if (target) observer.observe(target);
 
 topBtn.addEventListener("click", () => {
   // 1) 실제 스크롤
