@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_09.css?v=20251207104609" />
+  <link rel="stylesheet" href="/style_10.css?v=20251207104610" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -81,10 +81,12 @@
    🔼 스크롤 내리면 나타나는 위로가기 버튼
    ============================================================ */
 const topBtn = document.getElementById("scroll-top-btn");
-const banner = document.querySelector("header.banner");  // 최상단 요소 감시
+const banner = document.querySelector(".banner");  // 최상단 요소 감시
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
+      console.log('intersecting:', entry.isIntersecting, 
+              'ratio:', entry.intersectionRatio);
     if (!entry.isIntersecting) {
       topBtn.classList.add("show");
     } else {
