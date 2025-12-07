@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_06.css?v=20251207082506" />
+  <link rel="stylesheet" href="/style_01.css?v=20251207082501" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -77,36 +77,31 @@
 <button id="scroll-top-btn" class="scroll-top-btn">↑</button>
 
 <script>
-/* ------------------------------------------------------------
-   🔼 위로가기 버튼 — 플뤼겔의 탑 전용 안정판
-   - header h1은 고정이라 감시장치로 사용 불가
-   - 실제 스크롤되는 main을 감시해야 스크롤 여부 판단 가능
--------------------------------------------------------------*/
-
+/* ============================================================
+   🔼 스크롤 내리면 나타나는 위로가기 버튼
+   ============================================================ */
 const topBtn = document.getElementById("scroll-top-btn");
-const target = document.querySelector("#main-content"); // ← 정답!
+const banner = document.querySelector("h1");  // 최상단 요소 감시
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        topBtn.classList.add("show");  // main이 위로 사라짐 → 버튼 표시
-      } else {
-        topBtn.classList.remove("show"); // main이 화면에 보임 → 버튼 숨김
-      }
-    });
-  },
-  {
-    threshold: 0,
-    rootMargin: "0px 0px -90% 0px" // 화면 아래쪽 10% 남았을 때 show
-  }
-);
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      topBtn.classList.add("show");
+    } else {
+      topBtn.classList.remove("show");
+    }
+  });
+}, { threshold: 0 }); // 약 0 ~ 0.05 등장 타이밍 미세 조절 
 
-observer.observe(target);
+observer.observe(banner);
 
-// 부드럽게 최상단으로
 topBtn.addEventListener("click", () => {
+  // 1) 제일 안전한 방법: window 기준으로 스크롤
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // 2) 혹시 몰라서 문서 루트/바디도 같이 0으로 맞춰 줌 (fallback)
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 });
 </script>
 
