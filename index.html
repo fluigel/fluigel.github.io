@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_05.css?v=20251207012705" />
+  <link rel="stylesheet" href="/style_06.css?v=20251207012706" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,39 +78,34 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼 (딜레이 버전)
+   🔼 스크롤 내리면 나타나는 위로가기 버튼
    ============================================================ */
-const topBtn = document.getElementById("scroll-top-btn");
-const banner = document.querySelector("h1");  // 원본 그대로
 
-let readyToShow = false;  
+// 스크롤 버튼 요소
+const scrollBtn = document.getElementById("scroll-top-btn");
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) {
-      readyToShow = true;   // h1이 사라진 순간 → '이제 등장 준비 상태'
-    } else {
-      readyToShow = false;  // 다시 보이면 off
-      topBtn.classList.remove("show");
-    }
-  });
-}, { threshold: 0 });
+// 버튼이 나타나는 기준(px)
+const SHOW_SCROLL_Y = 250;
 
-observer.observe(banner);
-
-// ⭐ 핵심: h1이 사라진 뒤 “추가 거리” 조건 넣기
-const extraOffset = 0; // ← 얼마든지 조절 가능 (100~300 추천)
-
+// 스크롤 양 기준으로 show/hide
 window.addEventListener("scroll", () => {
-  if (readyToShow && window.scrollY > extraOffset) {
-    topBtn.classList.add("show");
+  const y = window.pageYOffset || document.documentElement.scrollTop;
+
+  if (y > SHOW_SCROLL_Y) {
+    scrollBtn.classList.add("show");
   } else {
-    topBtn.classList.remove("show");
+    scrollBtn.classList.remove("show");
   }
 });
 
-topBtn.addEventListener("click", () => {
+// 기존 기능 유지: 탑으로 부드럽게 이동 + 3중 fallback
+scrollBtn.addEventListener("click", () => {
+  // 1) 가장 표준적인 방법
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // 2) 미지원 브라우저 fallback
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 });
 </script>
 
