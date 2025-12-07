@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_05.css?v=20251208012605" />
+  <link rel="stylesheet" href="/style_06.css?v=20251208012606" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,7 +78,7 @@
 
 <script>
 /* ============================================================
-   🔼 위로가기 버튼 (PC 전용 · Scroll 방식 · Banner 기준 · SPA 완전 대응)
+   🔼 위로가기 버튼 (PC 전용 · Scroll 방식 · Banner 기준 · SPA 대응)
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
@@ -90,11 +90,14 @@ function handleScroll() {
 
   const bannerHeight = banner.offsetHeight;
 
-  // 🔥 등장 지연값 (원하는 만큼 조절)
-  // 예: 100 = 배너가 사라지고 100px 더 스크롤해야 버튼 등장
-  const delay = 100;
+  // 🔥 등장 지연값 (조절 가능)
+  // 예: 120 = 배너가 사라진 뒤 120px 지나서 버튼 등장
+  const delay = 120;
 
-  if (window.scrollY > bannerHeight + delay) {
+  // ⚡ 실제 스크롤 감지 — window.scrollY가 정답
+  const scrollPos = window.scrollY;
+
+  if (scrollPos > bannerHeight + delay) {
     topBtn.classList.add("show");
   } else {
     topBtn.classList.remove("show");
@@ -104,20 +107,22 @@ function handleScroll() {
 // 스크롤 감지
 window.addEventListener("scroll", handleScroll);
 
-/* SPA 페이지 로딩 이후에도 로직 유지 */
+/* SPA 페이지 로딩 후에도 재적용 (중요!) */
 const _origLoadPage = loadPage;
 loadPage = async function(path) {
   await _origLoadPage(path);
-  handleScroll();  // ← 새로운 본문 불러올 때 즉시 재계산
+  handleScroll();  // 새로운 페이지가 로드되면 기준 다시 계산
 };
 
-/* 위로가기 버튼 클릭 */
+/* 🔼 위로가기 버튼 클릭 (브라우저 호환 3중 처리)  */
 topBtn.addEventListener("click", () => {
-  // 1) 실제 스크롤
+  // 1) Safari 일부 환경 대응
   document.body.scrollTop = 0;
-  
-  // 2) 혹시 모를 브라우저 대비
+
+  // 2) 표준 브라우저(html 요소) 대응
   document.documentElement.scrollTop = 0;
+
+  // 3) 부드러운 이동
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
