@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_10.css?v=20251207012710" />
+  <link rel="stylesheet" href="/style_12.css?v=20251207012712" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -81,27 +81,27 @@
    🔼 스크롤 내리면 나타나는 위로가기 버튼
    ============================================================ */
 const topBtn = document.getElementById("scroll-top-btn");
-const banner = document.querySelector("h1");  // 최상단 요소 감시
+const banner = document.querySelector(".banner"); // 최상단 요소 감시
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if (!entry.isIntersecting) {
+    if (!entry.isIntersecting && window.scrollY > 200) {
       topBtn.classList.add("show");
     } else {
       topBtn.classList.remove("show");
     }
   });
-}, { threshold: 0 }); // 약 0 ~ 0.05 등장 타이밍 미세 조절 
+}, { threshold: 0 });
 
 observer.observe(banner);
 
 topBtn.addEventListener("click", () => {
-  // 1) 제일 안전한 방법: window 기준으로 스크롤
-  // window.scrollTo({ top: 0, behavior: "smooth" });
-
-  // 2) 혹시 몰라서 문서 루트/바디도 같이 0으로 맞춰 줌 (fallback) -->
-  //document.documentElement.scrollTop = 0;
+  // 1) 실제 스크롤을 담당하는 주체 (현재 body)
   document.body.scrollTop = 0;
+
+  // 2) 혹시 모를 브라우저/레이아웃 대비 fallback
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  document.documentElement.scrollTop = 0;
 });
 </script>
 
