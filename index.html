@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_02.css?v=20251208012602" />
+  <link rel="stylesheet" href="/style_03.css?v=20251208012603" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,40 +78,74 @@
 
 <script>
 /* ============================================================
-   🔼 위로가기 버튼 (PC 전용)
-    - 본문 h1이 화면 밖으로 나가면 버튼 표시
-    - rootMargin 첫 값으로 등장 타이밍 조절
+   🔼 위로가기 버튼 (Sentinel 기반, PC 전용)
+   - 본문 h1 아래에 가상의 감지선을 삽입
+   - 이 선이 화면에서 사라지는 순간 버튼 등장
+   - height 값을 조절하면 등장 시점을 100% 컨트롤 가능
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 화면 본문 h1 기준
-const target = document.querySelector("#main-content h1");
+// 감지선 생성 + 삽입 함수
+function insertSentinel() {
+  // 이전 감지선 제거 (SPA 대비)
+  const old = document.querySelector(".scroll-trigger");
+  if (old) old.remove();
 
-// h1이 화면에서 사라지면 show
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        topBtn.classList.add("show");
-      } else {
-        topBtn.classList.remove("show");
-      }
-    });
-  },
-  {
-    threshold: 0,
-    rootMargin: "220px 0px 0px 0px" // ← 등장 지연값 (크게 = 더 늦게)
-  }
-);
+  const h1 = document.querySelector("#main-content h1");
+  if (!h1) return null;
 
-if (target) observer.observe(target);
+  // 새 감지선 만들기
+  const sentinel = document.createElement("div");
+  sentinel.className = "scroll-trigger";
 
+  // 🔥 버튼 등장 지연 (원하는 만큼 조절)
+  // 값이 클수록 등장 더 늦게 → 300~500 추천
+  sentinel.style.height = "320px";
+
+  // h1 바로 아래 삽입
+  h1.after(sentinel);
+
+  return sentinel;
+}
+
+// IntersectionObserver 설정
+function observeSentinel() {
+  const sentinel = insertSentinel();
+  if (!sentinel) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          topBtn.classList.add("show");
+        } else {
+          topBtn.classList.remove("show");
+        }
+      });
+    },
+    {
+      threshold: 0,
+      // rootMargin은 필요 없음 (감지선이 역할 수행)
+    }
+  );
+
+  observer.observe(sentinel);
+}
+
+/* 초기 로딩 */
+document.addEventListener("DOMContentLoaded", observeSentinel);
+
+/* SPA 로딩 이후에도 자동 적용 */
+const _origLoadPage = loadPage;
+loadPage = async function(path) {
+  await _origLoadPage(path);
+  observeSentinel();
+};
+
+/* 버튼 클릭 */
 topBtn.addEventListener("click", () => {
-  // 1) 실제 스크롤
   document.body.scrollTop = 0;
-   
-  // 2) 혹시 모를 브라우저 대비
   document.documentElement.scrollTop = 0;
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
