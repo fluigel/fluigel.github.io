@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_30.css?v=20251207012730" />
+  <link rel="stylesheet" href="/style_01.css?v=20251208012601" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,37 +78,42 @@
 
 <script>
 /* ============================================================
-    🔼 스크롤 내리면 나타나는 위로가기 버튼
+   🔼 위로가기 버튼 (PC 전용)
+    - 메뉴의 h1이 화면 밖으로 나가면 버튼 표시
+    - rootMargin 첫 값으로 등장 타이밍 조절
    ============================================================ */
 
-document.addEventListener("DOMContentLoaded", () => {
-  const topBtn  = document.getElementById("scroll-top-btn");
-  const banner  = document.querySelector(".banner");  // 최상단 요소 감시
+const topBtn = document.getElementById("scroll-top-btn");
 
-  if (!topBtn || !banner) return;
+// 화면 상단 고정 h1 (SPA 영향 안 받는 안정 기준)
+const target = document.querySelector("h1");
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const entry = entries[0];
-
-      // 🔥 entry.boundingClientRect.bottom 이 "가상 margin" 아래로 내려가면 버튼 표시
-      if (entry.boundingClientRect.bottom < -240) {
+// h1이 화면에서 사라지면 show
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
         topBtn.classList.add("show");
       } else {
         topBtn.classList.remove("show");
       }
-    },  { threshold: 0, }); // 약 0 ~ 0.05 등장 타이밍 미세 조절 
+    });
+  },
+  {
+    threshold: 0,
+    rootMargin: "220px 0px 0px 0px" // ← 등장 지연값 (크게 = 더 늦게)
+  }
+);
 
-  observer.observe(banner);
+observer.observe(target);
 
-  topBtn.addEventListener("click", () => {
-    // 1) 실제 스크롤
-    document.body.scrollTop = 0;
+topBtn.addEventListener("click", () => {
+  // 1) 실제 스크롤
+  document.body.scrollTop = 0;
    
-    // 2) 혹시 모를 브라우저 대비
-    document.documentElement.scrollTop = 0;
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+  // 2) 혹시 모를 브라우저 대비
+  document.documentElement.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 
