@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_01.css?v=20251207082501" />
+  <link rel="stylesheet" href="/style_02.css?v=20251207082502" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -85,7 +85,8 @@ const banner = document.querySelector("h1");  // 최상단 요소 감시
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if (!entry.isIntersecting) {
+    if (!entry.isIntersecting /* ← 원본 그대로 */ 
+        && window.scrollY > 200) {    // ⭐ 추가된 단 1줄 ⭐
       topBtn.classList.add("show");
     } else {
       topBtn.classList.remove("show");
