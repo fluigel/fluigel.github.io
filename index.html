@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_06.css?v=20251207055906" />
+  <link rel="stylesheet" href="/style_07.css?v=20251207055907" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -93,7 +93,7 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { 
   threshold: 0,
-  rootMargin: "-120px 0px 0px 0px"   // 🔥 등장 타이밍 딜레이 (조절 가능)
+  rootMargin: "220px 0px 0px 0px"   // 🔥 등장 타이밍 딜레이 (조절 가능)
 });
 
 observer.observe(banner);
@@ -102,10 +102,9 @@ topBtn.addEventListener("click", () => {
   // 1) 실제 스크롤
   document.body.scrollTop = 0;
 
-  // 2) 하위 버전
+  // 2) 하위 버전 대비
   window.scrollTo({ top: 0, behavior: "smooth" });
   document.documentElement.scrollTop = 0;
-
 });
 </script>
 
