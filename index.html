@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_07.css?v=20251207012707" />
+  <link rel="stylesheet" href="/style_08.css?v=20251207012708" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -80,32 +80,28 @@
 /* ============================================================
    🔼 스크롤 내리면 나타나는 위로가기 버튼
    ============================================================ */
+const topBtn = document.getElementById("scroll-top-btn");
+const banner = document.querySelector("h1");  // 최상단 요소 감시
 
-// 버튼
-const scrollBtn = document.getElementById("scroll-top-btn");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      topBtn.classList.add("show");
+    } else {
+      topBtn.classList.remove("show");
+    }
+  });
+}, { threshold: 0 }); // 약 0 ~ 0.05 등장 타이밍 미세 조절 
 
-// 스크롤이 실제로 일어나는 컨테이너(네 구조 기준)
-const SCROLLER = document.querySelector(".content-container") 
-              || document.querySelector(".content") 
-              || document.querySelector("main");
+observer.observe(banner);
 
-// 버튼 표시 기준(px)
-const SHOW_SCROLL_Y = 250;
+topBtn.addEventListener("click", () => {
+  // 1) 제일 안전한 방법: window 기준으로 스크롤
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
-// 스크롤 감지
-SCROLLER.addEventListener("scroll", () => {
-  const y = SCROLLER.scrollTop;
-
-  if (y > SHOW_SCROLL_Y) {
-    scrollBtn.classList.add("show");
-  } else {
-    scrollBtn.classList.remove("show");
-  }
-});
-
-// 클릭 시 최상단 이동
-scrollBtn.addEventListener("click", () => {
-  SCROLLER.scrollTo({ top: 0, behavior: "smooth" });
+  // 2) 혹시 몰라서 문서 루트/바디도 같이 0으로 맞춰 줌 (fallback) -->
+  // document.documentElement.scrollTop = 0;
+  // document.body.scrollTop = 0;
 });
 </script>
 
