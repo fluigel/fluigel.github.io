@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_08.css?v=20251207012708" />
+  <link rel="stylesheet" href="/style_09.css?v=20251207012709" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -97,10 +97,10 @@ observer.observe(banner);
 
 topBtn.addEventListener("click", () => {
   // 1) 제일 안전한 방법: window 기준으로 스크롤
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  // window.scrollTo({ top: 0, behavior: "smooth" });
 
   // 2) 혹시 몰라서 문서 루트/바디도 같이 0으로 맞춰 줌 (fallback) -->
-  // document.documentElement.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
   // document.body.scrollTop = 0;
 });
 </script>
