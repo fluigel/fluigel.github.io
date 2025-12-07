@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_25.css?v=20251207012725" />
+  <link rel="stylesheet" href="/style_27.css?v=20251207012727" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,23 +78,20 @@
 
 <script>
 /* ============================================================
-   🔼 위로가기 버튼 — rootMargin 기반 (예전 느낌 그대로)
-   - .banner 가 화면 위로 충분히 사라지면 버튼 표시
-   - 마우스휠 빨리/천천히 굴려도 경계에서 안 씹히게 설계
+    🔼 스크롤 내리면 나타나는 위로가기 버튼
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
   const topBtn  = document.getElementById("scroll-top-btn");
-  const banner  = document.querySelector(".banner");   // 최상단 배너 기준
+  const banner  = document.querySelector(".banner");  // 최상단 요소 감시
 
   if (!topBtn || !banner) return;
 
-  // 📌 IntersectionObserver: 배너가 화면에서 어느 정도 위로 사라졌을 때 감지
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) {
-          // 배너가 root 영역 밖으로 나감 → 버튼 표시
+          // 배너가 영역 밖으로 나가면 버튼 표시
           topBtn.classList.add("show");
         } else {
           // 배너가 다시 보이면 버튼 숨김
@@ -103,20 +100,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     },
     {
-      threshold: 0,
-      // 🔥 top 방향 margin을 조정해서 “얼마나 내려가야” 버튼이 뜨는지 결정
-      // 값 키우면 → 더 내려갔을 때 뜸 / 줄이면 → 배너 살짝만 올라가도 뜸
-      rootMargin: "-220px 0px 0px 0px"
-      // 예전 코드가 "220px"이었다면, 지금 레이아웃에 맞게 -220px 정도부터 시작해서 감으로 조금씩 튜닝하면 됨
+      threshold: 0, rootMargin: "240px 0px 0px 0px" // ← 등장 지연값 (크게 = 더 늦게)
     }
   );
 
   observer.observe(banner);
 
-  // ⬆ 위로가기: 실제 스크롤 주체 = body 기준
   topBtn.addEventListener("click", () => {
-    document.body.scrollTop = 0;              // 실제 스크롤 (네 사이트 기준)
-    document.documentElement.scrollTop = 0;   // 혹시 모를 브라우저 대비
+    // 1) 실제 스크롤
+    document.body.scrollTop = 0;
+    
+    // 2) 혹시 모를 브라우저 대비
+    document.documentElement.scrollTop = 0;
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
