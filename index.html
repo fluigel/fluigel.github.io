@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_06.css?v=20251207055906" />
+  <link rel="stylesheet" href="/style_07.css?v=20251207055907" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -81,27 +81,28 @@
    🔼 스크롤 내리면 나타나는 위로가기 버튼
    ============================================================ */
 
-   const topBtn = document.getElementById("scroll-top-btn");
+const topBtn = document.getElementById("scroll-top-btn");
 
-window.addEventListener("scroll", () => {
+/* 중요: window가 아니라 document 스크롤 감지 */
+document.addEventListener("scroll", () => {
   const y = document.body.scrollTop || document.documentElement.scrollTop;
 
-  if (y > 300) {  // ← 등장 기준, 맘대로 조절 가능
+  if (y > 300) {        // ← 등장 조건
     topBtn.classList.add("show");
   } else {
     topBtn.classList.remove("show");
   }
 });
 
-/* ===============================
-   버튼 클릭 → 맨 위로 스크롤
-=============================== */
+/* 버튼 클릭 → 맨 위로 이동 (3중 방어 유지) */
 topBtn.addEventListener("click", () => {
   // 1) 실제 스크롤
   document.body.scrollTop = 0;
 
-  // 2) 하위 버전 대비
+  // 2) 하위 브라우저 대비용
   document.documentElement.scrollTop = 0;
+
+  // 3) smooth 스크롤을 지원하는 환경용
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
