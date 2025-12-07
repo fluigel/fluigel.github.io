@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_29.css?v=20251207012729" />
+  <link rel="stylesheet" href="/style_30.css?v=20251207012730" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -83,33 +83,28 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   const topBtn  = document.getElementById("scroll-top-btn");
-  const banner  = document.querySelector("h1");  // 최상단 요소 감시
+  const banner  = document.querySelector(".banner");  // 최상단 요소 감시
 
   if (!topBtn || !banner) return;
 
   const observer = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          // 배너가 영역 밖으로 나가면 버튼 표시
-          topBtn.classList.add("show");
-        } else {
-          // 배너가 다시 보이면 버튼 숨김
-          topBtn.classList.remove("show");
-        }
-      });
-    },
-    {
-      threshold: 0, rootMargin: "240px 0px 0px 0px" // ← 등장 지연값 (크게 = 더 늦게)
-    }
-  );
+      const entry = entries[0];
+
+      // 🔥 entry.boundingClientRect.bottom 이 "가상 margin" 아래로 내려가면 버튼 표시
+      if (entry.boundingClientRect.bottom < -240) {
+        topBtn.classList.add("show");
+      } else {
+        topBtn.classList.remove("show");
+      }
+    },  { threshold: 0, }); // 약 0 ~ 0.05 등장 타이밍 미세 조절 
 
   observer.observe(banner);
 
   topBtn.addEventListener("click", () => {
     // 1) 실제 스크롤
     document.body.scrollTop = 0;
-    
+   
     // 2) 혹시 모를 브라우저 대비
     document.documentElement.scrollTop = 0;
     window.scrollTo({ top: 0, behavior: "smooth" });
