@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_03.css?v=20251207012703" />
+  <link rel="stylesheet" href="/style_04.css?v=20251207012704" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,36 +78,37 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼 (배너 기반 딜레이)
-   - 조건 1: 배너가 화면에서 사라짐
-   - 조건 2: 추가로 일정 px 더 내려야 등장
+   🔼 스크롤 내리면 나타나는 위로가기 버튼 (딜레이 버전)
    ============================================================ */
-
 const topBtn = document.getElementById("scroll-top-btn");
-const banner = document.querySelector(".banner");
+const banner = document.querySelector("h1");  // 원본 그대로
 
-let bannerGone = false;
-const extraOffset = 250;  // ← 플뤼겔 원하는 만큼 늦출 수 있음
+let readyToShow = false;  
 
-/* 1) 배너가 화면에서 사라졌는지 관찰 */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    bannerGone = !entry.isIntersecting;  // 배너가 안 보이면 true
+    if (!entry.isIntersecting) {
+      readyToShow = true;   // h1이 사라진 순간 → '이제 등장 준비 상태'
+    } else {
+      readyToShow = false;  // 다시 보이면 off
+      topBtn.classList.remove("show");
+    }
   });
 }, { threshold: 0 });
 
 observer.observe(banner);
 
-/* 2) 스크롤 위치 + 배너 상태 함께 체크 */
+// ⭐ 핵심: h1이 사라진 뒤 “추가 거리” 조건 넣기
+const extraOffset = 200; // ← 얼마든지 조절 가능 (100~300 추천)
+
 window.addEventListener("scroll", () => {
-  if (bannerGone && window.scrollY > extraOffset) {
+  if (readyToShow && window.scrollY > extraOffset) {
     topBtn.classList.add("show");
   } else {
     topBtn.classList.remove("show");
   }
 });
 
-/* 3) 부드러운 스크롤 탑 이동 */
 topBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
