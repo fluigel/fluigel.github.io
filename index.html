@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_03.css?v=20251208012603" />
+  <link rel="stylesheet" href="/style_04.css?v=20251208012604" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,43 +78,21 @@
 
 <script>
 /* ============================================================
-   🔼 위로가기 버튼 (Sentinel 기반, PC 전용)
-   - 본문 h1 아래에 가상의 감지선을 삽입
-   - 이 선이 화면에서 사라지는 순간 버튼 등장
-   - height 값을 조절하면 등장 시점을 100% 컨트롤 가능
+   🔼 위로가기 버튼 (PC 전용, SPA 완전 대응)
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
+let observer = null;
 
-// 감지선 생성 + 삽입 함수
-function insertSentinel() {
-  // 이전 감지선 제거 (SPA 대비)
-  const old = document.querySelector(".scroll-trigger");
-  if (old) old.remove();
+// h1 감지 + observer 설정 함수
+function observeH1() {
+  const target = document.querySelector("#main-content h1");
+  if (!target) return;  // 아직 로딩 안 됨 → SPA가 불러온 뒤 다시 실행됨
 
-  const h1 = document.querySelector("#main-content h1");
-  if (!h1) return null;
+  // 이전 옵저버 제거 (중복 방지)
+  if (observer) observer.disconnect();
 
-  // 새 감지선 만들기
-  const sentinel = document.createElement("div");
-  sentinel.className = "scroll-trigger";
-
-  // 🔥 버튼 등장 지연 (원하는 만큼 조절)
-  // 값이 클수록 등장 더 늦게 → 300~500 추천
-  sentinel.style.height = "320px";
-
-  // h1 바로 아래 삽입
-  h1.after(sentinel);
-
-  return sentinel;
-}
-
-// IntersectionObserver 설정
-function observeSentinel() {
-  const sentinel = insertSentinel();
-  if (!sentinel) return;
-
-  const observer = new IntersectionObserver(
+  observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) {
@@ -126,26 +104,31 @@ function observeSentinel() {
     },
     {
       threshold: 0,
-      // rootMargin은 필요 없음 (감지선이 역할 수행)
+      rootMargin: "220px 0px 0px 0px" // ← 등장 지연값
     }
   );
 
-  observer.observe(sentinel);
+  observer.observe(target);
 }
 
-/* 초기 로딩 */
-document.addEventListener("DOMContentLoaded", observeSentinel);
+/* 초기 로딩 때도 한 번 시도 */
+document.addEventListener("DOMContentLoaded", () => {
+  observeH1();
+});
 
-/* SPA 로딩 이후에도 자동 적용 */
+/* SPA loadPage 후 다시 h1을 감지 */
 const _origLoadPage = loadPage;
 loadPage = async function(path) {
   await _origLoadPage(path);
-  observeSentinel();
+  observeH1();   // ← 본문이 로드된 직후 다시 observer 붙이기
 };
 
 /* 버튼 클릭 */
 topBtn.addEventListener("click", () => {
+  // 1) 실제 스크롤
   document.body.scrollTop = 0;
+  
+  // 2) 혹시 모를 브라우저 대비
   document.documentElement.scrollTop = 0;
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
