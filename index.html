@@ -78,41 +78,31 @@
 
 <script>
 /* ============================================================
-   🔼 위로가기 버튼 (PC 전용)
-    - 메뉴의 h1이 화면 밖으로 나가면 버튼 표시
-    - rootMargin 첫 값으로 등장 타이밍 조절
+   🔼 위로가기 버튼 (PC 전용, 스크롤 기준 등장)
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 화면 상단 고정 h1 (SPA 영향 안 받는 안정 기준)
-const target = document.querySelector("h1");
+// 1) 스크롤 위치에 따라 버튼 표시/숨김
+window.addEventListener("scroll", () => {
+  if (!topBtn) return;
 
-// h1이 화면에서 사라지면 show
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
-        topBtn.classList.add("show");
-      } else {
-        topBtn.classList.remove("show");
-      }
-    });
-  },
-  {
-    threshold: 0,
-    rootMargin: "320px 0px 0px 0px" // ← 등장 지연값 (크게 = 더 늦게)
+  if (window.scrollY > 700) {        // ← 지연 위치 조절
+    topBtn.classList.add("show");
+  } else {
+    topBtn.classList.remove("show");
   }
-);
+});
 
-observer.observe(target);
-
+// 2) 버튼 클릭 시 실제 스크롤 + 보조 + 스무스 이동
 topBtn.addEventListener("click", () => {
-  // 1) 실제 스크롤
+  // (1) 실제 스크롤 — 네 사이트 구조에서 핵심
   document.body.scrollTop = 0;
-   
-  // 2) 혹시 모를 브라우저 대비
+
+  // (2) 브라우저 호환 보조
   document.documentElement.scrollTop = 0;
+
+  // (3) 스무스 스크롤 (현대 브라우저)
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
