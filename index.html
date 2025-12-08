@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_12.css?v=20251207055912" />
+  <link rel="stylesheet" href="/style_13.css?v=20251207055913" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,16 +78,24 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼 (y값 기준)
+   🔼 스크롤 내리면 나타나는 위로가기 버튼 (완전판)
+   - SPA 구조와 관계없이 항상 정상 감지
+   - window, html, body 어디서 스크롤이 발생해도 처리됨
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
 
-// 몇 px 이상 내려가야 버튼을 보이게 할지 설정 (원하는 만큼 조절)
-const SHOW_AT = 800;   // ← 예: 800px 이후에 등장
+// 🔥 스크롤 발생 주체를 자동 감지
+const scrollRoot =
+  document.scrollingElement ||
+  document.documentElement ||
+  document.body;
 
-window.addEventListener("scroll", () => {
-  const y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+// 🔥 버튼이 등장할 스크롤 위치(px)
+const SHOW_AT = 700;   // 원하는 만큼 조절 가능
+
+scrollRoot.addEventListener("scroll", () => {
+  const y = scrollRoot.scrollTop;
 
   if (y > SHOW_AT) {
     topBtn.classList.add("show");
@@ -97,10 +105,7 @@ window.addEventListener("scroll", () => {
 });
 
 topBtn.addEventListener("click", () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  scrollRoot.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 
