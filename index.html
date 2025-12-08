@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_13.css?v=20251207055913" />
+  <link rel="stylesheet" href="/style_14.css?v=20251207055914" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,34 +78,62 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼 (완전판)
-   - SPA 구조와 관계없이 항상 정상 감지
-   - window, html, body 어디서 스크롤이 발생해도 처리됨
+   🔼 스크롤 내리면 나타나는 위로가기 버튼 (디버그 + 완전판)
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
+const SHOW_AT = 700; // 몇 px 이상에서 버튼을 보일지 (원하면 조절)
 
-// 🔥 스크롤 발생 주체를 자동 감지
-const scrollRoot =
-  document.scrollingElement ||
-  document.documentElement ||
-  document.body;
+// 공통 처리 함수: 어디서 스크롤 이벤트가 오든 이 함수만 호출
+function handleScroll(source) {
+  const y =
+    window.scrollY ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop ||
+    0;
 
-// 🔥 버튼이 등장할 스크롤 위치(px)
-const SHOW_AT = 700;   // 원하는 만큼 조절 가능
-
-scrollRoot.addEventListener("scroll", () => {
-  const y = scrollRoot.scrollTop;
+  console.log(`[${source}] scrollY =`, y);
 
   if (y > SHOW_AT) {
     topBtn.classList.add("show");
   } else {
     topBtn.classList.remove("show");
   }
+}
+
+// 1) window 스크롤 감지
+window.addEventListener("scroll", () => handleScroll("window"));
+
+// 2) document 스크롤 감지
+document.addEventListener("scroll", () => handleScroll("document"));
+
+// 3) documentElement(html) 스크롤 감지
+if (document.documentElement) {
+  document.documentElement.addEventListener("scroll", () =>
+    handleScroll("documentElement")
+  );
+}
+
+// 4) body 스크롤 감지
+if (document.body) {
+  document.body.addEventListener("scroll", () =>
+    handleScroll("body")
+  );
+}
+
+// (선택) main-content 자체가 스크롤 컨테이너인 경우 대비
+document.addEventListener("DOMContentLoaded", () => {
+  const main = document.getElementById("main-content");
+  console.log("DOMContentLoaded, main-content =", main);
+
+  if (main) {
+    main.addEventListener("scroll", () => handleScroll("main-content"));
+  }
 });
 
+// 위로가기 버튼 클릭
 topBtn.addEventListener("click", () => {
-  scrollRoot.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 </script>
 
