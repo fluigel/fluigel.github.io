@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_11.css?v=20251207055911" />
+  <link rel="stylesheet" href="/style_12.css?v=20251207055912" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,30 +78,29 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼 (정상 작동 버전)
+   🔼 스크롤 내리면 나타나는 위로가기 버튼 (y값 기준)
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
-const banner = document.querySelector(".banner img");  // ← 관찰 대상을 h1 → 배너 이미지로 변경
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    // 배너가 화면에서 완전히 사라진 뒤 + margin 만큼 더 내려갔을 때 버튼 등장
-    if (entry.intersectionRatio === 0) {
-      topBtn.classList.add("show");
-    } else {
-      topBtn.classList.remove("show");
-    }
-  });
-}, { 
-    rootMargin: "400px 0px 0px 0px",   // ← 스크롤 더 내려가야 "사라졌다"로 인식됨,
-    threshold: 0
+// 몇 px 이상 내려가야 버튼을 보이게 할지 설정 (원하는 만큼 조절)
+const SHOW_AT = 800;   // ← 예: 800px 이후에 등장
+
+window.addEventListener("scroll", () => {
+  const y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+  if (y > SHOW_AT) {
+    topBtn.classList.add("show");
+  } else {
+    topBtn.classList.remove("show");
+  }
 });
 
-observer.observe(banner);
-
 topBtn.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 });
 </script>
 
