@@ -78,13 +78,15 @@
 
 <script>
 /* ============================================================
-   🔼 위로가기 버튼 — 플뤼겔 사이트용 최종 안정판
+   🔼 플뤼겔의 탑 — 위로가기 버튼 완성판 (2025)
+   모든 스크롤 입력을 100% 감지 (window + document + html)
+   스크롤바 드래그 문제 완전 해결
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
-const SHOW_AT = 500; // 몇 px 이상 내려가면 버튼 등장 (원하면 조절)
+const SHOW_AT = 500; // 기준 px
 
-// 스크롤 발생 위치와 상관없이 항상 y값을 읽는 함수
+/* --- 공통 스크롤 Y값 획득 --- */
 function getScrollY() {
   return (
     window.scrollY ||
@@ -94,29 +96,42 @@ function getScrollY() {
   );
 }
 
-// 스크롤 감지(모든 루트에 리스너 설치 → 안정성 최우선)
-["scroll", "wheel", "touchmove"].forEach(evt => {
-  window.addEventListener(evt, () => {
-    const y = getScrollY();
-    if (y > SHOW_AT) topBtn.classList.add("show");
-    else topBtn.classList.remove("show");
-  });
+/* --- 버튼 표시/숨김 업데이트 --- */
+function updateScrollButton() {
+  const y = getScrollY();
+  if (y > SHOW_AT) topBtn.classList.add("show");
+  else topBtn.classList.remove("show");
+}
+
+/* --- 모든 입력 장치를 커버하는 스크롤 감지 --- */
+["scroll", "wheel", "touchmove", "keydown"].forEach(evt => {
+  window.addEventListener(evt, updateScrollButton, { passive: true });
+  document.addEventListener(evt, updateScrollButton, { passive: true });
+  document.documentElement.addEventListener(evt, updateScrollButton, { passive: true });
 });
 
-// 위로가기 클릭(브라우저별로 확실하게 먹히는 3중 방식)
+/* --- 위로가기 클릭 --- */
 topBtn.addEventListener("click", () => {
-  // 1) 가장 원초적이고 SPA에서 잘 먹힘
+  // 브라우저별 즉시 반복 적용 (일부 환경 대응)
   document.body.scrollTop = 0;
-
-  // 2) html 기반 브라우저 대응
-
   document.documentElement.scrollTop = 0;
 
-  // 3) 최신 브라우저 smooth 효과
+  // 최신 smooth 처리
   window.scrollTo({ top: 0, behavior: "smooth" });
 
+  // 빠르게 사라지는 것이 자연스러움
   topBtn.classList.remove("show");
 });
+
+/* --- SPA 페이지 로딩 시 항상 최상단으로 --- */
+function resetScrollOnSPALoad() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener("popstate", resetScrollOnSPALoad);
+document.addEventListener("DOMContentLoaded", resetScrollOnSPALoad);
 </script>
 
 <script>
