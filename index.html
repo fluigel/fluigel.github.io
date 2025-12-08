@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_15.css?v=20251207055915" />
+  <link rel="stylesheet" href="/style_16.css?v=20251207055916" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -78,31 +78,47 @@
 
 <script>
 /* ============================================================
-   🔼 스크롤 내리면 나타나는 위로가기 버튼 (정식 안정판)
+   🔼 스크롤 내리면 나타나는 위로가기 버튼 (절대 실패하지 않는 통합판)
    ============================================================ */
 
 const topBtn = document.getElementById("scroll-top-btn");
+const SHOW_AT = 700;
 
-// 플뤼겔 사이트의 실제 스크롤 루트를 자동 선택
-const scrollRoot =
-  document.scrollingElement ||        // 대부분 브라우저
-  document.documentElement ||         // html
-  document.body;                      // fallback
-
-const SHOW_AT = 700;  // 버튼 등장 위치(px)
-
-scrollRoot.addEventListener("scroll", () => {
-  const y = scrollRoot.scrollTop;
+// 공통 처리 함수
+function handleScroll(source) {
+  const y =
+    window.scrollY ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop ||
+    0;
 
   if (y > SHOW_AT) {
     topBtn.classList.add("show");
   } else {
     topBtn.classList.remove("show");
   }
+}
+
+/* 🔥 스크롤 발생 가능한 모든 루트에 리스너 부착 */
+window.addEventListener("scroll", () => handleScroll("window"));
+document.addEventListener("scroll", () => handleScroll("document"));
+document.documentElement.addEventListener("scroll", () => handleScroll("html"));
+document.body.addEventListener("scroll", () => handleScroll("body"));
+
+/* SPA 로딩 이후 main-content가 스크롤 루트인 경우도 대비 */
+document.addEventListener("DOMContentLoaded", () => {
+  const main = document.getElementById("main-content");
+  if (main) main.addEventListener("scroll", () => handleScroll("main"));
 });
 
+// 위로가기 버튼 클릭
 topBtn.addEventListener("click", () => {
-  scrollRoot.scrollTo({ top: 0, behavior: "smooth" });
+  // 1) 실제 스크롤
+  document.body.scrollTop = 0;
+
+  // 2) 하위 버전 대비
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  document.documentElement.scrollTop = 0;
 });
 </script>
 
