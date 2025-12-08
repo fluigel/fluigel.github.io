@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_17.css?v=20251207055917" />
+  <link rel="stylesheet" href="/style_01.css?v=20251209060001" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -109,10 +109,13 @@ topBtn.addEventListener("click", () => {
   document.body.scrollTop = 0;
 
   // 2) html 기반 브라우저 대응
+
   document.documentElement.scrollTop = 0;
 
   // 3) 최신 브라우저 smooth 효과
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  topBtn.classList.remove("show");
 });
 </script>
 
