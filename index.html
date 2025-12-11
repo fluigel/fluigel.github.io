@@ -107,7 +107,7 @@ function handleScroll() {
   else topBtn.classList.remove("show");
 }
 
-// 🚨 스크롤 입력 가능한 모든 루트에 이벤트 연결 (미친 안정성)
+// 🚨 스크롤 입력 가능한 모든 루트에 이벤트 연결 (강한 안정성)
 ["scroll", "wheel", "touchmove"].forEach(evt => {
   window.addEventListener(evt, handleScroll);
   document.addEventListener(evt, handleScroll);
