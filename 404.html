@@ -3,34 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <title>Redirecting...</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <script>
-    /* ============================================================
-       FLUEGEL SPA 404 REDIRECT — 완전 안정판
-       GitHub Pages deep-link 방지용
-       ============================================================ */
-
-    // 무조건 index.html로 보내기
-    // GitHub Pages는 "/" 로 보내면 자동으로 index.html을 불러옴
-    window.location.replace("/");
+    // 현재 경로가 "/" 자체일 경우 404 반복 방지
+    if (location.pathname === "/" || location.pathname === "/index.html") {
+      // 그대로 홈으로 보여주기만 함
+    } else {
+      // 존재하지 않는 파일 → SPA 보호용 리셋
+      window.location.replace("/");
+    }
   </script>
 
   <style>
     body {
-      background: #111;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
       font-family: sans-serif;
-      opacity: 0.7;
+      background: #ffffff;
+      color: #333;
+      text-align: center;
+      padding-top: 40vh;
     }
   </style>
 </head>
 
 <body>
-  Redirecting to Fluegel's Tower...
+  <h2>페이지를 찾을 수 없습니다.</h2>
+  <p>잠시 후 홈으로 이동합니다…</p>
 </body>
 </html>
