@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_07.css?v=20260129195407" />
+  <link rel="stylesheet" href="/style_08.css?v=20260129195408" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -69,14 +69,7 @@
    <!-- <a href="https://github.com/fluigel/REPO/releases/download/v1.0/Fluigel.zip" download>홈페이지 다운로드</a> -->
       <hr />  
       <!-- 방문자 카운터 -->
-      <div class="menu-visitor">
-        <span class="badge-frame">
-          <img
-            src="https://visitor-badge.laobi.icu/badge?page_id=fluigel.github.io&left_color=000000&right_color=000000&text_color=ffd700"
-            alt="Visitors"
-          >
-        </span>
-      </div>
+      <div class="menu-visitor" id="auto-visitor"></div>
       </nav>
     </aside>
   </section>
@@ -372,18 +365,23 @@ function fixLinks(basePath) {
       카운터 연도별 리셋
    ============================================================ */
 
-  const year = new Date().getFullYear();
+  // ✅ 한국(Asia/Seoul) 기준 연도 고정 (해외 접속도 연도 흔들림 방지)
+  const year = new Intl.DateTimeFormat("en", { timeZone: "Asia/Seoul", year: "numeric" }).format(new Date());
   const pageId = `fluigel.github.io_${year}`;
 
-  document.getElementById("auto-visitor").innerHTML = `
-    <img
-      src="https://visitor-badge.laobi.icu/badge?page_id=${pageId}
-      &left_color=000000
-      &right_color=000000
-      &text_color=ffd700"
-      alt="Visitors ${year}"
-    >
-  `;
+  const el = document.getElementById("auto-visitor");
+  if (el) {
+    el.innerHTML = `
+      <span class="badge-frame">
+        <img
+          src="https://visitor-badge.laobi.icu/badge?page_id=${pageId}&left_color=000000&right_color=000000&text_color=ffd700"
+          alt="Visitors ${year}"
+        >
+      </span>
+    `;
+  }
+</script>
+
 </script>
 
 <footer class="site-footer">
