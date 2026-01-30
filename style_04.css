@@ -278,18 +278,20 @@ html, body {
 }
 
 /* 외부 카운터 */
-.visitor-badge {
-  margin-top: 10px;
-  display: inline-block;
-  border: 1px solid #333;
-  border-radius: 0;
-  padding: 4px;
-  background: #fff;
+.menu-visitor {
+  margin-top: 20px;
+  padding-top: 14px;
+  padding-bottom: 6px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 215, 0, 0.35); /* 황금 톤 구분선 */
 }
 
-.visitor-badge img {
-  display: block;
-  border-radius: 0;
+.menu-visitor img {
+  display: inline-block;
+  background: #000;              /* ✅ 검정 배경 */
+  border: 1px solid #d6b35c;      /* ✅ 황금 테두리 */
+  border-radius: 0;              /* ✅ 직각 */
+  padding: 6px;
 }
 
 /* =========================================================
