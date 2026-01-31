@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_11.css?v=20260130195311" />
+  <link rel="stylesheet" href="/style_12.css?v=20260130195312" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -361,11 +361,18 @@ function fixLinks(basePath) {
 /* ============================================================
     CountAPI (외부 카운터)
    ============================================================ */
+function formatCount(n) {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
+  if (n >= 1_000) return (n / 1_000).toFixed(1) + "k";
+  return n.toString();
+}
+
 fetch('https://api.countapi.xyz/hit/fluigel.github.io/visits')
   .then(res => res.json())
   .then(res => {
+    const v = formatCount(res.value);
     document.getElementById("visitor-counter").innerText =
-      "visits · " + res.value.toLocaleString();
+      "visits · " + v;
   });
 </script>
 
