@@ -7,7 +7,7 @@
   <title>플뤼겔의 탑</title>
 
   <!-- 깃허브 리포지토리 내 절대경로로 고정 -->
-  <link rel="stylesheet" href="/style_08.css?v=20260131223908" />
+  <link rel="stylesheet" href="/style_09.css?v=20260131223909" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
 </head>
@@ -263,6 +263,28 @@ async function autoCountMenu() {
 }
 
 document.addEventListener("DOMContentLoaded", autoCountMenu);
+</script>
+
+<script>
+/* ============================================================
+   Github Pages SPA Redirect 복원
+   ============================================================ */
+
+const savedPath =
+  sessionStorage.getItem("spa_redirect");
+
+if (savedPath) {
+
+  sessionStorage.removeItem("spa_redirect");
+
+  history.replaceState(
+    {
+      path: savedPath.replace(/^\/+/, "")
+    },
+    "",
+    savedPath
+  );
+}
 </script>
 
 <script>

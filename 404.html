@@ -7,10 +7,19 @@
   <script>
     // 현재 경로가 "/" 자체일 경우 404 반복 방지
     if (location.pathname === "/" || location.pathname === "/index.html") {
-      // 그대로 홈으로 보여주기만 함
+
+    // 그대로 홈으로 보여주기만 함
     } else {
-      // 존재하지 않는 파일 → SPA 보호용 리셋
-      window.location.replace("/");
+
+     // 존재하지 않는 파일 → SPA 보호용 리다이렉트
+     // 원래 접속하려던 경로를 저장
+      sessionStorage.setItem(
+        "spa_redirect",
+        location.pathname
+     );
+
+     // 홈으로 이동 후 index.html에서 복원
+     window.location.replace("/");
     }
   </script>
 
