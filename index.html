@@ -346,7 +346,24 @@ window.addEventListener("popstate", (e) => {
 
 /* 5) 첫 로딩 --------------------------------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
-  loadPage("main.html");
+
+  let path = location.pathname;
+
+  // 홈 접속
+  if (
+    path === "/" ||
+    path === "/index.html" ||
+    path === ""
+  ) {
+    loadPage("main.html");
+    return;
+  }
+
+  // 맨 앞 "/" 제거
+  path = path.replace(/^\/+/, "");
+
+  // 현재 주소 그대로 로드
+  loadPage(path);
 });
 
 /* 6) fragment 링크 자동 고침 ----------------------------------- */
