@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <div class="poem">
 <h1 id="_1">오늘은 어제보다 강하게, 내일은 오늘보다 강하게</h1>
 <div class="poem-body">

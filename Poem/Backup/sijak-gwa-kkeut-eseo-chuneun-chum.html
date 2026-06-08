@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <div class="poem">
 <h1 id="_1">시작과 끝에서 추는 춤</h1>
 <div class="poem-body">

@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <div class="poem">
 <h1 id="_1">진실과 자유의 탑</h1>
 <div class="poem-body">

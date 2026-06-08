@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <div class="poem">
 <h1 id="_1">자기 생각은 항상 옳다</h1>
 <div class="poem-body">

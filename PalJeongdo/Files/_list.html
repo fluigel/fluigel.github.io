@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <div class="page-list-small">
 <h1 id="_1">정법자료</h1>
 <div class="page-list-small-body">
