@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <h1 id="_1">에스페란토 간단 규칙</h1>
 <p><strong>명사는 "-o"로 끝납니다.</strong></p>
 <p>예: kato (고양이), domo (집)</p>

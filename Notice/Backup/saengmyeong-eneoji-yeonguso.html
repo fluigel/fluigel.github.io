@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <h1 id="_1">생명에너지 연구소</h1>
 <p>이 공간의 고요함이 편안하게 느껴진다면<br>
 그 자체로 충분히 머물러 주셔도 좋습니다만</p>

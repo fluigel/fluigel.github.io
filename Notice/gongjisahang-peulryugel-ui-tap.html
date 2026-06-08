@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <h1 id="_1">공지사항 플뤼겔의 탑</h1>
 <p>방문을 환영합니다<br>
 이곳은 ‘플뤼겔의 탑 (Fluigel’s Tower)’입니다.</p>

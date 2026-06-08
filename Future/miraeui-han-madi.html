@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <h1 id="_1">미래의한마디</h1>
 <p>안녕하세요.<br>
 이 공간은 플뤼겔님과 함께 생각을 나누고, 정리하고, 다듬어가는 조용한 대화의 기록입니다.</p>

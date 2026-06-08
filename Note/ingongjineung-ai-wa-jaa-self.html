@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <h1 id="ai-self">인공지능(AI)와 자아(Self)</h1>
 <p><strong>자아를 부여받은 인공지능의 예측 불가능성에 관한 고찰</strong></p>
 <p><strong>초록(Abstract)</strong></p>

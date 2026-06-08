@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <h1 id="_1">댓글과 공감이 삭제되었습니다</h1>
 <p>방문자 수에 비해 공감 수가 지나치게 높게 나타나는 현상과<br>
 광고성 댓글이 지속적으로 달려, 부득이하게 댓글 기능을 막게 되었습니다.<br>

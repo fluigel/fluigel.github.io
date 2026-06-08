@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <h1 id="_1">주기율표</h1>
 <p><img alt="" src="../_Images/Periodic.png"></p>
 <p>원자번호는 그 원자가 가진 ‘양성자(proton)’의 수를 뜻한다. 예를 들어 수소는 원자번호 1번으로 양성자가 단 하나뿐인 가장 단순한 원자다. 반면 우라늄은 원자번호 92번으로 무려 92개의 양성자를 품고 있다. 이것이 자연 상태에서 존재할 수 있는 원소 중 가장 무거운 부류에 속한다는 뜻이다.</p>

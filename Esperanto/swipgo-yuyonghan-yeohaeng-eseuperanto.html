@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <h1 id="_1">쉽고 유용한 여행 에스페란토</h1>
 <p><strong>————————————————————————————————————————————————————</strong></p>
 <p><strong>여기서 어떻게 가나요?</strong></p>

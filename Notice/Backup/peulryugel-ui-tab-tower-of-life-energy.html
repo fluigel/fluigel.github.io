@@ -1,3 +1,12 @@
+<script>
+(function () {
+  if (!document.getElementById("menu-panel")) {
+    const path = location.pathname.replace(/^\/+/, "");
+    location.replace("/#/" + path);
+  }
+})();
+</script>
+
 <h1 id="fluigels-tower">플뤼겔의 탑 (Fluigel’s Tower)</h1>
 <p>이곳은 누구를 부르지도, 대답하지도 않습니다.</p>
 <p>말 대신 빛과 사유<br>
