@@ -317,13 +317,13 @@ html, body {
 .download-box a {
   text-align: center;
   display: inline-block;
-  padding: 18px 38px;
+  padding: 18px 23px;
   background: #3b5c7a;
   color: #fff;
   font-size: 1.15rem;
   font-weight: 700;
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 6px 18px rgba(59, 92, 122, 0.35);
   transition: all 0.2s ease;
 }
