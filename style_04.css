@@ -197,7 +197,7 @@ html, body {
   color: #fff;
   padding: 25px 20px;
   background-color: #fff;
-  background: url("./_Images/Fluigel.png") no-repeat center top;
+  background: url("./Images/Fluigel.png") no-repeat center top;
   background-size: cover;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -464,7 +464,7 @@ html, body {
     /* ✅ 핵심: 필름을 pseudo-element가 아니라 “배경 2겹”으로 */
     background:
       linear-gradient(rgba(0,0,0,0.38), rgba(0,0,0,0.38)),
-      url("./_Images/Fluigel.png") no-repeat center top;
+      url("./Images/Fluigel.png") no-repeat center top;
     background-size: cover;
   }
 
