@@ -2,7 +2,7 @@ import os
 import markdown
 
 # ============================================================
-# 🌐 FLUEGEL MD → SPA HTML Fragment Builder
+# 🌐 Fluigel MD → SPA HTML Fragment Builder
 #    (Markdown → SPA용 HTML fragment 변환)
 #    (전역 줄바꿈: nl2br 적용)
 # ============================================================
