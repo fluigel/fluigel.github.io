@@ -1,9 +1,9 @@
 # 호연지기회(浩然之氣會)
 
-![](../_Images/image23.png)
+![](../Images/image23.png)
 
 
-![](../_Images/image24.png)
+![](../Images/image24.png)
 
 
 
