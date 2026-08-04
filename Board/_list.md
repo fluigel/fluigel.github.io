@@ -1,9 +1,0 @@
-<!-- page-list-small -->
-
-# 자유게시판
-
-[불 붙은 식용유에 물을 끼얹으면 안되는 이유](bul-buteun-sikyongyu-e-mureul-kkieonjeumyeon-andoeneun-iyu.html)
-
-[물질은 파동과 입자의 상태이다(양자역학)](muljil-eun-padong-gwa-ipja-ui-sangtae-ida-yangja-yeokhak.html)
-
-[주기율표](ju-gi-yul-pyo.html)
