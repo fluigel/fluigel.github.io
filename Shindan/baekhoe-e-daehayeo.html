@@ -131,6 +131,18 @@
         }
       });
 
+      // 모바일에서 메뉴 바깥 영역을 클릭하면 메뉴를 닫는다.
+      document.addEventListener('click', (event) => {
+        if (window.innerWidth > 760 || !sidebar.classList.contains('open')) return;
+
+        const clickedButton = button.contains(event.target);
+        const clickedSidebar = sidebar.contains(event.target);
+
+        if (!clickedButton && !clickedSidebar) {
+          setOpen(false);
+        }
+      });
+
       window.addEventListener('resize', () => {
         if (window.innerWidth > 760) setOpen(false);
       });
