@@ -14,6 +14,8 @@
     <img src="../Images/Banner2.png" alt="플뤼겔의 유토피아">
   </div>
 
+  <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-controls="site-sidebar" aria-expanded="false"></button>
+
   <div class="side-layout">
     <div class="site-main">
       <main class="content">
@@ -41,7 +43,7 @@
       </main>
     </div>
 
-    <aside class="site-sidebar">
+    <aside id="site-sidebar" class="site-sidebar" style="--sidebar-bg: url('../Images/fluigel.png');">
       <a class="site-title" href="../index.html">플뤼겔의 | <em class="glow">유토피아</em></a>
       <nav class="site-nav" aria-label="우측 메뉴">
         <a href="../index.html">Home</a>
@@ -105,5 +107,35 @@
   </div>
 
   <footer class="site-footer">© 2025 플뤼겔의 | 유토피아. All rights reserved.</footer>
+
+  <script>
+    (() => {
+      const button = document.querySelector('.menu-toggle');
+      const sidebar = document.querySelector('.site-sidebar');
+
+      if (!button || !sidebar) return;
+
+      const setOpen = (open) => {
+        sidebar.classList.toggle('open', open);
+        button.classList.toggle('open', open);
+        button.setAttribute('aria-expanded', String(open));
+        button.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+      };
+
+      button.addEventListener('click', () => {
+        setOpen(!sidebar.classList.contains('open'));
+      });
+
+      sidebar.addEventListener('click', (event) => {
+        if (window.innerWidth <= 760 && event.target.closest('a')) {
+          setOpen(false);
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 760) setOpen(false);
+      });
+    })();
+  </script>
 </body>
 </html>
