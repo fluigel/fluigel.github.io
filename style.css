@@ -225,7 +225,6 @@ html, body {
 }
 
 .content p {
-  white-space: pre-line;
   word-break: keep-all;
   margin: .8em 0;
 }
