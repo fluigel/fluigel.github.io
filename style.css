@@ -16,7 +16,6 @@ html, body {
                Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   color: #222;
   background: #fff;
-  overflow-x: hidden;
 }
 
 /* =================================================
@@ -45,7 +44,7 @@ html, body {
   border: 1px solid rgba(255,255,255,.18);
   background:
     linear-gradient(rgba(0,0,0,.38), rgba(0,0,0,.38)),
-    var(--sidebar-bg) no-repeat center center;
+    url("Images/Fluigel.png") no-repeat center center;
   background-size: cover;
   box-shadow: 0 14px 36px rgba(0,0,0,.18);
 }
@@ -410,7 +409,7 @@ html, body {
     box-shadow: -8px 0 24px rgba(0,0,0,.28);
     background:
       linear-gradient(rgba(0,0,0,.42), rgba(0,0,0,.42)),
-      var(--sidebar-bg) no-repeat center top;
+      url("Images/Fluigel.png") no-repeat center top;
     background-size: cover;
   }
 
