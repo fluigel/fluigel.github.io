@@ -26,14 +26,14 @@ html, body {
   width: min(calc(100% - 32px), var(--max-width));
   margin: 32px auto 38px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 240px;
-  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 24px;
   align-items: start;
 }
 
 .site-main {
   min-width: 0;
-  width: 94%;
+  width: 90%;
   justify-self: center;
 }
 
