@@ -105,6 +105,8 @@
 
   <footer class="site-footer">© 2025 플뤼겔의 | 유토피아. All rights reserved.</footer>
 
+  <button id="scroll-top-btn" class="scroll-top-btn" type="button" aria-label="맨 위로">↑</button>
+
   <script>
     (() => {
       const button = document.querySelector('.menu-toggle');
@@ -144,6 +146,25 @@
       window.addEventListener('resize', () => {
         if (window.innerWidth > 760) setOpen(false);
       });
+    })();
+  </script>
+
+  <script>
+    (() => {
+      const topBtn = document.getElementById('scroll-top-btn');
+      if (!topBtn) return;
+
+      const updateTopButton = () => {
+        topBtn.classList.toggle('show', window.scrollY > 520);
+      };
+
+      window.addEventListener('scroll', updateTopButton, { passive: true });
+
+      topBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      updateTopButton();
     })();
   </script>
 </body>

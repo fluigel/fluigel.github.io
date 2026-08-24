@@ -19,9 +19,9 @@
   <div class="side-layout">
     <div class="site-main">
       <main class="content">
-<div class="page-list-middle">
+<div class="list-large">
 <h1 id="_1">기본이론</h1>
-<div class="page-list-middle-body">
+<div class="list-large-body">
 <p><a href="saengmyeong-energy-gi-e-daehae-yeo.html">생명에너지(氣)에 대하여</a></p>
 <p><a href="wonli-wa-bonjil-eul-ihaehaeya-handa.html">원리와 본질을 이해해야 한다</a></p>
 <p><a href="saengmyeong-energy-chukjeog-ui-wonli.html">생명에너지 축적의 원리</a></p>
@@ -97,6 +97,8 @@
 
   <footer class="site-footer">© 2025 플뤼겔의 | 유토피아. All rights reserved.</footer>
 
+  <button id="scroll-top-btn" class="scroll-top-btn" type="button" aria-label="맨 위로">↑</button>
+
   <script>
     (() => {
       const button = document.querySelector('.menu-toggle');
@@ -136,6 +138,25 @@
       window.addEventListener('resize', () => {
         if (window.innerWidth > 760) setOpen(false);
       });
+    })();
+  </script>
+
+  <script>
+    (() => {
+      const topBtn = document.getElementById('scroll-top-btn');
+      if (!topBtn) return;
+
+      const updateTopButton = () => {
+        topBtn.classList.toggle('show', window.scrollY > 520);
+      };
+
+      window.addEventListener('scroll', updateTopButton, { passive: true });
+
+      topBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      updateTopButton();
     })();
   </script>
 </body>

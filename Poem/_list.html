@@ -19,9 +19,9 @@
   <div class="side-layout">
     <div class="site-main">
       <main class="content">
-<div class="page-list">
+<div class="list-middle">
 <h1 id="_1">나와의대화</h1>
-<div class="page-list-body">
+<div class="list-middle-body">
 <p><a href="hoyeon-jigi.html">호연지기(浩然之氣)</a></p>
 <p><a href="bit-gwa-geurimja.html">빛과 그림자</a></p>
 <p><a href="baram-i-doen-ma-eum.html">바람이된 마음</a></p>
@@ -108,6 +108,8 @@
 
   <footer class="site-footer">© 2025 플뤼겔의 | 유토피아. All rights reserved.</footer>
 
+  <button id="scroll-top-btn" class="scroll-top-btn" type="button" aria-label="맨 위로">↑</button>
+
   <script>
     (() => {
       const button = document.querySelector('.menu-toggle');
@@ -147,6 +149,25 @@
       window.addEventListener('resize', () => {
         if (window.innerWidth > 760) setOpen(false);
       });
+    })();
+  </script>
+
+  <script>
+    (() => {
+      const topBtn = document.getElementById('scroll-top-btn');
+      if (!topBtn) return;
+
+      const updateTopButton = () => {
+        topBtn.classList.toggle('show', window.scrollY > 520);
+      };
+
+      window.addEventListener('scroll', updateTopButton, { passive: true });
+
+      topBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      updateTopButton();
     })();
   </script>
 </body>

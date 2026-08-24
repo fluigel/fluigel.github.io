@@ -19,9 +19,9 @@
   <div class="side-layout">
     <div class="site-main">
       <main class="content">
-<div class="page-list-middle">
+<div class="list-large">
 <h1 id="_1">팔정도(八正道)</h1>
-<div class="page-list-middle-body">
+<div class="list-large-body">
 <p><a href="Sonogashira-hirochiga.html">소노가시라 히로치가(園頭広周)</a></p>
 <p><a href="yeongjeokgukbang.html">영적국방(霊的国防)에 대해 소개</a></p>
 </div>
@@ -94,6 +94,8 @@
 
   <footer class="site-footer">© 2025 플뤼겔의 | 유토피아. All rights reserved.</footer>
 
+  <button id="scroll-top-btn" class="scroll-top-btn" type="button" aria-label="맨 위로">↑</button>
+
   <script>
     (() => {
       const button = document.querySelector('.menu-toggle');
@@ -133,6 +135,25 @@
       window.addEventListener('resize', () => {
         if (window.innerWidth > 760) setOpen(false);
       });
+    })();
+  </script>
+
+  <script>
+    (() => {
+      const topBtn = document.getElementById('scroll-top-btn');
+      if (!topBtn) return;
+
+      const updateTopButton = () => {
+        topBtn.classList.toggle('show', window.scrollY > 520);
+      };
+
+      window.addEventListener('scroll', updateTopButton, { passive: true });
+
+      topBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      updateTopButton();
     })();
   </script>
 </body>

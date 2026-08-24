@@ -19,12 +19,13 @@
   <div class="side-layout">
     <div class="site-main">
       <main class="content">
-<div class="page-list-small">
+<div class="list-large">
 <h1 id="_1">정법자료</h1>
-<div class="page-list-small-body">
+<div class="list-large-body">
 <p><a href="simhaeng.html">심행(心行)</a></p>
 <p><a href="giwonmun.html">기원문(冀願文)</a></p>
 <p><a href="cheondomun.html">천도문(薦導文)</a></p>
+<p><a href="maeumuichanga.html">마음의 찬가(心の讃歌)</a></p>
 </div>
 </div>
       </main>
@@ -95,6 +96,8 @@
 
   <footer class="site-footer">© 2025 플뤼겔의 | 유토피아. All rights reserved.</footer>
 
+  <button id="scroll-top-btn" class="scroll-top-btn" type="button" aria-label="맨 위로">↑</button>
+
   <script>
     (() => {
       const button = document.querySelector('.menu-toggle');
@@ -134,6 +137,25 @@
       window.addEventListener('resize', () => {
         if (window.innerWidth > 760) setOpen(false);
       });
+    })();
+  </script>
+
+  <script>
+    (() => {
+      const topBtn = document.getElementById('scroll-top-btn');
+      if (!topBtn) return;
+
+      const updateTopButton = () => {
+        topBtn.classList.toggle('show', window.scrollY > 520);
+      };
+
+      window.addEventListener('scroll', updateTopButton, { passive: true });
+
+      topBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      updateTopButton();
     })();
   </script>
 </body>

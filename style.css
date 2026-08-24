@@ -37,8 +37,7 @@ html, body {
 }
 
 .site-sidebar {
-  position: sticky;
-  top: 24px;
+  position: relative;
   min-height: calc(100vh - 48px);
   overflow: visible;
   border: 1px solid rgba(255,255,255,.18);
@@ -327,35 +326,41 @@ html, body {
   margin: 0;
 }
 
-/* 페이지 목록 */
-.page-list-body,
-.page-list-middle-body,
-.page-list-small-body {
-  display: inline-block;
-  text-align: left;
-  margin-left: 32%;
-  margin-right: auto;
+/* 페이지 목록
+- 목록 전체는 본문 영역에서 자동 세로 중앙 정렬
+- 목록 내용이 길어지면 실제 높이에 맞춰 위아래 여백이 자동 감소
+*/
+.list-small,
+.list-middle,
+.list-large {
+  min-height: calc(100vh - 300px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.page-list-body p {
+.list-small-body,
+.list-middle-body,
+.list-large-body {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.list-small-body p {
   font-size: 1rem;
   line-height: .8;
 }
 
-.page-list-middle-body {
-  margin-top: 10%;
-}
-
-.page-list-middle-body p {
+.list-middle-body p {
   font-size: 1.2rem;
   line-height: 1;
 }
 
-.page-list-small-body {
-  margin-top: 16%;
-}
-
-.page-list-small-body p {
+.list-large-body p {
   font-size: 1.4rem;
   line-height: 1.2;
 }
@@ -368,6 +373,70 @@ html, body {
 ::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,.25);
   border-radius: 4px;
+}
+
+
+/* =================================================
+위로가기 버튼
+- 정적 HTML용 최소 구조
+- 520px 이상 스크롤하면 표시
+================================================= */
+.scroll-top-btn {
+  position: fixed;
+  right: 200px;
+  bottom: 32px;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(59, 92, 122, .85);
+  color: #fff;
+  font-size: 1.55rem;
+  font-weight: 500;
+  line-height: 1;
+  box-shadow:
+    0 6px 18px rgba(59, 92, 122, .35),
+    0 0 0 1px rgba(255,255,255,.22) inset;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  z-index: 9997;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity .25s ease,
+    visibility .25s ease,
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.scroll-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+  background: rgba(59, 92, 122, .72);
+  transform: scale(1.07);
+  box-shadow:
+    0 8px 22px rgba(59, 92, 122, .45),
+    0 0 0 1px rgba(255,255,255,.30) inset;
+}
+
+@media (max-width: 760px) {
+  .scroll-top-btn {
+    right: 18px;
+    bottom: 22px;
+    width: 48px;
+    height: 48px;
+    font-size: 1.35rem;
+  }
 }
 
 /* =================================================
@@ -493,12 +562,6 @@ html, body {
     font-size: 1.2rem;
   }
 
-  .page-list-body,
-  .page-list-middle-body,
-  .page-list-small-body {
-    display: block;
-    margin-left: 0;
-  }
 }
 
 /* =================================================
