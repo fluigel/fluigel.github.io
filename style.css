@@ -18,6 +18,11 @@ html, body {
   background: #fff;
 }
 
+.content .md-br {
+    display: block;
+    height: 0.5em;
+}
+
 /* =================================================
 우측 메뉴형 구조
 ================================================= */
@@ -248,12 +253,6 @@ html, body {
 
 .content li {
   margin: .3em 0;
-}
-
-/* 강조문 위쪽 여백 */
-.content strong {
-  display: inline-block;
-  margin-top: 1.2em;
 }
 
 /* 가운데 정렬 블록 아래쪽 여백 */
